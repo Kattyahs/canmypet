@@ -1,0 +1,29 @@
+# Environment variables
+.env
+.env.local
+
+# Java / Maven / Spring Boot
+backend/target/
+backend/.mvn/
+backend/HELP.md
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+# Node / React / Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
