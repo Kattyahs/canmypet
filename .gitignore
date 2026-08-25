@@ -3,7 +3,7 @@
 .env.local
 
 # Java / Maven / Spring Boot
-backend/target/
+**/target/
 backend/.mvn/
 backend/HELP.md
 *.class
