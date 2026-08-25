@@ -4,37 +4,104 @@ services:
     container_name: canmypet-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "${POSTGRES_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  # backend:
-  #   build:
-  #     context: ./backend
-  #     dockerfile: Dockerfile
-  #   container_name: canmypet-backend
-  #   restart: unless-stopped
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #   environment:
-  #     SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
-  #     SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
-  #     SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-  #     SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-  #     JWT_SECRET: ${JWT_SECRET}
-  #     JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS}
-  #   ports:
-  #     - "${BACKEND_PORT}:8080"
+  user-service:
+    build:
+      context: ./backend/user-service
+      dockerfile: Dockerfile
+    container_name: canmypet-user-service
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      USER_SERVICE_DB: ${USER_SERVICE_DB}
+      USER_SERVICE_PORT: ${USER_SERVICE_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS}
+    ports:
+      - "${USER_SERVICE_PORT}:${USER_SERVICE_PORT}"
+
+  pet-service:
+    build:
+      context: ./backend/pet-service
+      dockerfile: Dockerfile
+    container_name: canmypet-pet-service
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      user-service:
+        condition: service_started
+    environment:
+      DB_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PET_SERVICE_DB: ${PET_SERVICE_DB}
+      PET_SERVICE_PORT: ${PET_SERVICE_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      USER_SERVICE_URL: http://user-service:${USER_SERVICE_PORT}
+    ports:
+      - "${PET_SERVICE_PORT}:${PET_SERVICE_PORT}"
+
+  food-service:
+    build:
+      context: ./backend/food-service
+      dockerfile: Dockerfile
+    container_name: canmypet-food-service
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      user-service:
+        condition: service_started
+    environment:
+      DB_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      FOOD_SERVICE_DB: ${FOOD_SERVICE_DB}
+      FOOD_SERVICE_PORT: ${FOOD_SERVICE_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      USER_SERVICE_URL: http://user-service:${USER_SERVICE_PORT}
+    ports:
+      - "${FOOD_SERVICE_PORT}:${FOOD_SERVICE_PORT}"
+
+  api-gateway:
+    build:
+      context: ./backend/api-gateway
+      dockerfile: Dockerfile
+    container_name: canmypet-api-gateway
+    restart: unless-stopped
+    depends_on:
+      - user-service
+      - pet-service
+      - food-service
+    environment:
+      GATEWAY_PORT: ${GATEWAY_PORT}
+      USER_SERVICE_URL: http://user-service:${USER_SERVICE_PORT}
+      PET_SERVICE_URL: http://pet-service:${PET_SERVICE_PORT}
+      FOOD_SERVICE_URL: http://food-service:${FOOD_SERVICE_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "${GATEWAY_PORT}:${GATEWAY_PORT}"
 
   # frontend:
   #   build:
@@ -43,7 +110,7 @@ services:
   #   container_name: canmypet-frontend
   #   restart: unless-stopped
   #   depends_on:
-  #     - backend
+  #     - api-gateway
   #   environment:
   #     VITE_API_BASE_URL: ${VITE_API_BASE_URL}
   #   ports:
