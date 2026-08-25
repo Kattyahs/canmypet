@@ -12,10 +12,10 @@
     </parent>
 
     <groupId>com.canmypet</groupId>
-    <artifactId>canmypet-backend</artifactId>
+    <artifactId>user-service</artifactId>
     <version>0.1.0</version>
-    <name>canmypet-backend</name>
-    <description>Backend API for CanMyPet - pet food safety platform</description>
+    <name>user-service</name>
+    <description>User authentication, roles, and veterinarian approval service for CanMyPet</description>
 
     <properties>
         <java.version>19</java.version>
