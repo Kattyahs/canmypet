@@ -1,0 +1,49 @@
+package com.canmypet.foodservice.controller;
+
+import com.canmypet.foodservice.dto.FoodSafetyRequest;
+import com.canmypet.foodservice.dto.FoodSafetyResponse;
+import com.canmypet.foodservice.model.LifeStage;
+import com.canmypet.foodservice.security.JwtPrincipal;
+import com.canmypet.foodservice.service.FoodSafetyService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/food-safety")
+@RequiredArgsConstructor
+public class FoodSafetyController {
+
+    private final FoodSafetyService foodSafetyService;
+
+    @GetMapping("/{foodId}/{species}")
+    public ResponseEntity<List<FoodSafetyResponse>> getByFoodAndSpecies(
+            @PathVariable Long foodId,
+            @PathVariable String species,
+            @RequestParam(required = false) LifeStage lifeStage
+    ) {
+        return ResponseEntity.ok(foodSafetyService.getByFoodAndSpecies(foodId, species, lifeStage));
+    }
+
+    @PostMapping
+    @PreAuthorize("hasRole('VETERINARIAN') or hasRole('ADMIN')")
+    public ResponseEntity<FoodSafetyResponse> createFoodSafety(@Valid @RequestBody FoodSafetyRequest request) {
+        FoodSafetyResponse response = foodSafetyService.createFoodSafety(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/{id}/verify")
+    @PreAuthorize("hasRole('VETERINARIAN') or hasRole('ADMIN')")
+    public ResponseEntity<FoodSafetyResponse> verifyFoodSafety(
+            @PathVariable Long id,
+            @AuthenticationPrincipal JwtPrincipal principal
+    ) {
+        FoodSafetyResponse response = foodSafetyService.verifyFoodSafety(id, principal.userId());
+        return ResponseEntity.ok(response);
+    }
+}
