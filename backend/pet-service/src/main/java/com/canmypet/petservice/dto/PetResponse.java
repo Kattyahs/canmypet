@@ -1,5 +1,6 @@
 package com.canmypet.petservice.dto;
 
+import com.canmypet.petservice.model.LifeStage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class PetResponse {
     private String breed;
     private BigDecimal weight;
     private LocalDate birthDate;
+    private LifeStage lifeStage;
     private String medicalConditions;
     private Long ownerId;
 }

@@ -1,5 +1,6 @@
 package com.canmypet.petservice.dto;
 
+import com.canmypet.petservice.model.LifeStage;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
@@ -23,6 +24,8 @@ public class PetRequest {
     private BigDecimal weight;
 
     private LocalDate birthDate;
+
+    private LifeStage lifeStage;
 
     private String medicalConditions;
 }

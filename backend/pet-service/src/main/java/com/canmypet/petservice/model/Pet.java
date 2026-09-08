@@ -36,6 +36,10 @@ public class Pet {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "life_stage")
+    private LifeStage lifeStage;
+
     @Column(name = "medical_conditions", columnDefinition = "TEXT")
     private String medicalConditions;
 

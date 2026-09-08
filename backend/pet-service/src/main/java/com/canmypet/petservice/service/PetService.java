@@ -42,6 +42,7 @@ public class PetService {
                 .breed(request.getBreed())
                 .weight(request.getWeight())
                 .birthDate(request.getBirthDate())
+                .lifeStage(request.getLifeStage())
                 .medicalConditions(request.getMedicalConditions())
                 .ownerId(ownerId)
                 .build();
@@ -63,6 +64,7 @@ public class PetService {
         pet.setBreed(request.getBreed());
         pet.setWeight(request.getWeight());
         pet.setBirthDate(request.getBirthDate());
+        pet.setLifeStage(request.getLifeStage());
         pet.setMedicalConditions(request.getMedicalConditions());
 
         Pet updated = petRepository.save(pet);
@@ -88,6 +90,7 @@ public class PetService {
                 .breed(pet.getBreed())
                 .weight(pet.getWeight())
                 .birthDate(pet.getBirthDate())
+                .lifeStage(pet.getLifeStage())
                 .medicalConditions(pet.getMedicalConditions())
                 .ownerId(pet.getOwnerId())
                 .build();
