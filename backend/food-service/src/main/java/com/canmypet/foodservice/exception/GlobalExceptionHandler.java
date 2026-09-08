@@ -1,5 +1,6 @@
 package com.canmypet.foodservice.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -27,6 +28,31 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnauthorizedVerificationException.class)
     public ResponseEntity<Map<String, Object>> handleUnauthorizedVerification(UnauthorizedVerificationException ex) {
         return buildResponse(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
+    @ExceptionHandler(FaqNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleFaqNotFound(FaqNotFoundException ex) {
+        return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(EmergencyGuideNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleEmergencyGuideNotFound(EmergencyGuideNotFoundException ex) {
+        return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(UnauthorizedAnswerException.class)
+    public ResponseEntity<Map<String, Object>> handleUnauthorizedAnswer(UnauthorizedAnswerException ex) {
+        return buildResponse(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        return buildResponse(HttpStatus.CONFLICT, "This entry conflicts with an existing record (duplicate or invalid reference)");
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalState(IllegalStateException ex) {
+        return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
