@@ -74,3 +74,20 @@ jobs:
       - name: Build with Maven
         working-directory: backend/api-gateway
         run: mvn clean compile -B
+
+  integration-test-user-service:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 19
+        uses: actions/setup-java@v4
+        with:
+          java-version: '19'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run integration tests
+        working-directory: backend/user-service
+        run: mvn test -Dtest=AuthIntegrationTest -B
