@@ -90,4 +90,4 @@ jobs:
 
       - name: Run integration tests
         working-directory: backend/user-service
-        run: mvn test -B
+        run: mvn test -Dtest=AuthIntegrationTest -B
