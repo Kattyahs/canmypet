@@ -1,1 +1,6 @@
 @import "tailwindcss";
+@config "../tailwind.config.js";
+
+body {
+    font-family: "Public Sans", sans-serif;
+}
