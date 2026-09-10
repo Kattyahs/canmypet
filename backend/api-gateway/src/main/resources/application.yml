@@ -3,9 +3,21 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:5173"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: true
       routes:
         - id: user-service
-          uri: ${USER_SERVICE_URL:http://localhost:8081}
+          uri: ${USER_SERVICE_URL:http://localhost:8091}
           predicates:
             - Path=/api/auth/**, /api/users/**
 
