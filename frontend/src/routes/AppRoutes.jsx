@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext'
 import LoginPage from '../pages/LoginPage'
 import RegisterPage from '../pages/RegisterPage'
 import DashboardPage from '../pages/DashboardPage'
+import PetsPage from "../pages/PetsPage.jsx";
 import OwnerLayout from '../layouts/OwnerLayout'
 
 function ProtectedRoute({ children }) {
@@ -56,11 +57,12 @@ function AppRoutes() {
             <Route
                 element={
                     <ProtectedRoute>
-                        <OwnerLayout />
+                        <OwnerLayout  />
                     </ProtectedRoute>
                 }
             >
                 <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/pets" element={<PetsPage />} />
             </Route>
 
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
