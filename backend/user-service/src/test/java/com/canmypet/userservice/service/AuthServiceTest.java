@@ -40,7 +40,6 @@ class AuthServiceTest {
 
     @Test
     void register_withNewEmail_createsUserAndReturnsToken() {
-        // Arrange
         RegisterRequest request = new RegisterRequest();
         request.setName("Kattya Herrera");
         request.setEmail("kattya@example.com");
@@ -62,10 +61,8 @@ class AuthServiceTest {
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
         when(jwtService.generateToken(1L, "kattya@example.com", "OWNER")).thenReturn("fake-jwt-token");
 
-        // Act
         AuthResponse response = authService.register(request);
 
-        // Assert
         assertThat(response.getToken()).isEqualTo("fake-jwt-token");
         assertThat(response.getUserId()).isEqualTo(1L);
         assertThat(response.getEmail()).isEqualTo("kattya@example.com");
@@ -76,7 +73,6 @@ class AuthServiceTest {
 
     @Test
     void register_withExistingEmail_throwsEmailAlreadyExistsException() {
-        // Arrange
         RegisterRequest request = new RegisterRequest();
         request.setName("Kattya Herrera");
         request.setEmail("kattya@example.com");
@@ -85,7 +81,6 @@ class AuthServiceTest {
 
         when(userRepository.existsByEmail("kattya@example.com")).thenReturn(true);
 
-        // Act & Assert
         assertThatThrownBy(() -> authService.register(request))
                 .isInstanceOf(EmailAlreadyExistsException.class)
                 .hasMessageContaining("kattya@example.com");
@@ -95,7 +90,6 @@ class AuthServiceTest {
 
     @Test
     void login_withValidCredentials_returnsToken() {
-        // Arrange
         LoginRequest request = new LoginRequest();
         request.setEmail("kattya@example.com");
         request.setPassword("password123");
@@ -113,17 +107,14 @@ class AuthServiceTest {
         when(passwordEncoder.matches("password123", "hashed_password")).thenReturn(true);
         when(jwtService.generateToken(1L, "kattya@example.com", "OWNER")).thenReturn("fake-jwt-token");
 
-        // Act
         AuthResponse response = authService.login(request);
 
-        // Assert
         assertThat(response.getToken()).isEqualTo("fake-jwt-token");
         assertThat(response.getUserId()).isEqualTo(1L);
     }
 
     @Test
     void login_withWrongPassword_throwsInvalidCredentialsException() {
-        // Arrange
         LoginRequest request = new LoginRequest();
         request.setEmail("kattya@example.com");
         request.setPassword("wrongpassword");
@@ -138,21 +129,18 @@ class AuthServiceTest {
         when(userRepository.findByEmail("kattya@example.com")).thenReturn(Optional.of(existingUser));
         when(passwordEncoder.matches("wrongpassword", "hashed_password")).thenReturn(false);
 
-        // Act & Assert
         assertThatThrownBy(() -> authService.login(request))
                 .isInstanceOf(InvalidCredentialsException.class);
     }
 
     @Test
     void login_withNonExistentEmail_throwsInvalidCredentialsException() {
-        // Arrange
         LoginRequest request = new LoginRequest();
         request.setEmail("noexiste@example.com");
         request.setPassword("password123");
 
         when(userRepository.findByEmail("noexiste@example.com")).thenReturn(Optional.empty());
 
-        // Act & Assert
         assertThatThrownBy(() -> authService.login(request))
                 .isInstanceOf(InvalidCredentialsException.class);
     }
