@@ -5,6 +5,10 @@ import RegisterPage from '../pages/RegisterPage'
 import DashboardPage from '../pages/DashboardPage'
 import PetsPage from "../pages/PetsPage.jsx";
 import OwnerLayout from '../layouts/OwnerLayout'
+import SearchPage from '../pages/SearchPage'
+import HistoryPage from '../pages/HistoryPage'
+import FaqPage from '../pages/FaqPage'
+import EmergencyPage from '../pages/EmergencyPage'
 
 function ProtectedRoute({ children }) {
     const { user, loading } = useAuth()
@@ -63,6 +67,11 @@ function AppRoutes() {
             >
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/pets" element={<PetsPage />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/history" element={<HistoryPage />} />
+                <Route path="/faq" element={<FaqPage />} />
+                <Route path="/emergency" element={<EmergencyPage />} />
+                <Route path="/emergency/:riskLevel" element={<EmergencyPage />} />
             </Route>
 
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
