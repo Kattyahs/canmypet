@@ -9,6 +9,7 @@ import com.canmypet.userservice.model.Role;
 import com.canmypet.userservice.model.User;
 import com.canmypet.userservice.repository.UserRepository;
 import com.canmypet.userservice.security.JwtService;
+import com.canmypet.userservice.exception.ForbiddenRoleException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,10 @@ public class AuthService {
     private final JwtService jwtService;
 
     public AuthResponse register(RegisterRequest request) {
+        if (request.getRole() == Role.ADMIN) {
+            throw new ForbiddenRoleException("Public registration cannot create ADMIN accounts");
+        }
+
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyExistsException(request.getEmail());
         }

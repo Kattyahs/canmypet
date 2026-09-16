@@ -28,6 +28,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleUserNotFound(UserNotFoundException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
+    @ExceptionHandler(ForbiddenRoleException.class)
+    public ResponseEntity<Map<String, Object>> handleForbiddenRole(ForbiddenRoleException ex) {
+        return buildResponse(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(MethodArgumentNotValidException ex) {
