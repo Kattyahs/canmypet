@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -137,5 +138,27 @@ class FoodSafetyServiceTest {
                 .isInstanceOf(com.canmypet.foodservice.exception.UnauthorizedVerificationException.class);
 
         verify(foodSafetyRepository, never()).save(any(FoodSafety.class));
+    }
+
+    @Test
+    void getByStatus_pending_returnsMappedEntries() {
+        Food food = Food.builder().id(1L).name("Chocolate").build();
+        FoodSafety pending = FoodSafety.builder()
+                .id(7L)
+                .food(food)
+                .species(Species.CAT)
+                .riskLevel(RiskLevel.TOXIC)
+                .verifiedStatus(VerifiedStatus.PENDING)
+                .build();
+
+        when(foodSafetyRepository.findByVerifiedStatusOrderByIdAsc(VerifiedStatus.PENDING))
+                .thenReturn(List.of(pending));
+
+        List<FoodSafetyResponse> result = foodSafetyService.getByStatus(VerifiedStatus.PENDING);
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getId()).isEqualTo(7L);
+        assertThat(result.get(0).getFoodName()).isEqualTo("Chocolate");
+        assertThat(result.get(0).getVerifiedStatus()).isEqualTo(VerifiedStatus.PENDING);
     }
 }

@@ -22,6 +22,11 @@ public class FoodSafetyService {
     private final FoodRepository foodRepository;
     private final UserServiceClient userServiceClient;
 
+    public List<FoodSafetyResponse> getByStatus(VerifiedStatus status) {
+        return foodSafetyRepository.findByVerifiedStatusOrderByIdAsc(status).stream()
+                .map(this::toResponse)
+                .toList();
+    }
 
     public List<FoodSafetyResponse> getByFoodAndSpecies(Long foodId, Species species, LifeStage lifeStage) {
         if (lifeStage == null) {
