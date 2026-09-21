@@ -59,7 +59,12 @@ class FoodSafetyServiceTest {
 
         when(foodSafetyRepository.save(any(FoodSafety.class))).thenReturn(savedEntry);
 
-        FoodSafetyResponse response = foodSafetyService.createFoodSafety(request);
+        UserDto veterinarian = new UserDto();
+        veterinarian.setRole("VETERINARIAN");
+        veterinarian.setVerified(true);
+        when(userServiceClient.getUserById(5L)).thenReturn(veterinarian);
+
+        FoodSafetyResponse response = foodSafetyService.createFoodSafety(request, 5L, "VETERINARIAN");
 
         assertThat(response.getId()).isEqualTo(1L);
         assertThat(response.getRiskLevel()).isEqualTo(RiskLevel.TOXIC);
@@ -80,10 +85,11 @@ class FoodSafetyServiceTest {
         when(foodSafetyRepository.findByFoodIdAndSpeciesAndLifeStageIsNull(1L, Species.DOG))
                 .thenReturn(Optional.of(existingEntry));
 
-        assertThatThrownBy(() -> foodSafetyService.createFoodSafety(request))
+        assertThatThrownBy(() -> foodSafetyService.createFoodSafety(request, 1L, "ADMIN"))
                 .isInstanceOf(IllegalStateException.class);
 
         verify(foodSafetyRepository, never()).save(any(FoodSafety.class));
+        verifyNoInteractions(userServiceClient);
     }
 
     @Test
@@ -160,5 +166,24 @@ class FoodSafetyServiceTest {
         assertThat(result.get(0).getId()).isEqualTo(7L);
         assertThat(result.get(0).getFoodName()).isEqualTo("Chocolate");
         assertThat(result.get(0).getVerifiedStatus()).isEqualTo(VerifiedStatus.PENDING);
+    }
+
+    @Test
+    void createFoodSafety_byUnverifiedVeterinarian_throwsUnauthorizedVerificationException() {
+        FoodSafetyRequest request = new FoodSafetyRequest();
+        request.setFoodId(1L);
+        request.setSpecies(Species.CAT);
+        request.setRiskLevel(RiskLevel.SAFE);
+
+        UserDto unverifiedVet = new UserDto();
+        unverifiedVet.setRole("VETERINARIAN");
+        unverifiedVet.setVerified(false);
+        when(userServiceClient.getUserById(6L)).thenReturn(unverifiedVet);
+
+        assertThatThrownBy(() -> foodSafetyService.createFoodSafety(request, 6L, "VETERINARIAN"))
+                .isInstanceOf(com.canmypet.foodservice.exception.UnauthorizedVerificationException.class);
+
+        verify(foodSafetyRepository, never()).save(any(FoodSafety.class));
+        verifyNoInteractions(foodRepository);
     }
 }

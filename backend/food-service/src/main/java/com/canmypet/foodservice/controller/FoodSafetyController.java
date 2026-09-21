@@ -45,8 +45,12 @@ public class FoodSafetyController {
 
     @PostMapping
     @PreAuthorize("hasRole('VETERINARIAN') or hasRole('ADMIN')")
-    public ResponseEntity<FoodSafetyResponse> createFoodSafety(@Valid @RequestBody FoodSafetyRequest request) {
-        FoodSafetyResponse response = foodSafetyService.createFoodSafety(request);
+    public ResponseEntity<FoodSafetyResponse> createFoodSafety(
+            @Valid @RequestBody FoodSafetyRequest request,
+            @AuthenticationPrincipal JwtPrincipal principal
+    ) {
+        FoodSafetyResponse response =
+                foodSafetyService.createFoodSafety(request, principal.userId(), principal.role());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
