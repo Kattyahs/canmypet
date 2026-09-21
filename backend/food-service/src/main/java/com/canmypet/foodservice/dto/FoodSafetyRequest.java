@@ -2,6 +2,7 @@ package com.canmypet.foodservice.dto;
 
 import com.canmypet.foodservice.model.LifeStage;
 import com.canmypet.foodservice.model.RiskLevel;
+import com.canmypet.foodservice.model.Species;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,10 +18,9 @@ public class FoodSafetyRequest {
     @NotNull(message = "foodId is required")
     private Long foodId;
 
-    @NotBlank(message = "Species is required")
-    private String species;
+    @NotNull(message = "species is required")
+    private Species species;
 
-    // Optional: null means "applies to all life stages"
     private LifeStage lifeStage;
 
     @NotNull(message = "riskLevel is required")

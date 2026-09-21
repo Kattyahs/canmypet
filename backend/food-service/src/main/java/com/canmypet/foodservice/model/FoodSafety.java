@@ -28,8 +28,9 @@ public class FoodSafety {
     @JoinColumn(name = "food_id", nullable = false)
     private Food food;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String species;
+    private Species species;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "life_stage")

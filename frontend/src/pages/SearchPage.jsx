@@ -5,6 +5,7 @@ import { searchFoods, getFoodSafety } from '../api/foods'
 import { getMyPets } from '../api/pets'
 import { recordSearch } from '../api/searchHistory'
 import { RISK_CONFIG } from '../components/RiskBadge'
+import { getSpeciesLabel } from '../constants/species'
 
 function SearchPage() {
     const [searchParams] = useSearchParams()
@@ -107,7 +108,7 @@ function SearchPage() {
                         <option value="">Selecciona una mascota</option>
                         {pets.map((pet) => (
                             <option key={pet.id} value={pet.id}>
-                                {pet.name} · {pet.species}
+                                {pet.name} · {getSpeciesLabel(pet.species)}
                                 {pet.lifeStage ? ` · ${pet.lifeStage}` : ''}
                             </option>
                         ))}
@@ -125,7 +126,7 @@ function SearchPage() {
                     <p className="text-sm text-gray-500">
                         Todavía no hay información de seguridad registrada para{' '}
                         <span className="font-medium text-gray-900">{selectedFood?.name}</span> en{' '}
-                        {selectedPet?.species}.
+                        {getSpeciesLabel(selectedPet?.species)}.
                     </p>
                     <Link to="/faq" className="text-sm text-brand font-medium mt-2 inline-block">
                         Preguntar en el FAQ
@@ -170,7 +171,7 @@ function SearchPage() {
                                         </p>
                                         <p className="text-gray-900 font-medium">{selectedPet?.name}</p>
                                         <p className="text-xs text-gray-500">
-                                            {entry.species}
+                                            {getSpeciesLabel(entry.species)}
                                             {entry.lifeStage ? ` · ${entry.lifeStage}` : ' · todas las edades'}
                                         </p>
                                     </div>

@@ -26,8 +26,9 @@ public class Pet {
     @Column(nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String species;
+    private Species species;
 
     private String breed;
 

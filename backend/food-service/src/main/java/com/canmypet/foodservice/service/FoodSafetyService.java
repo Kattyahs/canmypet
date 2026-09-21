@@ -22,7 +22,7 @@ public class FoodSafetyService {
     private final FoodRepository foodRepository;
     private final UserServiceClient userServiceClient;
 
-    public List<FoodSafetyResponse> getByFoodAndSpecies(Long foodId, String species, LifeStage lifeStage) {
+    public List<FoodSafetyResponse> getByFoodAndSpecies(Long foodId, Species species, LifeStage lifeStage) {
         if (lifeStage == null) {
             // No lifeStage specified: return ALL entries for this food+species
             List<FoodSafety> all = foodSafetyRepository.findByFoodIdAndSpecies(foodId, species);

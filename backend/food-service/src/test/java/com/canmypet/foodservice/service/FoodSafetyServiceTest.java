@@ -4,10 +4,7 @@ import com.canmypet.foodservice.client.UserServiceClient;
 import com.canmypet.foodservice.dto.FoodSafetyRequest;
 import com.canmypet.foodservice.dto.FoodSafetyResponse;
 import com.canmypet.foodservice.dto.UserDto;
-import com.canmypet.foodservice.model.Food;
-import com.canmypet.foodservice.model.FoodSafety;
-import com.canmypet.foodservice.model.RiskLevel;
-import com.canmypet.foodservice.model.VerifiedStatus;
+import com.canmypet.foodservice.model.*;
 import com.canmypet.foodservice.repository.FoodRepository;
 import com.canmypet.foodservice.repository.FoodSafetyRepository;
 import org.junit.jupiter.api.Test;
@@ -42,19 +39,19 @@ class FoodSafetyServiceTest {
     void createFoodSafety_newCombination_createsEntry() {
         FoodSafetyRequest request = new FoodSafetyRequest();
         request.setFoodId(1L);
-        request.setSpecies("dog");
+        request.setSpecies(Species.DOG);
         request.setRiskLevel(RiskLevel.TOXIC);
 
         Food food = Food.builder().id(1L).name("Chocolate").category("human food").build();
 
         when(foodRepository.findById(1L)).thenReturn(Optional.of(food));
-        when(foodSafetyRepository.findByFoodIdAndSpeciesAndLifeStageIsNull(1L, "dog"))
+        when(foodSafetyRepository.findByFoodIdAndSpeciesAndLifeStageIsNull(1L, Species.DOG))
                 .thenReturn(Optional.empty());
 
         FoodSafety savedEntry = FoodSafety.builder()
                 .id(1L)
                 .food(food)
-                .species("dog")
+                .species(Species.DOG)
                 .riskLevel(RiskLevel.TOXIC)
                 .verifiedStatus(VerifiedStatus.PENDING)
                 .build();
@@ -72,14 +69,14 @@ class FoodSafetyServiceTest {
     void createFoodSafety_duplicateCombination_throwsIllegalStateException() {
         FoodSafetyRequest request = new FoodSafetyRequest();
         request.setFoodId(1L);
-        request.setSpecies("dog");
+        request.setSpecies(Species.DOG);
         request.setRiskLevel(RiskLevel.TOXIC);
 
         Food food = Food.builder().id(1L).name("Chocolate").build();
-        FoodSafety existingEntry = FoodSafety.builder().id(5L).food(food).species("dog").build();
+        FoodSafety existingEntry = FoodSafety.builder().id(5L).food(food).species(Species.DOG).build();
 
         when(foodRepository.findById(1L)).thenReturn(Optional.of(food));
-        when(foodSafetyRepository.findByFoodIdAndSpeciesAndLifeStageIsNull(1L, "dog"))
+        when(foodSafetyRepository.findByFoodIdAndSpeciesAndLifeStageIsNull(1L, Species.DOG))
                 .thenReturn(Optional.of(existingEntry));
 
         assertThatThrownBy(() -> foodSafetyService.createFoodSafety(request))
@@ -97,7 +94,7 @@ class FoodSafetyServiceTest {
         FoodSafety entry = FoodSafety.builder()
                 .id(entryId)
                 .food(food)
-                .species("dog")
+                .species(Species.DOG)
                 .riskLevel(RiskLevel.TOXIC)
                 .verifiedStatus(VerifiedStatus.PENDING)
                 .build();
@@ -125,7 +122,7 @@ class FoodSafetyServiceTest {
         FoodSafety entry = FoodSafety.builder()
                 .id(entryId)
                 .food(food)
-                .species("dog")
+                .species(Species.DOG)
                 .verifiedStatus(VerifiedStatus.PENDING)
                 .build();
 

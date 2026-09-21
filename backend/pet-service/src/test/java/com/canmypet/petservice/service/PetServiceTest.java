@@ -6,6 +6,7 @@ import com.canmypet.petservice.dto.PetResponse;
 import com.canmypet.petservice.dto.UserDto;
 import com.canmypet.petservice.exception.UserValidationException;
 import com.canmypet.petservice.model.Pet;
+import com.canmypet.petservice.model.Species;
 import com.canmypet.petservice.repository.PetRepository;
 import feign.FeignException;
 import feign.Request;
@@ -42,7 +43,7 @@ class PetServiceTest {
         // Arrange
         PetRequest request = new PetRequest();
         request.setName("Firulais");
-        request.setSpecies("dog");
+        request.setSpecies(Species.DOG);
         request.setBreed("Labrador");
         request.setWeight(new BigDecimal("25.5"));
 
@@ -53,7 +54,7 @@ class PetServiceTest {
         Pet savedPet = Pet.builder()
                 .id(1L)
                 .name("Firulais")
-                .species("dog")
+                .species(Species.DOG)
                 .breed("Labrador")
                 .weight(new BigDecimal("25.5"))
                 .ownerId(ownerId)
@@ -76,7 +77,7 @@ class PetServiceTest {
     void createPet_withInvalidOwner_throwsUserValidationException() {
         PetRequest request = new PetRequest();
         request.setName("Firulais");
-        request.setSpecies("dog");
+        request.setSpecies(Species.DOG);
 
         Long ownerId = 999L;
 
@@ -100,13 +101,13 @@ class PetServiceTest {
         Pet existingPet = Pet.builder()
                 .id(petId)
                 .name("Firulais")
-                .species("dog")
+                .species(Species.DOG)
                 .ownerId(ownerId)
                 .build();
 
         PetRequest request = new PetRequest();
         request.setName("Firulais Actualizado");
-        request.setSpecies("dog");
+        request.setSpecies(Species.DOG);
 
         when(petRepository.findById(petId)).thenReturn(java.util.Optional.of(existingPet));
         when(petRepository.save(any(Pet.class))).thenReturn(existingPet);
@@ -126,13 +127,13 @@ class PetServiceTest {
         Pet existingPet = Pet.builder()
                 .id(petId)
                 .name("Firulais")
-                .species("dog")
+                .species(Species.DOG)
                 .ownerId(realOwnerId)
                 .build();
 
         PetRequest request = new PetRequest();
         request.setName("Intento de robo");
-        request.setSpecies("dog");
+        request.setSpecies(Species.DOG);
 
         when(petRepository.findById(petId)).thenReturn(java.util.Optional.of(existingPet));
 
