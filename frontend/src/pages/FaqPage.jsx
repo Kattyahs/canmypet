@@ -13,8 +13,7 @@ function FaqPage() {
     const [answeringId, setAnsweringId] = useState(null)
     const [error, setError] = useState('')
 
-    const isVet = user?.role === 'VETERINARIAN'
-
+    const canAnswer = user?.role === 'VETERINARIAN' && user?.verified === true
     const loadFaqs = async () => {
         setLoading(true)
         try {
@@ -131,7 +130,7 @@ function FaqPage() {
                         )}
 
                         {/* Solo veterinarios pueden responder pendientes */}
-                        {isVet && faq.status === 'PENDING' && (
+                        {canAnswer && faq.status === 'PENDING' && (
                             <div className="pt-2">
                                 {answeringId === faq.id ? (
                                     <AnswerForm
