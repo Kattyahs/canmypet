@@ -8,3 +8,4 @@ spring:
 logging:
   level:
     com.canmypet: DEBUG
+    org.springframework.security: DEBUG

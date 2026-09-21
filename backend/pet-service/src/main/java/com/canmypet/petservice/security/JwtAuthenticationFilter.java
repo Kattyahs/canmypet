@@ -12,11 +12,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.List;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -46,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authToken);
         } catch (Exception e) {
-            // Invalid or expired token — leave unauthenticated, Spring Security handles the 401
+            log.warn("JWT validation failed: {} - {}", e.getClass().getSimpleName(), e.getMessage());
             SecurityContextHolder.clearContext();
         }
 
