@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { ClipboardCheck, HelpCircle, ShieldAlert } from 'lucide-react'
+import { ClipboardCheck, HelpCircle, Plus, ShieldAlert } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import PendingEntriesTab from '../components/vet/PendingEntriesTab'
 import PendingQuestionsTab from '../components/vet/PendingQuestionsTab'
+import ProposeEntryForm from '../components/vet/ProposeEntryForm'
 
 const TABS = [
     { id: 'entries', label: 'Entradas pendientes', Icon: ClipboardCheck },
@@ -13,6 +14,10 @@ function VetPanelPage() {
     const { user, refreshUser } = useAuth()
     const [activeTab, setActiveTab] = useState('entries')
     const [checking, setChecking] = useState(false)
+    const [showForm, setShowForm] = useState(false)
+    const [notice, setNotice] = useState('')
+    // Changing the key remounts PendingEntriesTab, which reloads the list
+    const [entriesVersion, setEntriesVersion] = useState(0)
 
     // UX only: the backend rejects actions from unverified veterinarians anyway
     const canAct = user?.verified === true
@@ -26,12 +31,37 @@ function VetPanelPage() {
         }
     }
 
+    const handleCreated = () => {
+        setShowForm(false)
+        setActiveTab('entries')
+        setEntriesVersion((v) => v + 1)
+        setNotice('Entrada creada. Ya aparece en la lista de pendientes.')
+    }
+
     return (
         <div>
-            <h1 className="text-2xl font-semibold text-gray-900 mb-1">Panel veterinario</h1>
-            <p className="text-sm text-gray-500 mb-6">
-                Verifica evaluaciones de riesgo y responde las preguntas de los dueños.
-            </p>
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-6">
+                <div>
+                    <h1 className="text-2xl font-semibold text-gray-900 mb-1">Panel veterinario</h1>
+                    <p className="text-sm text-gray-500">
+                        Verifica evaluaciones de riesgo y responde las preguntas de los dueños.
+                    </p>
+                </div>
+                {!showForm && (
+                    <button
+                        type="button"
+                        onClick={() => {
+                            setNotice('')
+                            setShowForm(true)
+                        }}
+                        disabled={!canAct}
+                        className="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-md disabled:opacity-60"
+                    >
+                        <Plus size={16} aria-hidden="true" />
+                        Proponer entrada
+                    </button>
+                )}
+            </div>
 
             {!canAct && (
                 <div
@@ -45,7 +75,7 @@ function VetPanelPage() {
                         </p>
                         <p className="text-sm text-gray-600">
                             Un administrador debe verificar tu licencia antes de que puedas verificar
-                            entradas o responder preguntas.
+                            entradas, proponer nuevas o responder preguntas.
                         </p>
                     </div>
                     <button
@@ -57,6 +87,16 @@ function VetPanelPage() {
                         {checking ? 'Comprobando...' : 'Comprobar de nuevo'}
                     </button>
                 </div>
+            )}
+
+            {notice && (
+                <p role="status" className="bg-green-50 border border-green-100 rounded-lg p-3 mb-4 text-sm text-gray-900">
+                    {notice}
+                </p>
+            )}
+
+            {showForm && canAct && (
+                <ProposeEntryForm onCreated={handleCreated} onCancel={() => setShowForm(false)} />
             )}
 
             <div role="tablist" aria-label="Secciones del panel" className="flex gap-1 border-b border-gray-200 mb-4">
@@ -86,7 +126,7 @@ function VetPanelPage() {
 
             <div role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
                 {activeTab === 'entries' ? (
-                    <PendingEntriesTab canAct={canAct} />
+                    <PendingEntriesTab key={entriesVersion} canAct={canAct} />
                 ) : (
                     <PendingQuestionsTab canAct={canAct} />
                 )}
