@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
-import { Search, AlertTriangle } from 'lucide-react'
-import { searchFoods, getFoodSafety } from '../api/foods'
+import { AlertTriangle } from 'lucide-react'
+import { searchFoods, getFoodSafety, getFoodSafetyAllSpecies } from '../api/foods'
 import { getMyPets } from '../api/pets'
 import { recordSearch } from '../api/searchHistory'
-import { RISK_CONFIG } from '../components/RiskBadge'
 import { getSpeciesLabel } from '../constants/species'
+import { RISK_CONFIG } from '../components/RiskBadge'
 
 function SearchPage() {
     const [searchParams] = useSearchParams()
@@ -18,6 +18,11 @@ function SearchPage() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
+    // Mascota usada en la consulta que produjo los resultados actuales.
+    // Se guarda aparte de selectedPetId para que el detalle mostrado no cambie
+    // si el usuario modifica el selector despues de consultar.
+    const [resultPet, setResultPet] = useState(null)
+
     useEffect(() => {
         getMyPets().then((res) => setPets(res.data)).catch(() => {})
     }, [])
@@ -28,6 +33,7 @@ function SearchPage() {
         setQuery(value)
         setSelectedFood(null)
         setResults(null)
+        setResultPet(null)
         if (value.length < 2) {
             setSuggestions([])
             return
@@ -41,19 +47,24 @@ function SearchPage() {
     }
 
     const handleConsult = async (food) => {
-        if (!selectedPet) {
-            setError('Selecciona una mascota para consultar el riesgo.')
-            return
-        }
         setSelectedFood(food)
         setSuggestions([])
         setQuery(food.name)
         setError('')
         setLoading(true)
+        setResultPet(selectedPet || null)
+
         try {
-            const res = await getFoodSafety(food.id, selectedPet.species, selectedPet.lifeStage)
+            const res = selectedPet
+                ? await getFoodSafety(food.id, selectedPet.species, selectedPet.lifeStage)
+                : await getFoodSafetyAllSpecies(food.id)
+
             setResults(res.data)
-            await recordSearch({ petId: selectedPet.id, foodId: food.id })
+
+            await recordSearch({
+                petId: selectedPet ? selectedPet.id : null,
+                foodId: food.id,
+            })
         } catch (err) {
             if (err.response?.status === 404) {
                 setResults([])
@@ -105,7 +116,7 @@ function SearchPage() {
                         onChange={(e) => setSelectedPetId(e.target.value)}
                         className="min-h-[44px] px-3 border border-gray-300 rounded-md text-sm md:w-64 focus:outline-none focus:ring-2 focus:ring-brand"
                     >
-                        <option value="">Selecciona una mascota</option>
+                        <option value="">Todas las especies</option>
                         {pets.map((pet) => (
                             <option key={pet.id} value={pet.id}>
                                 {pet.name} · {getSpeciesLabel(pet.species)}
@@ -114,6 +125,11 @@ function SearchPage() {
                         ))}
                     </select>
                 </div>
+
+                <p className="text-xs text-gray-500 mt-3">
+                    Elige una mascota para ajustar el resultado a su especie y etapa de vida, o
+                    consulta sin seleccionarla para ver el riesgo en todas las especies.
+                </p>
 
                 {error && <p className="text-sm text-risk-toxic mt-3">{error}</p>}
             </div>
@@ -125,8 +141,8 @@ function SearchPage() {
                 <div className="bg-white border border-gray-200 rounded-lg p-6 text-center">
                     <p className="text-sm text-gray-500">
                         Todavía no hay información de seguridad registrada para{' '}
-                        <span className="font-medium text-gray-900">{selectedFood?.name}</span> en{' '}
-                        {getSpeciesLabel(selectedPet?.species)}.
+                        <span className="font-medium text-gray-900">{selectedFood?.name}</span>
+                        {resultPet ? ` en ${getSpeciesLabel(resultPet.species)}` : ''}.
                     </p>
                     <Link to="/faq" className="text-sm text-brand font-medium mt-2 inline-block">
                         Preguntar en el FAQ
@@ -137,6 +153,13 @@ function SearchPage() {
             {/* Resultados */}
             {results && results.length > 0 && (
                 <div className="space-y-4">
+                    {!resultPet && results.length > 1 && (
+                        <p className="text-sm text-gray-500">
+                            Resultados para {results.length} especies. Selecciona una mascota para
+                            ver solo la que te interesa.
+                        </p>
+                    )}
+
                     {results.map((entry) => {
                         const config = RISK_CONFIG[entry.riskLevel]
                         const Icon = config?.Icon
@@ -148,7 +171,7 @@ function SearchPage() {
                                 {/* Cabecera con color por nivel */}
                                 <div className={`${config?.bg} ${config?.border} border-b p-5`}>
                                     <p className="font-mono text-xs uppercase tracking-wide text-gray-500 mb-1">
-                                        Nivel de riesgo
+                                        Nivel de riesgo · {getSpeciesLabel(entry.species)}
                                     </p>
                                     <div className="flex items-center gap-2 mb-1">
                                         {Icon && <Icon size={24} className={config.text} />}
@@ -169,10 +192,12 @@ function SearchPage() {
                                         <p className="font-mono text-xs uppercase tracking-wide text-gray-500 mb-1">
                                             Evaluado para
                                         </p>
-                                        <p className="text-gray-900 font-medium">{selectedPet?.name}</p>
+                                        <p className="text-gray-900 font-medium">
+                                            {resultPet ? resultPet.name : getSpeciesLabel(entry.species)}
+                                        </p>
                                         <p className="text-xs text-gray-500">
-                                            {getSpeciesLabel(entry.species)}
-                                            {entry.lifeStage ? ` · ${entry.lifeStage}` : ' · todas las edades'}
+                                            {resultPet ? `${getSpeciesLabel(entry.species)} · ` : ''}
+                                            {entry.lifeStage ? entry.lifeStage : 'todas las edades'}
                                         </p>
                                     </div>
                                     <div>
@@ -207,45 +232,45 @@ function SearchPage() {
                                             {entry.sources.map((source) => (
                                                 <li key={source.id} className="text-sm">
                                                     {source.sourceUrl ? (
-                                                    <a
+                                                        <a
                                                             href={source.sourceUrl}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="text-brand"
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="text-brand"
                                                         >
-                                                    {source.sourceName}
+                                                            {source.sourceName}
                                                         </a>
-                                                        ) : (
+                                                    ) : (
                                                         <span className="text-gray-700">{source.sourceName}</span>
-                                            )}
-                                        </li>
-                                        ))}
-                                    </ul>
+                                                    )}
+                                                </li>
+                                            ))}
+                                        </ul>
                                     </div>
-                                    )}
+                                )}
 
-                    {/* Acción de emergencia, solo si el riesgo lo amerita */}
-                    {entry.riskLevel !== 'SAFE' && (
-                        <div className="p-5 flex items-center justify-between gap-4">
-                        <p className="text-sm text-gray-600">
-                        Si ya lo ingirió, actúa en los próximos minutos.
-                        </p>
-                        <Link
-                        to={`/emergency/${entry.riskLevel}`}
-                     className="shrink-0 flex items-center gap-2 px-4 py-2 bg-risk-toxic text-white text-sm font-medium rounded-md"
-                >
-                    <AlertTriangle size={16} />
-                    Guía de emergencia
-                </Link>
+                                {/* Acción de emergencia, solo si el riesgo lo amerita */}
+                                {entry.riskLevel !== 'SAFE' && (
+                                    <div className="p-5 flex items-center justify-between gap-4">
+                                        <p className="text-sm text-gray-600">
+                                            Si ya lo ingirió, actúa en los próximos minutos.
+                                        </p>
+                                        <Link
+                                            to={`/emergency/${entry.riskLevel}`}
+                                            className="shrink-0 flex items-center gap-2 px-4 py-2 bg-risk-toxic text-white text-sm font-medium rounded-md"
+                                        >
+                                            <AlertTriangle size={16} />
+                                            Guía de emergencia
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
+                        )
+                    })}
                 </div>
-                )}
-                </div>
-                )
-            })}
+            )}
         </div>
-    )}
-</div>
-)
+    )
 }
 
 export default SearchPage
