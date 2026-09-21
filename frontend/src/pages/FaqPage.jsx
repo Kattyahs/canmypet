@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { MessageCirclePlus, CircleCheck, Clock } from 'lucide-react'
 import { getAllFaqs, askQuestion, answerQuestion } from '../api/faq'
 import { useAuth } from '../context/AuthContext'
+import AnswerForm from '../components/AnswerForm'
 
 function FaqPage() {
     const { user } = useAuth()
@@ -10,7 +11,6 @@ function FaqPage() {
     const [newQuestion, setNewQuestion] = useState('')
     const [asking, setAsking] = useState(false)
     const [answeringId, setAnsweringId] = useState(null)
-    const [answerText, setAnswerText] = useState('')
     const [error, setError] = useState('')
 
     const isVet = user?.role === 'VETERINARIAN'
@@ -45,20 +45,10 @@ function FaqPage() {
         }
     }
 
-    const handleAnswer = async (faqId) => {
-        if (!answerText.trim()) return
-        setError('')
-        try {
-            await answerQuestion(faqId, { answer: answerText })
-            setAnsweringId(null)
-            setAnswerText('')
-            await loadFaqs()
-        } catch (err) {
-            setError(
-                err.response?.data?.error ||
-                'No se pudo responder. Solo veterinarios verificados pueden hacerlo.'
-            )
-        }
+    const handleAnswer = async (faqId, answer) => {
+        await answerQuestion(faqId, { answer })
+        setAnsweringId(null)
+        await loadFaqs()
     }
 
     const formatDate = (isoString) => {
@@ -144,34 +134,13 @@ function FaqPage() {
                         {isVet && faq.status === 'PENDING' && (
                             <div className="pt-2">
                                 {answeringId === faq.id ? (
-                                    <div className="space-y-2">
-                    <textarea
-                        value={answerText}
-                        onChange={(e) => setAnswerText(e.target.value)}
-                        rows={3}
-                        placeholder="Escribe tu respuesta..."
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand"
-                    />
-                                        <div className="flex gap-2">
-                                            <button
-                                                onClick={() => handleAnswer(faq.id)}
-                                                className="px-4 py-2 bg-brand text-white text-sm font-medium rounded-md"
-                                            >
-                                                Enviar respuesta
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    setAnsweringId(null)
-                                                    setAnswerText('')
-                                                }}
-                                                className="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700"
-                                            >
-                                                Cancelar
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <AnswerForm
+                                        onSubmit={(answer) => handleAnswer(faq.id, answer)}
+                                        onCancel={() => setAnsweringId(null)}
+                                    />
                                 ) : (
                                     <button
+                                        type="button"
                                         onClick={() => setAnsweringId(faq.id)}
                                         className="text-sm text-brand font-medium"
                                     >
