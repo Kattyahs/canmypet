@@ -11,3 +11,10 @@ export const getFoodSafety = (foodId, species, lifeStage) =>
     })
 export const getFoodSafetyAllSpecies = (foodId) =>
     axiosClient.get(`/api/food-safety/${foodId}`)
+
+export const getFoodSafetyByStatus = (status) =>
+    axiosClient.get('/api/food-safety', { params: { status } })
+
+export const verifyFoodSafety = (id) => axiosClient.put(`/api/food-safety/${id}/verify`)
+
+export const createFoodSafety = (data) => axiosClient.post('/api/food-safety', data)
