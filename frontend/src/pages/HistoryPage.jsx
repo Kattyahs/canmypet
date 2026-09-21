@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { getMyHistory } from '../api/searchHistory'
 import { getAllFoods } from '../api/foods'
 import { getMyPets } from '../api/pets'
+import { getSpeciesLabel } from '../constants/species'
 
 function HistoryPage() {
     const [history, setHistory] = useState([])
@@ -84,7 +85,7 @@ function HistoryPage() {
                                     </p>
                                     <p className="text-xs text-gray-500">
                                         {pet
-                                            ? `${pet.name} · ${pet.species}${pet.lifeStage ? ` · ${pet.lifeStage}` : ''}`
+                                            ? `${pet.name} · ${getSpeciesLabel(pet.species)}${pet.lifeStage ? ` · ${pet.lifeStage}` : ''}`
                                             : 'Consulta general'}
                                     </p>
                                 </div>

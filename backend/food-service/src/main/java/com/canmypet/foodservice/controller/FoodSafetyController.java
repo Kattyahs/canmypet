@@ -3,6 +3,7 @@ package com.canmypet.foodservice.controller;
 import com.canmypet.foodservice.dto.FoodSafetyRequest;
 import com.canmypet.foodservice.dto.FoodSafetyResponse;
 import com.canmypet.foodservice.model.LifeStage;
+import com.canmypet.foodservice.model.Species;
 import com.canmypet.foodservice.security.JwtPrincipal;
 import com.canmypet.foodservice.service.FoodSafetyService;
 import jakarta.validation.Valid;
@@ -24,7 +25,7 @@ public class FoodSafetyController {
     @GetMapping("/{foodId}/{species}")
     public ResponseEntity<List<FoodSafetyResponse>> getByFoodAndSpecies(
             @PathVariable Long foodId,
-            @PathVariable String species,
+            @PathVariable Species species,
             @RequestParam(required = false) LifeStage lifeStage
     ) {
         return ResponseEntity.ok(foodSafetyService.getByFoodAndSpecies(foodId, species, lifeStage));

@@ -2,12 +2,16 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Plus, Pencil, Search } from 'lucide-react'
 import { getMyPets, createPet, updatePet } from '../api/pets'
+import {SPECIES, getSpeciesLabel, getStageHints} from '../constants/species'
 
-const LIFE_STAGES = [
-    { value: 'PUPPY', label: 'Puppy', hint: '0–1 año' },
-    { value: 'ADULT', label: 'Adult', hint: '1–7 años' },
-    { value: 'SENIOR', label: 'Senior', hint: '7+ años' },
-]
+const buildLifeStages = (species) => {
+    const hints = getStageHints(species)
+    return[
+        { value: 'PUPPY', label: 'Puppy', hint: hints.PUPPY },
+        { value: 'ADULT', label: 'Adult', hint: hints.ADULT },
+        { value: 'SENIOR', label: 'Senior', hint: hints.SENIOR },
+    ]
+}
 
 const EMPTY_FORM = {
     name: '',
@@ -139,7 +143,7 @@ function PetsPage() {
                                 )}
                             </div>
                             <p className="text-sm text-gray-500 mb-2">
-                                {pet.species}
+                                {getSpeciesLabel(pet.species)}
                                 {pet.breed ? ` · ${pet.breed}` : ''}
                                 {pet.weight ? ` · ${pet.weight} kg` : ''}
                             </p>
@@ -191,17 +195,23 @@ function PetsPage() {
 
                             <div className="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label className="block font-mono text-xs uppercase tracking-wide text-gray-500 mb-1.5">
-                                        Especie
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={form.species}
-                                        onChange={handleChange('species')}
-                                        placeholder="Perro, gato..."
-                                        required
-                                        className="w-full min-h-[44px] px-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand"
-                                    />
+
+                                    <div>
+                                        <label className="block font-mono text-xs uppercase tracking-wide text-gray-500 mb-1.5">
+                                            Especie
+                                        </label>
+                                        <select
+                                            value={form.species}
+                                            onChange={handleChange('species')}
+                                            required
+                                            className="w-full min-h-[44px] px-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                                        >
+                                            <option value="">Selecciona una especie</option>
+                                            {SPECIES.map((s) => (
+                                                <option key={s.value} value={s.value}>{s.label}</option>
+                                            ))}
+                                        </select>
+                                    </div>
                                 </div>
                                 <div>
                                     <label className="block font-mono text-xs uppercase tracking-wide text-gray-500 mb-1.5">
@@ -237,6 +247,7 @@ function PetsPage() {
                                         type="date"
                                         value={form.birthDate}
                                         onChange={handleChange('birthDate')}
+                                        max={new Date().toISOString().split('T')[0]}
                                         className="w-full min-h-[44px] px-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand"
                                     />
                                 </div>
@@ -247,7 +258,7 @@ function PetsPage() {
                                     Etapa de vida
                                 </label>
                                 <div className="grid grid-cols-3 gap-2">
-                                    {LIFE_STAGES.map((stage) => (
+                                    {buildLifeStages(form.species).map((stage) => (
                                         <button
                                             key={stage.value}
                                             type="button"

@@ -1,6 +1,8 @@
 package com.canmypet.petservice.dto;
 
 import com.canmypet.petservice.model.LifeStage;
+import com.canmypet.petservice.model.Species;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +16,7 @@ import java.time.LocalDate;
 public class PetResponse {
     private Long id;
     private String name;
-    private String species;
+    private Species species;
     private String breed;
     private BigDecimal weight;
     private LocalDate birthDate;
