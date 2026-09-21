@@ -22,6 +22,11 @@ public class FoodSafetyController {
 
     private final FoodSafetyService foodSafetyService;
 
+    @GetMapping("/{foodId}")
+    public ResponseEntity<List<FoodSafetyResponse>> getByFood(@PathVariable Long foodId) {
+        return ResponseEntity.ok(foodSafetyService.getByFood(foodId));
+    }
+
     @GetMapping("/{foodId}/{species}")
     public ResponseEntity<List<FoodSafetyResponse>> getByFoodAndSpecies(
             @PathVariable Long foodId,
