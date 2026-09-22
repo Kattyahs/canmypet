@@ -34,10 +34,15 @@ function ProposeEntryForm({ onCreated, onCancel }) {
             )
     }, [])
 
-    const setField = (field) => (e) => setForm((prev) => ({ ...prev, [field]: e.target.value }))
+    const setField = (field) => (e) => {
+        setForm((prev) => ({ ...prev, [field]: e.target.value }))
+        setError('')
+    }
 
-    const updateSource = (index, field, value) =>
+    const updateSource = (index, field, value) => {
         setSources((prev) => prev.map((s, i) => (i === index ? { ...s, [field]: value } : s)))
+        setError('')
+    }
     const addSource = () => setSources((prev) => [...prev, { ...EMPTY_SOURCE }])
     const removeSource = (index) => setSources((prev) => prev.filter((_, i) => i !== index))
 
