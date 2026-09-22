@@ -17,7 +17,7 @@ function LoginPage() {
         setLoading(true)
         try {
             const response = await axiosClient.post('/api/auth/login', { email, password })
-            login(response.data.token, response.data)
+            await login(response.data.token)
             navigate('/dashboard')
         } catch (err) {
             setError('Email o contraseña incorrectos.')

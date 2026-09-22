@@ -37,7 +37,7 @@ function RegisterPage() {
                 payload.licenseNumber = licenseNumber
             }
             const response = await axiosClient.post('/api/auth/register', payload)
-            login(response.data.token, response.data)
+            await login(response.data.token)
             navigate('/dashboard')
         } catch (err) {
             setError(

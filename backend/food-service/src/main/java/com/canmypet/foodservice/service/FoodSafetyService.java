@@ -22,6 +22,11 @@ public class FoodSafetyService {
     private final FoodRepository foodRepository;
     private final UserServiceClient userServiceClient;
 
+    public List<FoodSafetyResponse> getByStatus(VerifiedStatus status) {
+        return foodSafetyRepository.findByVerifiedStatusOrderByIdAsc(status).stream()
+                .map(this::toResponse)
+                .toList();
+    }
 
     public List<FoodSafetyResponse> getByFoodAndSpecies(Long foodId, Species species, LifeStage lifeStage) {
         if (lifeStage == null) {
@@ -55,7 +60,13 @@ public class FoodSafetyService {
                 .toList();
     }
 
-    public FoodSafetyResponse createFoodSafety(FoodSafetyRequest request) {
+    public FoodSafetyResponse createFoodSafety(FoodSafetyRequest request, Long creatorId, String creatorRole) {
+
+        if (!"ADMIN".equals(creatorRole)) {
+            requireVerifiedVeterinarian(creatorId,
+                    "Only verified veterinarians or admins can create FoodSafety entries");
+        }
+
         Food food = foodRepository.findById(request.getFoodId())
                 .orElseThrow(() -> new FoodNotFoundException(request.getFoodId()));
 
@@ -102,23 +113,27 @@ public class FoodSafetyService {
         FoodSafety entry = foodSafetyRepository.findById(id)
                 .orElseThrow(() -> new FoodSafetyNotFoundException(id));
 
-        UserDto verifier;
-        try {
-            verifier = userServiceClient.getUserById(verifierId);
-        } catch (FeignException e) {
-            throw new UnauthorizedVerificationException("Could not validate verifier with user-service");
-        }
-
-        if (!"VETERINARIAN".equals(verifier.getRole()) || !Boolean.TRUE.equals(verifier.getVerified())) {
-            throw new UnauthorizedVerificationException(
-                    "Only verified veterinarians can verify a FoodSafety entry");
-        }
+        requireVerifiedVeterinarian(verifierId,
+                "Only verified veterinarians can verify a FoodSafety entry");
 
         entry.setVerifiedBy(verifierId);
         entry.setVerifiedStatus(VerifiedStatus.VERIFIED);
 
         FoodSafety updated = foodSafetyRepository.save(entry);
         return toResponse(updated);
+    }
+
+    private void requireVerifiedVeterinarian(Long userId, String message) {
+        UserDto user;
+        try {
+            user = userServiceClient.getUserById(userId);
+        } catch (FeignException e) {
+            throw new UnauthorizedVerificationException("Could not validate user with user-service");
+        }
+
+        if (!"VETERINARIAN".equals(user.getRole()) || !Boolean.TRUE.equals(user.getVerified())) {
+            throw new UnauthorizedVerificationException(message);
+        }
     }
 
     private FoodSafetyResponse toResponse(FoodSafety entry) {

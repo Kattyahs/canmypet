@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { ShieldAlert } from 'lucide-react'
 
 function DashboardPage() {
     const { user } = useAuth()
@@ -16,6 +17,17 @@ function DashboardPage() {
                 {today}
             </p>
             <h1 className="text-2xl font-semibold text-gray-900 mb-6">Hola, {user?.name}</h1>
+            {user?.role === 'VETERINARIAN' && user?.verified === false && (
+                <div className="bg-amber-50 border border-amber-100 rounded-lg p-4 mb-6 flex items-center gap-3">
+                    <ShieldAlert size={20} className="text-risk-moderate shrink-0" aria-hidden="true" />
+                    <p className="flex-1 text-sm text-gray-900">
+                        Tu cuenta de veterinario está pendiente de aprobación.
+                    </p>
+                    <Link to="/vet" className="shrink-0 text-sm font-medium text-brand">
+                        Ver detalles
+                    </Link>
+                </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                 <div className="bg-white border border-gray-200 rounded-lg p-5">

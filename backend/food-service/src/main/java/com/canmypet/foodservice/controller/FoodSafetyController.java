@@ -4,6 +4,7 @@ import com.canmypet.foodservice.dto.FoodSafetyRequest;
 import com.canmypet.foodservice.dto.FoodSafetyResponse;
 import com.canmypet.foodservice.model.LifeStage;
 import com.canmypet.foodservice.model.Species;
+import com.canmypet.foodservice.model.VerifiedStatus;
 import com.canmypet.foodservice.security.JwtPrincipal;
 import com.canmypet.foodservice.service.FoodSafetyService;
 import jakarta.validation.Valid;
@@ -22,6 +23,12 @@ public class FoodSafetyController {
 
     private final FoodSafetyService foodSafetyService;
 
+    @GetMapping
+    @PreAuthorize("hasRole('VETERINARIAN') or hasRole('ADMIN')")
+    public ResponseEntity<List<FoodSafetyResponse>> getByStatus(@RequestParam VerifiedStatus status) {
+        return ResponseEntity.ok(foodSafetyService.getByStatus(status));
+    }
+
     @GetMapping("/{foodId}")
     public ResponseEntity<List<FoodSafetyResponse>> getByFood(@PathVariable Long foodId) {
         return ResponseEntity.ok(foodSafetyService.getByFood(foodId));
@@ -38,8 +45,12 @@ public class FoodSafetyController {
 
     @PostMapping
     @PreAuthorize("hasRole('VETERINARIAN') or hasRole('ADMIN')")
-    public ResponseEntity<FoodSafetyResponse> createFoodSafety(@Valid @RequestBody FoodSafetyRequest request) {
-        FoodSafetyResponse response = foodSafetyService.createFoodSafety(request);
+    public ResponseEntity<FoodSafetyResponse> createFoodSafety(
+            @Valid @RequestBody FoodSafetyRequest request,
+            @AuthenticationPrincipal JwtPrincipal principal
+    ) {
+        FoodSafetyResponse response =
+                foodSafetyService.createFoodSafety(request, principal.userId(), principal.role());
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

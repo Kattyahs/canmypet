@@ -1,20 +1,40 @@
 import { NavLink } from 'react-router-dom'
-import { Home, PawPrint, Search, ClipboardList, HelpCircle, AlertTriangle, LogOut } from 'lucide-react'
+import { Home, PawPrint, Search, ClipboardList, HelpCircle, AlertTriangle, LogOut,Stethoscope  } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
-const NAV_ITEMS = [
-    { to: '/dashboard', label: 'Inicio', Icon: Home },
-    { to: '/pets', label: 'Mis mascotas', Icon: PawPrint },
-    { to: '/search', label: 'Buscar alimento', Icon: Search },
-    { to: '/history', label: 'Historial', Icon: ClipboardList },
-    { to: '/faq', label: 'FAQ', Icon: HelpCircle },
-    { to: '/emergency', label: 'Emergencias', Icon: AlertTriangle },
+export const NAV_ITEMS = [
+    { to: '/dashboard', label: 'Inicio', Icon: Home, mobilePriority: 1 },
+    { to: '/pets', label: 'Mis mascotas', Icon: PawPrint, mobilePriority: 4 },
+    { to: '/search', label: 'Buscar alimento', Icon: Search, mobilePriority: 2 },
+    { to: '/history', label: 'Historial', Icon: ClipboardList, mobilePriority: 6 },
+    { to: '/faq', label: 'FAQ', Icon: HelpCircle, mobilePriority: 5 },
+    {
+        to: '/vet',
+        label: 'Panel veterinario',
+        Icon: Stethoscope,
+        roles: ['VETERINARIAN'],
+        mobilePriority: 3,
+    },
+    { to: '/emergency', label: 'Emergencias', Icon: AlertTriangle, mobilePriority: 7 },
 ]
 
-const MOBILE_TABS = NAV_ITEMS.slice(0, 5)
+const MOBILE_TAB_LIMIT = 5
+
+export function getNavItems(role) {
+    const visibleItems = NAV_ITEMS.filter((item) => !item.roles || item.roles.includes(role))
+    const mobileSet = new Set(
+        [...visibleItems]
+            .sort((a, b) => a.mobilePriority - b.mobilePriority)
+            .slice(0, MOBILE_TAB_LIMIT)
+    )
+    // Keep the desktop order on mobile too
+    const mobileTabs = visibleItems.filter((item) => mobileSet.has(item))
+    return { visibleItems, mobileTabs }
+}
 
 function Sidebar() {
     const { user, logout } = useAuth()
+    const { visibleItems, mobileTabs } = getNavItems(user?.role)
 
     const initials = user?.name
         ?.split(' ')
@@ -33,7 +53,7 @@ function Sidebar() {
                 </div>
 
                 <nav className="flex-1 space-y-1">
-                    {NAV_ITEMS.map(({ to, label, Icon }) => {
+                    {visibleItems.map(({ to, label, Icon }) => {
                         const isEmergency = to === '/emergency'
                         return (
                             <NavLink
@@ -81,7 +101,7 @@ function Sidebar() {
 
             {/* Sidebar mobile */}
             <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex z-10">
-                {MOBILE_TABS.map(({ to, label, Icon }) => (
+                {mobileTabs.map(({ to, label, Icon }) => (
                     <NavLink
                         key={to}
                         to={to}

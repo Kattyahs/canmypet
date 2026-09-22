@@ -68,7 +68,7 @@ graph TD
 
 | Method | Path | Auth required | Description |
 |---|---|---|---|
-| POST | `/api/auth/register` | No | Register a new user (OWNER, VETERINARIAN, or ADMIN) |
+| POST | `/api/auth/register` | No | Register a new user (OWNER or VETERINARIAN). ADMIN cannot self-register; the first admin is created from `ADMIN_EMAIL` / `ADMIN_PASSWORD` at startup |
 | POST | `/api/auth/login` | No | Log in, returns a JWT |
 | GET | `/api/users/me` | Yes | Get the current user's profile |
 | PUT | `/api/users/me` | Yes | Update the current user's profile |
@@ -94,9 +94,11 @@ graph TD
 | GET | `/api/foods/{id}` | Yes | Get a food by id |
 | GET | `/api/foods/search?query=` | Yes | Search foods by name |
 | POST | `/api/foods` | ADMIN | Create a food |
+| GET | `/api/food-safety?status=PENDING` | VETERINARIAN, ADMIN | Review queue: entries by verification status, oldest first |
+| GET | `/api/food-safety/{foodId}` | Yes | Get all risk entries for a food, across species |
 | GET | `/api/food-safety/{foodId}/{species}` | Yes | Get risk levels for a food/species, optionally filtered by `?lifeStage=` |
-| POST | `/api/food-safety` | VETERINARIAN, ADMIN | Create a food safety entry |
-| PUT | `/api/food-safety/{id}/verify` | VETERINARIAN, ADMIN | Verify a food safety entry |
+| POST | `/api/food-safety` | Verified VETERINARIAN, ADMIN | Create a food safety entry (starts as `PENDING`) |
+| PUT | `/api/food-safety/{id}/verify` | Verified VETERINARIAN | Verify a food safety entry |
 
 ### FAQ & Emergency Guidance (food-service)
 
@@ -104,13 +106,14 @@ graph TD
 |---|---|---|---|
 | GET | `/api/faq` | Yes | List all FAQ questions |
 | POST | `/api/faq` | Yes | Ask a question |
-| PUT | `/api/faq/{id}/answer` | VETERINARIAN | Answer a question |
+| PUT | `/api/faq/{id}/answer` | Verified VETERINARIAN | Answer a question |
 | GET | `/api/emergency/{riskLevel}` | Yes | Get emergency guidance for a risk level |
 | POST | `/api/emergency` | ADMIN | Create or update an emergency guide |
 
 ## Testing
 
 - **Unit tests:** JUnit 5 + Mockito, covering the core business logic of each service.
+- **Frontend tests:** Vitest + React Testing Library. Run `npm run test:run` inside `frontend/`.
 - **Integration tests:** Testcontainers spins up a real PostgreSQL 16 container to test the full registration/login flow end-to-end.
 - Run locally per service: `mvn test` (inside each `backend/<service>` folder).
 - Runs automatically on every push via GitHub Actions (`.github/workflows/backend-ci.yml`).
