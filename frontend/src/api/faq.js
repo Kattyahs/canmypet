@@ -1,6 +1,8 @@
 import axiosClient from './axiosClient'
 
-export const getAllFaqs = () => axiosClient.get('/api/faq')
+export const getFaqs = (params) => axiosClient.get('/api/faq', { params })
+
+export const getAllFaqs = getFaqs
 
 export const askQuestion = (data) => axiosClient.post('/api/faq', data)
 
