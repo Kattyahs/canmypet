@@ -96,4 +96,16 @@ class FoodServiceTest {
         assertThat(response.getId()).isEqualTo(2L);
         assertThat(response.getName()).isEqualTo("Uvas");
     }
+
+    @Test
+    void getFoodsByIds_returnsOnlyRequestedFoods() {
+        Food chocolate = Food.builder().id(1L).name("Chocolate").category("human food").build();
+        Food grapes = Food.builder().id(5L).name("Uvas").category("fruit").build();
+
+        when(foodRepository.findAllById(List.of(1L, 5L))).thenReturn(List.of(chocolate, grapes));
+
+        List<FoodResponse> result = foodService.getFoodsByIds(List.of(1L, 5L));
+
+        assertThat(result).extracting(FoodResponse::getName).containsExactly("Chocolate", "Uvas");
+    }
 }

@@ -39,6 +39,12 @@ public class FoodService {
                 .toList();
     }
 
+    public List<FoodResponse> getFoodsByIds(List<Long> ids) {
+        return foodRepository.findAllById(ids).stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
     public FoodResponse createFood(FoodRequest request) {
         Food food = Food.builder()
                 .name(request.getName())
