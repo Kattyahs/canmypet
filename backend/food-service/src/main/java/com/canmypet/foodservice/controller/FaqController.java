@@ -12,6 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import com.canmypet.foodservice.dto.PageResponse;
+import com.canmypet.foodservice.model.FaqStatus;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 
 import java.util.List;
 
@@ -23,8 +28,11 @@ public class FaqController {
     private final FaqService faqService;
 
     @GetMapping
-    public ResponseEntity<List<FaqResponse>> getAllFaqs() {
-        return ResponseEntity.ok(faqService.getAllFaqs());
+    public ResponseEntity<PageResponse<FaqResponse>> getFaqs(
+            @RequestParam(required = false) FaqStatus status,
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(faqService.getFaqs(status, pageable));
     }
 
     @PostMapping

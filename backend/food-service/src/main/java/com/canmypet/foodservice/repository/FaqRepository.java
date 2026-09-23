@@ -1,10 +1,11 @@
 package com.canmypet.foodservice.repository;
 
 import com.canmypet.foodservice.model.Faq;
+import com.canmypet.foodservice.model.FaqStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 public interface FaqRepository extends JpaRepository<Faq, Long> {
-    List<Faq> findAllByOrderByCreatedAtDesc();
+    Page<Faq> findByStatus(FaqStatus status, Pageable pageable);
 }

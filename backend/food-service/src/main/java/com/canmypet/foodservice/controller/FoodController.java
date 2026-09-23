@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import com.canmypet.foodservice.dto.PageResponse;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 import java.util.List;
 
@@ -20,8 +23,10 @@ public class FoodController {
     private final FoodService foodService;
 
     @GetMapping
-    public ResponseEntity<List<FoodResponse>> getAllFoods() {
-        return ResponseEntity.ok(foodService.getAllFoods());
+    public ResponseEntity<PageResponse<FoodResponse>> getAllFoods(
+            @PageableDefault(size = 20, sort = "name") Pageable pageable
+    ) {
+        return ResponseEntity.ok(foodService.getAllFoods(pageable));
     }
 
     @GetMapping("/{id}")

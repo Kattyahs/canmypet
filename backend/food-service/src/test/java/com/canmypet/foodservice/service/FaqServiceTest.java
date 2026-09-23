@@ -15,6 +15,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import com.canmypet.foodservice.dto.PageResponse;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,15 +41,33 @@ class FaqServiceTest {
     private FaqService faqService;
 
     @Test
-    void getAllFaqs_returnsAllQuestions() {
-        Faq faq = Faq.builder().id(1L).question("¿Puedo darle uvas?").askedBy(1L).status(FaqStatus.PENDING).build();
+    void getFaqs_withoutStatus_returnsEveryQuestion() {
+        Faq faq = Faq.builder().id(1L).question("Puedo darle uvas?").askedBy(1L).status(FaqStatus.PENDING).build();
 
-        when(faqRepository.findAllByOrderByCreatedAtDesc()).thenReturn(List.of(faq));
+        Pageable pageable = PageRequest.of(0, 20);
+        when(faqRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(faq), pageable, 1));
 
-        List<FaqResponse> result = faqService.getAllFaqs();
+        PageResponse<FaqResponse> result = faqService.getFaqs(null, pageable);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getQuestion()).isEqualTo("¿Puedo darle uvas?");
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().get(0).getQuestion()).isEqualTo("Puedo darle uvas?");
+        assertThat(result.totalElements()).isEqualTo(1);
+    }
+
+    @Test
+    void getFaqs_withPendingStatus_filtersByStatus() {
+        Faq pending = Faq.builder().id(2L).question("Puedo darle cebolla?").askedBy(1L).status(FaqStatus.PENDING).build();
+
+        Pageable pageable = PageRequest.of(0, 20);
+        when(faqRepository.findByStatus(FaqStatus.PENDING, pageable))
+                .thenReturn(new PageImpl<>(List.of(pending), pageable, 1));
+
+        PageResponse<FaqResponse> result = faqService.getFaqs(FaqStatus.PENDING, pageable);
+
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().get(0).getStatus()).isEqualTo(FaqStatus.PENDING);
+        // The filter runs in the database, not after loading everything
+        verify(faqRepository, never()).findAll(any(Pageable.class));
     }
 
     @Test

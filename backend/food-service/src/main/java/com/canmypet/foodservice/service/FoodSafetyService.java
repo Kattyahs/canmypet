@@ -11,6 +11,8 @@ import com.canmypet.foodservice.repository.FoodSafetyRepository;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,10 +24,12 @@ public class FoodSafetyService {
     private final FoodRepository foodRepository;
     private final UserServiceClient userServiceClient;
 
-    public List<FoodSafetyResponse> getByStatus(VerifiedStatus status) {
-        return foodSafetyRepository.findByVerifiedStatusOrderByIdAsc(status).stream()
-                .map(this::toResponse)
-                .toList();
+    @Transactional(readOnly = true)
+    public PageResponse<FoodSafetyResponse> getByStatus(VerifiedStatus status, Pageable pageable) {
+        return PageResponse.from(
+                foodSafetyRepository.findByVerifiedStatus(status, pageable),
+                this::toResponse
+        );
     }
 
     public List<FoodSafetyResponse> getByFoodAndSpecies(Long foodId, Species species, LifeStage lifeStage) {
