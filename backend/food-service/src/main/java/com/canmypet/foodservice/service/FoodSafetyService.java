@@ -34,7 +34,6 @@ public class FoodSafetyService {
 
     public List<FoodSafetyResponse> getByFoodAndSpecies(Long foodId, Species species, LifeStage lifeStage) {
         if (lifeStage == null) {
-            // No lifeStage specified: return ALL entries for this food+species
             List<FoodSafety> all = foodSafetyRepository.findByFoodIdAndSpecies(foodId, species);
             if (all.isEmpty()) {
                 throw new FoodSafetyNotFoundException(foodId, species);
@@ -42,13 +41,11 @@ public class FoodSafetyService {
             return all.stream().map(this::toResponse).toList();
         }
 
-        // lifeStage specified: look for the specific entry first
         var specific = foodSafetyRepository.findByFoodIdAndSpeciesAndLifeStage(foodId, species, lifeStage);
         if (specific.isPresent()) {
             return List.of(toResponse(specific.get()));
         }
 
-        // Fall back to the general entry
         FoodSafety general = foodSafetyRepository.findByFoodIdAndSpeciesAndLifeStageIsNull(foodId, species)
                 .orElseThrow(() -> new FoodSafetyNotFoundException(foodId, species));
 

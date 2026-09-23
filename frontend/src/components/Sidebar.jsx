@@ -27,7 +27,6 @@ export function getNavItems(role) {
             .sort((a, b) => a.mobilePriority - b.mobilePriority)
             .slice(0, MOBILE_TAB_LIMIT)
     )
-    // Keep the desktop order on mobile too
     const mobileTabs = visibleItems.filter((item) => mobileSet.has(item))
     return { visibleItems, mobileTabs }
 }
