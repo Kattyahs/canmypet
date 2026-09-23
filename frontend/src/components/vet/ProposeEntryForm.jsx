@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Plus, Trash2 } from 'lucide-react'
-import { getAllFoods, createFoodSafety } from '../../api/foods'
+import { searchFoods, createFoodSafety } from '../../api/foods'
 import { SPECIES } from '../../constants/species'
 import { LIFE_STAGE_LABELS } from '../../constants/lifeStages'
 import { RISK_CONFIG } from '../RiskBadge'
@@ -8,7 +8,8 @@ import { getApiErrorMessage } from '../../utils/apiError'
 
 const RISK_LEVELS = ['SAFE', 'MODERATE', 'TOXIC', 'LETHAL']
 const EMPTY_SOURCE = { sourceName: '', sourceUrl: '' }
-const INITIAL_FORM = { foodId: '', species: '', lifeStage: '', riskLevel: '', notes: '' }
+const INITIAL_FORM = { species: '', lifeStage: '', riskLevel: '', notes: '' }
+const MIN_QUERY_LENGTH = 2
 
 const isHttpUrl = (value) => /^https?:\/\/\S+$/i.test(value)
 
@@ -17,25 +18,50 @@ const INPUT =
     'w-full min-h-[44px] px-3 border border-gray-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand'
 
 function ProposeEntryForm({ onCreated, onCancel }) {
-    const [foods, setFoods] = useState([])
-    const [foodsError, setFoodsError] = useState('')
     const [form, setForm] = useState(INITIAL_FORM)
+    const [foodQuery, setFoodQuery] = useState('')
+    const [foodSuggestions, setFoodSuggestions] = useState([])
+    const [selectedFood, setSelectedFood] = useState(null)
+    const [searching, setSearching] = useState(false)
+    const latestSearch = useRef(0)
     const [sources, setSources] = useState([{ ...EMPTY_SOURCE }])
     const [submitting, setSubmitting] = useState(false)
     const [error, setError] = useState('')
 
-    useEffect(() => {
-        getAllFoods()
-            .then((res) => setFoods([...res.data].sort((a, b) => a.name.localeCompare(b.name, 'es'))))
-            .catch((err) =>
-                setFoodsError(
-                    getApiErrorMessage(err, { fallback: 'No se pudo cargar el catálogo de alimentos.' })
-                )
-            )
-    }, [])
-
     const setField = (field) => (e) => {
         setForm((prev) => ({ ...prev, [field]: e.target.value }))
+        setError('')
+    }
+
+    const handleFoodQuery = async (value) => {
+        setFoodQuery(value)
+        setSelectedFood(null)
+        setError('')
+        const searchId = ++latestSearch.current
+
+        if (value.trim().length < MIN_QUERY_LENGTH) {
+            setFoodSuggestions([])
+            setSearching(false)
+            return
+        }
+
+        setSearching(true)
+        try {
+            const res = await searchFoods(value.trim())
+            if (searchId === latestSearch.current) setFoodSuggestions(res.data)
+        } catch {
+            if (searchId === latestSearch.current) setFoodSuggestions([])
+        } finally {
+            if (searchId === latestSearch.current) setSearching(false)
+        }
+    }
+
+    const selectFood = (food) => {
+        latestSearch.current += 1
+        setSelectedFood(food)
+        setFoodQuery(food.name)
+        setFoodSuggestions([])
+        setSearching(false)
         setError('')
     }
 
@@ -47,9 +73,8 @@ function ProposeEntryForm({ onCreated, onCancel }) {
     const removeSource = (index) => setSources((prev) => prev.filter((_, i) => i !== index))
 
     const validate = (filledSources) => {
-        if (!form.foodId || !form.species || !form.riskLevel) {
-            return 'Completa alimento, especie y nivel de riesgo.'
-        }
+        if (!selectedFood) return 'Elige un alimento de la lista de sugerencias.'
+        if (!form.species || !form.riskLevel) return 'Completa especie y nivel de riesgo.'
         for (const source of filledSources) {
             if (!source.sourceName.trim()) return 'Cada fuente necesita un nombre.'
             if (source.sourceUrl.trim() && !isHttpUrl(source.sourceUrl.trim())) {
@@ -61,7 +86,6 @@ function ProposeEntryForm({ onCreated, onCancel }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        // Fully empty source rows are ignored
         const filledSources = sources.filter((s) => s.sourceName.trim() || s.sourceUrl.trim())
         const validationError = validate(filledSources)
         if (validationError) {
@@ -73,7 +97,7 @@ function ProposeEntryForm({ onCreated, onCancel }) {
         setError('')
         try {
             await createFoodSafety({
-                foodId: Number(form.foodId),
+                foodId: selectedFood.id,
                 species: form.species,
                 lifeStage: form.lifeStage || null,
                 riskLevel: form.riskLevel,
@@ -99,6 +123,12 @@ function ProposeEntryForm({ onCreated, onCancel }) {
         }
     }
 
+    const showNoResults =
+        !selectedFood &&
+        !searching &&
+        foodQuery.trim().length >= MIN_QUERY_LENGTH &&
+        foodSuggestions.length === 0
+
     return (
         <form
             onSubmit={handleSubmit}
@@ -107,21 +137,35 @@ function ProposeEntryForm({ onCreated, onCancel }) {
             <h2 className="font-medium text-gray-900">Proponer una evaluación de riesgo</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
+                <div className="relative">
                     <label htmlFor="propose-food" className={LABEL}>Alimento</label>
-                    <select
+                    <input
                         id="propose-food"
-                        value={form.foodId}
-                        onChange={setField('foodId')}
-                        disabled={!!foodsError}
+                        type="text"
+                        autoComplete="off"
+                        value={foodQuery}
+                        onChange={(e) => handleFoodQuery(e.target.value)}
+                        placeholder="Escribe al menos 2 letras"
                         className={INPUT}
-                    >
-                        <option value="">Selecciona...</option>
-                        {foods.map((food) => (
-                            <option key={food.id} value={food.id}>{food.name}</option>
-                        ))}
-                    </select>
-                    {foodsError && <p className="text-sm text-risk-toxic mt-1">{foodsError}</p>}
+                    />
+                    {foodSuggestions.length > 0 && (
+                        <ul className="absolute z-10 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+                            {foodSuggestions.map((food) => (
+                                <li key={food.id}>
+                                    <button
+                                        type="button"
+                                        onClick={() => selectFood(food)}
+                                        className="w-full min-h-[44px] px-3 text-left text-sm text-gray-900 hover:bg-bone"
+                                    >
+                                        {food.name}
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                    {showNoResults && (
+                        <p className="text-xs text-gray-500 mt-1">No encontramos alimentos con ese nombre.</p>
+                    )}
                 </div>
 
                 <div>
