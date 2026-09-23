@@ -83,18 +83,19 @@ graph TD
 | POST | `/api/pets` | Yes | Create a pet |
 | PUT | `/api/pets/{id}` | Yes (owner) | Update a pet |
 | DELETE | `/api/pets/{id}` | Yes (owner) | Delete a pet |
-| GET | `/api/search-history/me` | Yes | Get the current user's search history |
+| GET | `/api/search-history/me` | Yes | Get the current user's search history (paginated, newest first) |
 | POST | `/api/search-history` | Yes | Record a search |
 
 ### Foods & Food Safety (food-service)
 
 | Method | Path | Auth required | Description |
 |---|---|---|---|
-| GET | `/api/foods` | Yes | List all foods |
+| GET | `/api/foods` | Yes | List foods (paginated, sorted by name) |
 | GET | `/api/foods/{id}` | Yes | Get a food by id |
-| GET | `/api/foods/search?query=` | Yes | Search foods by name |
+| GET | `/api/foods/search?query=` | Yes | Search foods by name (up to 10 suggestions) |
+| GET | `/api/foods/by-ids?ids=1,5,9` | Yes | Get several foods by id (max 100 ids) |
 | POST | `/api/foods` | ADMIN | Create a food |
-| GET | `/api/food-safety?status=PENDING` | VETERINARIAN, ADMIN | Review queue: entries by verification status, oldest first |
+| GET | `/api/food-safety?status=PENDING` | VETERINARIAN, ADMIN | Review queue by verification status (paginated, oldest first) |
 | GET | `/api/food-safety/{foodId}` | Yes | Get all risk entries for a food, across species |
 | GET | `/api/food-safety/{foodId}/{species}` | Yes | Get risk levels for a food/species, optionally filtered by `?lifeStage=` |
 | POST | `/api/food-safety` | Verified VETERINARIAN, ADMIN | Create a food safety entry (starts as `PENDING`) |
@@ -104,11 +105,22 @@ graph TD
 
 | Method | Path | Auth required | Description |
 |---|---|---|---|
-| GET | `/api/faq` | Yes | List all FAQ questions |
+| GET | `/api/food-safety?status=PENDING` | VETERINARIAN, ADMIN | Review queue by verification status (paginated, oldest first) |
 | POST | `/api/faq` | Yes | Ask a question |
 | PUT | `/api/faq/{id}/answer` | Verified VETERINARIAN | Answer a question |
 | GET | `/api/emergency/{riskLevel}` | Yes | Get emergency guidance for a risk level |
 | POST | `/api/emergency` | ADMIN | Create or update an emergency guide |
+
+### Pagination
+
+Endpoints marked *paginated* accept `page` (0-based), `size` (default 20, capped at 100 by the server) and `sort` (for example `sort=createdAt,asc`). They respond with:
+
+```json
+{ "content": [], "page": 0, "size": 20, "totalElements": 42, "totalPages": 3 }
+```
+
+`GET /api/pets` is intentionally not paginated: it only returns the authenticated user's own pets, and the pet selector needs the full list.
+
 
 ## Testing
 
