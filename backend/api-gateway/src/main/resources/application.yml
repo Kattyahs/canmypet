@@ -19,7 +19,7 @@ spring:
         - id: user-service
           uri: ${USER_SERVICE_URL:http://localhost:8091}
           predicates:
-            - Path=/api/auth/**, /api/users/**
+            - Path=/api/auth/**, /api/users, /api/users/me, /api/users/*/verify
 
         - id: pet-service
           uri: ${PET_SERVICE_URL:http://localhost:8082}
