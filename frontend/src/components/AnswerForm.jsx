@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { getApiErrorMessage } from '../utils/apiError'
 
-/**
- * Inline answer form for a pending FAQ question.
- * `onSubmit(answer)` must return a promise; if it rejects, the error is shown here.
- */
+
 function AnswerForm({ onSubmit, onCancel, disabled = false }) {
     const [text, setText] = useState('')
     const [submitting, setSubmitting] = useState(false)

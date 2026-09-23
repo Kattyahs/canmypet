@@ -7,6 +7,9 @@ import com.canmypet.foodservice.model.Food;
 import com.canmypet.foodservice.repository.FoodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.canmypet.foodservice.dto.PageResponse;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -14,12 +17,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FoodService {
 
+    private static final int SUGGESTION_LIMIT = 10;
+
     private final FoodRepository foodRepository;
 
-    public List<FoodResponse> getAllFoods() {
-        return foodRepository.findAll().stream()
-                .map(this::toResponse)
-                .toList();
+    public PageResponse<FoodResponse> getAllFoods(Pageable pageable) {
+        return PageResponse.from(foodRepository.findAll(pageable), this::toResponse);
     }
 
     public FoodResponse getFoodById(Long id) {
@@ -29,7 +32,15 @@ public class FoodService {
     }
 
     public List<FoodResponse> searchFoods(String query) {
-        return foodRepository.findByNameContainingIgnoreCase(query).stream()
+        return foodRepository
+                .findByNameContainingIgnoreCase(query, PageRequest.of(0, SUGGESTION_LIMIT))
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    public List<FoodResponse> getFoodsByIds(List<Long> ids) {
+        return foodRepository.findAllById(ids).stream()
                 .map(this::toResponse)
                 .toList();
     }

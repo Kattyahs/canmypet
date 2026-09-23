@@ -11,7 +11,8 @@ import com.canmypet.petservice.repository.SearchHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.canmypet.petservice.dto.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor
@@ -20,10 +21,11 @@ public class SearchHistoryService {
     private final SearchHistoryRepository searchHistoryRepository;
     private final PetRepository petRepository;
 
-    public List<SearchHistoryResponse> getHistoryForUser(Long userId) {
-        return searchHistoryRepository.findByUserIdOrderBySearchedAtDesc(userId).stream()
-                .map(this::toResponse)
-                .toList();
+    public PageResponse<SearchHistoryResponse> getHistoryForUser(Long userId, Pageable pageable) {
+        return PageResponse.from(
+                searchHistoryRepository.findByUserId(userId, pageable),
+                this::toResponse
+        );
     }
 
     public SearchHistoryResponse recordSearch(SearchHistoryRequest request, Long userId) {

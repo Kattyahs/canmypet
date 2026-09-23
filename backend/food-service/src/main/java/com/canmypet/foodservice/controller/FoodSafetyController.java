@@ -15,6 +15,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import com.canmypet.foodservice.dto.PageResponse;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+
 
 @RestController
 @RequestMapping("/api/food-safety")
@@ -25,8 +29,11 @@ public class FoodSafetyController {
 
     @GetMapping
     @PreAuthorize("hasRole('VETERINARIAN') or hasRole('ADMIN')")
-    public ResponseEntity<List<FoodSafetyResponse>> getByStatus(@RequestParam VerifiedStatus status) {
-        return ResponseEntity.ok(foodSafetyService.getByStatus(status));
+    public ResponseEntity<PageResponse<FoodSafetyResponse>> getByStatus(
+            @RequestParam VerifiedStatus status,
+            @PageableDefault(size = 20, sort = "id") Pageable pageable
+    ) {
+        return ResponseEntity.ok(foodSafetyService.getByStatus(status, pageable));
     }
 
     @GetMapping("/{foodId}")

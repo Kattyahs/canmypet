@@ -10,6 +10,8 @@ import com.canmypet.foodservice.exception.UnauthorizedAnswerException;
 import com.canmypet.foodservice.model.Faq;
 import com.canmypet.foodservice.model.FaqStatus;
 import com.canmypet.foodservice.repository.FaqRepository;
+import com.canmypet.foodservice.dto.PageResponse;
+import org.springframework.data.domain.Pageable;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,10 +26,11 @@ public class FaqService {
     private final FaqRepository faqRepository;
     private final UserServiceClient userServiceClient;
 
-    public List<FaqResponse> getAllFaqs() {
-        return faqRepository.findAllByOrderByCreatedAtDesc().stream()
-                .map(this::toResponse)
-                .toList();
+    public PageResponse<FaqResponse> getFaqs(FaqStatus status, Pageable pageable) {
+        var page = (status == null)
+                ? faqRepository.findAll(pageable)
+                : faqRepository.findByStatus(status, pageable);
+        return PageResponse.from(page, this::toResponse);
     }
 
     public FaqResponse askQuestion(FaqRequest request, Long userId) {

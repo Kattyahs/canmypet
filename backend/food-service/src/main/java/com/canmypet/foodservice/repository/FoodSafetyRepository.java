@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface FoodSafetyRepository extends JpaRepository<FoodSafety, Long> {
     Optional<FoodSafety> findByFoodIdAndSpeciesAndLifeStage(Long foodId, Species species, LifeStage lifeStage);
@@ -16,6 +18,6 @@ public interface FoodSafetyRepository extends JpaRepository<FoodSafety, Long> {
     List<FoodSafety> findByFoodIdAndSpecies(Long foodId, Species species);
     List<FoodSafety> findByFoodId(Long foodId);
 
-    @EntityGraph(attributePaths = {"food", "sources"})
-    List<FoodSafety> findByVerifiedStatusOrderByIdAsc(VerifiedStatus verifiedStatus);
+    @EntityGraph(attributePaths = {"food"})
+    Page<FoodSafety> findByVerifiedStatus(VerifiedStatus verifiedStatus, Pageable pageable);
 }

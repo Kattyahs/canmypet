@@ -6,19 +6,16 @@ const DEFAULT_BY_STATUS = {
     409: 'Ya existe un registro con esos datos.',
 }
 
-/**
- * Maps an Axios error to a user-facing Spanish message.
- * Temporary: Task 7 (RFC 7807) will replace status-based mapping with error codes.
- */
+const UNEXPECTED = 'Ocurrió un error inesperado. Intenta de nuevo.'
+
 export function getApiErrorMessage(err, { fallback, byStatus = {} } = {}) {
     if (!err?.response) {
+        if (!err?.isAxiosError) {
+            console.error(err)
+            return fallback || UNEXPECTED
+        }
         return 'No se pudo conectar con el servidor. Revisa tu conexión.'
     }
     const status = err.response.status
-    return (
-        byStatus[status] ||
-        DEFAULT_BY_STATUS[status] ||
-        fallback ||
-        'Ocurrió un error inesperado. Intenta de nuevo.'
-    )
+    return byStatus[status] || DEFAULT_BY_STATUS[status] || fallback || UNEXPECTED
 }

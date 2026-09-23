@@ -9,6 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import com.canmypet.foodservice.dto.PageResponse;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -18,10 +22,13 @@ import java.util.List;
 public class FoodController {
 
     private final FoodService foodService;
+    private static final int MAX_IDS_PER_LOOKUP = 100;
 
     @GetMapping
-    public ResponseEntity<List<FoodResponse>> getAllFoods() {
-        return ResponseEntity.ok(foodService.getAllFoods());
+    public ResponseEntity<PageResponse<FoodResponse>> getAllFoods(
+            @PageableDefault(size = 20, sort = "name") Pageable pageable
+    ) {
+        return ResponseEntity.ok(foodService.getAllFoods(pageable));
     }
 
     @GetMapping("/{id}")
@@ -32,6 +39,16 @@ public class FoodController {
     @GetMapping("/search")
     public ResponseEntity<List<FoodResponse>> searchFoods(@RequestParam String query) {
         return ResponseEntity.ok(foodService.searchFoods(query));
+    }
+
+
+    @GetMapping("/by-ids")
+    public ResponseEntity<List<FoodResponse>> getFoodsByIds(@RequestParam List<Long> ids) {
+        if (ids.size() > MAX_IDS_PER_LOOKUP) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "At most " + MAX_IDS_PER_LOOKUP + " ids per request");
+        }
+        return ResponseEntity.ok(foodService.getFoodsByIds(ids));
     }
 
     @PostMapping

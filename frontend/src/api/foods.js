@@ -3,7 +3,10 @@ import axiosClient from './axiosClient'
 export const searchFoods = (query) =>
     axiosClient.get('/api/foods/search', { params: { query } })
 
-export const getAllFoods = () => axiosClient.get('/api/foods')
+export const getAllFoods = (params) => axiosClient.get('/api/foods', { params })
+
+export const getFoodsByIds = (ids) =>
+    axiosClient.get('/api/foods/by-ids', { params: { ids: ids.join(',') } })
 
 export const getFoodSafety = (foodId, species, lifeStage) =>
     axiosClient.get(`/api/food-safety/${foodId}/${species}`, {
@@ -12,8 +15,7 @@ export const getFoodSafety = (foodId, species, lifeStage) =>
 export const getFoodSafetyAllSpecies = (foodId) =>
     axiosClient.get(`/api/food-safety/${foodId}`)
 
-export const getFoodSafetyByStatus = (status) =>
-    axiosClient.get('/api/food-safety', { params: { status } })
+export const getFoodSafetyByStatus = (params) => axiosClient.get('/api/food-safety', { params })
 
 export const verifyFoodSafety = (id) => axiosClient.put(`/api/food-safety/${id}/verify`)
 

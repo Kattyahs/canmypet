@@ -11,6 +11,8 @@ import com.canmypet.foodservice.repository.FoodSafetyRepository;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,15 +24,16 @@ public class FoodSafetyService {
     private final FoodRepository foodRepository;
     private final UserServiceClient userServiceClient;
 
-    public List<FoodSafetyResponse> getByStatus(VerifiedStatus status) {
-        return foodSafetyRepository.findByVerifiedStatusOrderByIdAsc(status).stream()
-                .map(this::toResponse)
-                .toList();
+    @Transactional(readOnly = true)
+    public PageResponse<FoodSafetyResponse> getByStatus(VerifiedStatus status, Pageable pageable) {
+        return PageResponse.from(
+                foodSafetyRepository.findByVerifiedStatus(status, pageable),
+                this::toResponse
+        );
     }
 
     public List<FoodSafetyResponse> getByFoodAndSpecies(Long foodId, Species species, LifeStage lifeStage) {
         if (lifeStage == null) {
-            // No lifeStage specified: return ALL entries for this food+species
             List<FoodSafety> all = foodSafetyRepository.findByFoodIdAndSpecies(foodId, species);
             if (all.isEmpty()) {
                 throw new FoodSafetyNotFoundException(foodId, species);
@@ -38,13 +41,11 @@ public class FoodSafetyService {
             return all.stream().map(this::toResponse).toList();
         }
 
-        // lifeStage specified: look for the specific entry first
         var specific = foodSafetyRepository.findByFoodIdAndSpeciesAndLifeStage(foodId, species, lifeStage);
         if (specific.isPresent()) {
             return List.of(toResponse(specific.get()));
         }
 
-        // Fall back to the general entry
         FoodSafety general = foodSafetyRepository.findByFoodIdAndSpeciesAndLifeStageIsNull(foodId, species)
                 .orElseThrow(() -> new FoodSafetyNotFoundException(foodId, species));
 

@@ -12,6 +12,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import com.canmypet.foodservice.dto.PageResponse;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 import java.util.List;
@@ -147,7 +151,7 @@ class FoodSafetyServiceTest {
     }
 
     @Test
-    void getByStatus_pending_returnsMappedEntries() {
+    void getByStatus_pending_returnsMappedPage() {
         Food food = Food.builder().id(1L).name("Chocolate").build();
         FoodSafety pending = FoodSafety.builder()
                 .id(7L)
@@ -157,15 +161,17 @@ class FoodSafetyServiceTest {
                 .verifiedStatus(VerifiedStatus.PENDING)
                 .build();
 
-        when(foodSafetyRepository.findByVerifiedStatusOrderByIdAsc(VerifiedStatus.PENDING))
-                .thenReturn(List.of(pending));
+        Pageable pageable = PageRequest.of(0, 20);
+        when(foodSafetyRepository.findByVerifiedStatus(VerifiedStatus.PENDING, pageable))
+                .thenReturn(new PageImpl<>(List.of(pending), pageable, 1));
 
-        List<FoodSafetyResponse> result = foodSafetyService.getByStatus(VerifiedStatus.PENDING);
+        PageResponse<FoodSafetyResponse> result =
+                foodSafetyService.getByStatus(VerifiedStatus.PENDING, pageable);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getId()).isEqualTo(7L);
-        assertThat(result.get(0).getFoodName()).isEqualTo("Chocolate");
-        assertThat(result.get(0).getVerifiedStatus()).isEqualTo(VerifiedStatus.PENDING);
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().get(0).getFoodName()).isEqualTo("Chocolate");
+        assertThat(result.totalElements()).isEqualTo(1);
+        assertThat(result.totalPages()).isEqualTo(1);
     }
 
     @Test

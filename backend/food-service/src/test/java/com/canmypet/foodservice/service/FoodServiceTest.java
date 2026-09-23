@@ -10,6 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import com.canmypet.foodservice.dto.PageResponse;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,15 +33,19 @@ class FoodServiceTest {
     private FoodService foodService;
 
     @Test
-    void getAllFoods_returnsAllFoods() {
+    void getAllFoods_returnsMappedPage() {
         Food chocolate = Food.builder().id(1L).name("Chocolate").category("human food").build();
 
-        when(foodRepository.findAll()).thenReturn(List.of(chocolate));
+        Pageable pageable = PageRequest.of(0, 20);
+        when(foodRepository.findAll(pageable))
+                .thenReturn(new PageImpl<>(List.of(chocolate), pageable, 1));
 
-        List<FoodResponse> result = foodService.getAllFoods();
+        PageResponse<FoodResponse> result = foodService.getAllFoods(pageable);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getName()).isEqualTo("Chocolate");
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().get(0).getName()).isEqualTo("Chocolate");
+        assertThat(result.page()).isZero();
+        assertThat(result.totalElements()).isEqualTo(1);
     }
 
     @Test
@@ -60,10 +68,11 @@ class FoodServiceTest {
     }
 
     @Test
-    void searchFoods_returnsMatchingResults() {
+    void searchFoods_capsSuggestionsAtTen() {
         Food chocolate = Food.builder().id(1L).name("Chocolate negro").category("human food").build();
 
-        when(foodRepository.findByNameContainingIgnoreCase("choco")).thenReturn(List.of(chocolate));
+        when(foodRepository.findByNameContainingIgnoreCase("choco", PageRequest.of(0, 10)))
+                .thenReturn(List.of(chocolate));
 
         List<FoodResponse> result = foodService.searchFoods("choco");
 
@@ -86,5 +95,17 @@ class FoodServiceTest {
 
         assertThat(response.getId()).isEqualTo(2L);
         assertThat(response.getName()).isEqualTo("Uvas");
+    }
+
+    @Test
+    void getFoodsByIds_returnsOnlyRequestedFoods() {
+        Food chocolate = Food.builder().id(1L).name("Chocolate").category("human food").build();
+        Food grapes = Food.builder().id(5L).name("Uvas").category("fruit").build();
+
+        when(foodRepository.findAllById(List.of(1L, 5L))).thenReturn(List.of(chocolate, grapes));
+
+        List<FoodResponse> result = foodService.getFoodsByIds(List.of(1L, 5L));
+
+        assertThat(result).extracting(FoodResponse::getName).containsExactly("Chocolate", "Uvas");
     }
 }

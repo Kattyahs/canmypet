@@ -21,6 +21,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import com.canmypet.petservice.dto.PageResponse;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 
 @ExtendWith(MockitoExtension.class)
 class SearchHistoryServiceTest {
@@ -35,21 +40,28 @@ class SearchHistoryServiceTest {
     private SearchHistoryService searchHistoryService;
 
     @Test
-    void getHistoryForUser_returnsUserHistory() {
+    void getHistoryForUser_returnsMappedPage() {
         Long userId = 1L;
+        Pet pet = Pet.builder().id(10L).name("Firulais").ownerId(userId).build();
+
         SearchHistory entry = SearchHistory.builder()
                 .id(1L)
                 .userId(userId)
+                .pet(pet)
                 .foodId(5L)
                 .build();
 
-        when(searchHistoryRepository.findByUserIdOrderBySearchedAtDesc(userId))
-                .thenReturn(List.of(entry));
+        Pageable pageable = PageRequest.of(0, 20);
+        when(searchHistoryRepository.findByUserId(userId, pageable))
+                .thenReturn(new PageImpl<>(List.of(entry), pageable, 1));
 
-        List<SearchHistoryResponse> result = searchHistoryService.getHistoryForUser(userId);
+        PageResponse<SearchHistoryResponse> result =
+                searchHistoryService.getHistoryForUser(userId, pageable);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getFoodId()).isEqualTo(5L);
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().get(0).getFoodId()).isEqualTo(5L);
+        assertThat(result.content().get(0).getPetId()).isEqualTo(10L);
+        assertThat(result.totalElements()).isEqualTo(1);
     }
 
     @Test

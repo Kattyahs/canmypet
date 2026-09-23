@@ -19,7 +19,6 @@ function VetPanelPage() {
     // Changing the key remounts PendingEntriesTab, which reloads the list
     const [entriesVersion, setEntriesVersion] = useState(0)
 
-    // UX only: the backend rejects actions from unverified veterinarians anyway
     const canAct = user?.verified === true
 
     const handleRecheck = async () => {
