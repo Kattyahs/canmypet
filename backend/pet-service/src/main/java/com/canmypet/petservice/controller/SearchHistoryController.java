@@ -11,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.canmypet.petservice.dto.PageResponse;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 
 @RestController
 @RequestMapping("/api/search-history")
@@ -21,10 +24,11 @@ public class SearchHistoryController {
     private final SearchHistoryService searchHistoryService;
 
     @GetMapping("/me")
-    public ResponseEntity<List<SearchHistoryResponse>> getMyHistory(
-            @AuthenticationPrincipal JwtPrincipal principal
+    public ResponseEntity<PageResponse<SearchHistoryResponse>> getMyHistory(
+            @AuthenticationPrincipal JwtPrincipal principal,
+            @PageableDefault(size = 20, sort = "searchedAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return ResponseEntity.ok(searchHistoryService.getHistoryForUser(principal.userId()));
+        return ResponseEntity.ok(searchHistoryService.getHistoryForUser(principal.userId(), pageable));
     }
 
     @PostMapping
