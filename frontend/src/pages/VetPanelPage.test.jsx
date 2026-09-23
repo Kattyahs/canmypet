@@ -4,17 +4,24 @@ import userEvent from '@testing-library/user-event'
 import VetPanelPage from './VetPanelPage'
 import { useAuth } from '../context/AuthContext'
 import { getFoodSafetyByStatus, verifyFoodSafety } from '../api/foods'
-import { getAllFaqs } from '../api/faq'
+import { getFaqs } from '../api/faq'
 
-// Factories keep the real API modules (and axiosClient) out of the tests
 vi.mock('../context/AuthContext', () => ({ useAuth: vi.fn() }))
 vi.mock('../api/foods', () => ({
     getFoodSafetyByStatus: vi.fn(),
     verifyFoodSafety: vi.fn(),
-    getAllFoods: vi.fn(),
+    searchFoods: vi.fn(),
     createFoodSafety: vi.fn(),
 }))
-vi.mock('../api/faq', () => ({ getAllFaqs: vi.fn(), answerQuestion: vi.fn() }))
+vi.mock('../api/faq', () => ({ getFaqs: vi.fn(), answerQuestion: vi.fn() }))
+
+const pageOf = (content, page = 0, totalPages = 1) => ({
+    content,
+    page,
+    size: 10,
+    totalElements: content.length,
+    totalPages,
+})
 
 const PENDING_ENTRY = {
     id: 7,
@@ -39,23 +46,53 @@ function mockVet({ verified }) {
 describe('VetPanelPage', () => {
     beforeEach(() => {
         vi.resetAllMocks()
-        getFoodSafetyByStatus.mockResolvedValue({ data: [PENDING_ENTRY] })
-        getAllFaqs.mockResolvedValue({ data: [] })
+        getFoodSafetyByStatus.mockResolvedValue({ data: pageOf([PENDING_ENTRY]) })
+        getFaqs.mockResolvedValue({ data: pageOf([]) })
     })
 
-    it('lists pending entries and removes one after verifying it', async () => {
+    it('requests the first page of pending entries', async () => {
         mockVet({ verified: true })
+        render(<VetPanelPage />)
+
+        await screen.findByText('Uvas')
+        expect(getFoodSafetyByStatus).toHaveBeenCalledWith({ status: 'PENDING', page: 0, size: 10 })
+    })
+
+    it('reloads the list after verifying an entry', async () => {
+        mockVet({ verified: true })
+        getFoodSafetyByStatus
+            .mockResolvedValueOnce({ data: pageOf([PENDING_ENTRY]) })
+            .mockResolvedValueOnce({ data: pageOf([]) })
         verifyFoodSafety.mockResolvedValue({ data: {} })
         const user = userEvent.setup()
 
         render(<VetPanelPage />)
 
-        expect(await screen.findByText('Uvas')).toBeInTheDocument()
+        await screen.findByText('Uvas')
         await user.click(screen.getByRole('button', { name: 'Verificar' }))
 
         expect(verifyFoodSafety).toHaveBeenCalledWith(7)
-        await waitFor(() => expect(screen.queryByText('Uvas')).not.toBeInTheDocument())
-        expect(screen.getByText('No hay entradas pendientes')).toBeInTheDocument()
+        expect(await screen.findByText('No hay entradas pendientes')).toBeInTheDocument()
+        expect(getFoodSafetyByStatus).toHaveBeenCalledTimes(2)
+    })
+
+    it('navigates to the next page of pending entries', async () => {
+        mockVet({ verified: true })
+        getFoodSafetyByStatus
+            .mockResolvedValueOnce({ data: pageOf([PENDING_ENTRY], 0, 2) })
+            .mockResolvedValueOnce({
+                data: pageOf([{ ...PENDING_ENTRY, id: 8, foodName: 'Cebolla' }], 1, 2),
+            })
+        const user = userEvent.setup()
+
+        render(<VetPanelPage />)
+
+        await screen.findByText('Uvas')
+        await user.click(screen.getByRole('button', { name: /siguiente/i }))
+
+        expect(await screen.findByText('Cebolla')).toBeInTheDocument()
+        expect(getFoodSafetyByStatus).toHaveBeenLastCalledWith({ status: 'PENDING', page: 1, size: 10 })
+        expect(screen.getByText('Página 2 de 2')).toBeInTheDocument()
     })
 
     it('only renders http(s) source URLs as links', async () => {
@@ -81,7 +118,7 @@ describe('VetPanelPage', () => {
         mockVet({ verified: true })
         getFoodSafetyByStatus
             .mockRejectedValueOnce({ response: { status: 500 } })
-            .mockResolvedValueOnce({ data: [] })
+            .mockResolvedValueOnce({ data: pageOf([]) })
         const user = userEvent.setup()
 
         render(<VetPanelPage />)
@@ -93,24 +130,24 @@ describe('VetPanelPage', () => {
         expect(await screen.findByText('No hay entradas pendientes')).toBeInTheDocument()
     })
 
-    it('lists only unanswered questions, oldest first', async () => {
+    it('asks the server for unanswered questions, oldest first', async () => {
         mockVet({ verified: true })
-        getAllFaqs.mockResolvedValue({
-            data: [
-                { id: 1, question: 'Pregunta nueva', status: 'PENDING', createdAt: '2026-09-20T10:00:00' },
-                { id: 2, question: 'Ya respondida', status: 'ANSWERED', createdAt: '2026-09-19T10:00:00' },
+        getFaqs.mockResolvedValue({
+            data: pageOf([
                 { id: 3, question: 'Pregunta antigua', status: 'PENDING', createdAt: '2026-09-01T10:00:00' },
-            ],
+            ]),
         })
         const user = userEvent.setup()
 
         render(<VetPanelPage />)
         await user.click(screen.getByRole('tab', { name: /preguntas sin responder/i }))
 
-        await screen.findByText('Pregunta antigua')
-        expect(screen.queryByText('Ya respondida')).not.toBeInTheDocument()
-        const items = screen.getAllByRole('listitem')
-        expect(items[0]).toHaveTextContent('Pregunta antigua')
-        expect(items[1]).toHaveTextContent('Pregunta nueva')
+        expect(await screen.findByText('Pregunta antigua')).toBeInTheDocument()
+        expect(getFaqs).toHaveBeenCalledWith({
+            status: 'PENDING',
+            sort: 'createdAt,asc',
+            page: 0,
+            size: 10,
+        })
     })
 })
