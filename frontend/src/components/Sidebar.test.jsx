@@ -8,14 +8,25 @@ describe('getNavItems', () => {
         expect(paths(getNavItems('OWNER').visibleItems)).not.toContain('/vet')
     })
 
-    it('keeps the owner mobile bar as it was before role-based navigation', () => {
+    it('starts the navigation with the food search and has no home page', () => {
+        const { visibleItems } = getNavItems('OWNER')
+        expect(paths(visibleItems)[0]).toBe('/search')
+        expect(paths(visibleItems)).not.toContain('/dashboard')
+    })
+
+    it('fits every owner item in the mobile bar, emergencies included', () => {
         expect(paths(getNavItems('OWNER').mobileTabs)).toEqual([
-            '/dashboard',
-            '/pets',
             '/search',
+            '/pets',
             '/history',
             '/faq',
+            '/emergency',
         ])
+    })
+
+    it('keeps emergencies in the mobile bar for veterinarians and admins', () => {
+        expect(paths(getNavItems('VETERINARIAN').mobileTabs)).toContain('/emergency')
+        expect(paths(getNavItems('ADMIN').mobileTabs)).toContain('/emergency')
     })
 
     it('shows the panel to veterinarians, including on mobile', () => {

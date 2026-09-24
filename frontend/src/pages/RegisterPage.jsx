@@ -38,7 +38,7 @@ function RegisterPage() {
             }
             const response = await axiosClient.post('/api/auth/register', payload)
             await login(response.data.token)
-            navigate('/dashboard')
+            navigate('/')
         } catch (err) {
             setError(
                 err.response?.data?.error || 'No se pudo crear la cuenta. Intenta de nuevo.'
