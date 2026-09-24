@@ -1,12 +1,15 @@
 import { useState } from 'react'
-import { UserCheck, Apple } from 'lucide-react'
+import { UserCheck, Apple, LifeBuoy } from 'lucide-react'
 import PendingVeterinariansTab from '../components/admin/PendingVeterinariansTab'
 import FoodsTab from '../components/admin/FoodsTab'
+import EmergencyGuidesTab from '../components/admin/EmergencyGuidesTab'
 
 const TABS = [
     { id: 'veterinarians', label: 'Veterinarios', Icon: UserCheck },
     { id: 'foods', label: 'Alimentos', Icon: Apple },
+    { id: 'guides', label: 'Guías', Icon: LifeBuoy },
 ]
+
 function AdminPanelPage() {
     const [activeTab, setActiveTab] = useState('veterinarians')
 
@@ -47,6 +50,7 @@ function AdminPanelPage() {
             <div role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
                 {activeTab === 'veterinarians' && <PendingVeterinariansTab />}
                 {activeTab === 'foods' && <FoodsTab />}
+                {activeTab === 'guides' && <EmergencyGuidesTab />}
             </div>
         </div>
     )
