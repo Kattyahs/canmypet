@@ -62,7 +62,7 @@ public class FoodSafetyController {
     }
 
     @PutMapping("/{id}/verify")
-    @PreAuthorize("hasRole('VETERINARIAN') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('VETERINARIAN')")
     public ResponseEntity<FoodSafetyResponse> verifyFoodSafety(
             @PathVariable Long id,
             @AuthenticationPrincipal JwtPrincipal principal
