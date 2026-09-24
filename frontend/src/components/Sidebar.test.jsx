@@ -25,6 +25,20 @@ describe('getNavItems', () => {
         expect(mobileTabs).toHaveLength(5)
     })
 
+    it('hides the admin panel from owners and veterinarians', () => {
+        expect(paths(getNavItems('OWNER').visibleItems)).not.toContain('/admin')
+        expect(paths(getNavItems('VETERINARIAN').visibleItems)).not.toContain('/admin')
+    })
+
+    it('gives admins every owner item plus the admin panel, including on mobile', () => {
+        const { visibleItems, mobileTabs } = getNavItems('ADMIN')
+        const ownerPaths = paths(getNavItems('OWNER').visibleItems)
+        expect(paths(visibleItems)).toEqual(expect.arrayContaining([...ownerPaths, '/admin']))
+        expect(paths(visibleItems)).not.toContain('/vet')
+        expect(paths(mobileTabs)).toContain('/admin')
+        expect(mobileTabs).toHaveLength(5)
+    })
+
     it('treats a missing role as having no role-restricted items', () => {
         expect(paths(getNavItems(undefined).visibleItems)).not.toContain('/vet')
     })

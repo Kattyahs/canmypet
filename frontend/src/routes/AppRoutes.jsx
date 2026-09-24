@@ -11,6 +11,7 @@ import FaqPage from '../pages/FaqPage'
 import EmergencyPage from '../pages/EmergencyPage'
 import RoleRoute from './RoleRoute'
 import VetPanelPage from '../pages/VetPanelPage'
+import AdminPanelPage from '../pages/AdminPanelPage'
 
 function ProtectedRoute({ children }) {
     const { user, loading } = useAuth()
@@ -77,6 +78,11 @@ function AppRoutes() {
 
                 <Route element={<RoleRoute allowedRoles={['VETERINARIAN']} />}>
                     <Route path="/vet" element={<VetPanelPage />} />
+                </Route>
+
+
+                <Route element={<RoleRoute allowedRoles={['ADMIN']} />}>
+                    <Route path="/admin" element={<AdminPanelPage />} />
                 </Route>
 
             </Route>
