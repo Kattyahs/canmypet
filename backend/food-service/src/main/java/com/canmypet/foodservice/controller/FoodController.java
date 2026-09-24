@@ -26,9 +26,10 @@ public class FoodController {
 
     @GetMapping
     public ResponseEntity<PageResponse<FoodResponse>> getAllFoods(
+            @RequestParam(required = false) String query,
             @PageableDefault(size = 20, sort = "name") Pageable pageable
     ) {
-        return ResponseEntity.ok(foodService.getAllFoods(pageable));
+        return ResponseEntity.ok(foodService.getAllFoods(query, pageable));
     }
 
     @GetMapping("/{id}")
@@ -56,5 +57,13 @@ public class FoodController {
     public ResponseEntity<FoodResponse> createFood(@Valid @RequestBody FoodRequest request) {
         FoodResponse response = foodService.createFood(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<FoodResponse> updateFood(
+            @PathVariable Long id,
+            @Valid @RequestBody FoodRequest request
+    ) {
+        return ResponseEntity.ok(foodService.updateFood(id, request));
     }
 }

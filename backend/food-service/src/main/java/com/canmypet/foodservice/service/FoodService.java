@@ -21,8 +21,11 @@ public class FoodService {
 
     private final FoodRepository foodRepository;
 
-    public PageResponse<FoodResponse> getAllFoods(Pageable pageable) {
-        return PageResponse.from(foodRepository.findAll(pageable), this::toResponse);
+    public PageResponse<FoodResponse> getAllFoods(String query, Pageable pageable) {
+        var page = (query == null || query.isBlank())
+                ? foodRepository.findAll(pageable)
+                : foodRepository.findAllByNameContainingIgnoreCase(query.trim(), pageable);
+        return PageResponse.from(page, this::toResponse);
     }
 
     public FoodResponse getFoodById(Long id) {
@@ -54,6 +57,16 @@ public class FoodService {
 
         Food saved = foodRepository.save(food);
         return toResponse(saved);
+    }
+    public FoodResponse updateFood(Long id, FoodRequest request) {
+        Food food = foodRepository.findById(id)
+                .orElseThrow(() -> new FoodNotFoundException(id));
+
+        food.setName(request.getName());
+        food.setCategory(request.getCategory());
+        food.setDescription(request.getDescription());
+
+        return toResponse(foodRepository.save(food));
     }
 
     private FoodResponse toResponse(Food food) {
