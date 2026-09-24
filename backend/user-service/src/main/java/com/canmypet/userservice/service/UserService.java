@@ -9,6 +9,8 @@ import com.canmypet.userservice.model.User;
 import com.canmypet.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.canmypet.userservice.dto.PageResponse;
+import org.springframework.data.domain.Pageable;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +55,13 @@ public class UserService {
         user.setVerified(true);
         User updated = userRepository.save(user);
         return toResponse(updated);
+    }
+
+    public PageResponse<UserResponse> getUsers(Role role, Boolean verified, Pageable pageable) {
+        var page = (verified == null)
+                ? userRepository.findByRole(role, pageable)
+                : userRepository.findByRoleAndVerified(role, verified, pageable);
+        return PageResponse.from(page, this::toResponse);
     }
 
     private UserResponse toResponse(User user) {

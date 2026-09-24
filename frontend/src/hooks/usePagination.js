@@ -7,8 +7,6 @@ export function usePagination(fetchPage, { size = 20 } = {}) {
     const [data, setData] = useState(EMPTY_PAGE)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
-    // Only the latest request may update state: a slow older response
-    // must never overwrite a newer one
     const latestRequest = useRef(0)
 
     const load = useCallback(
@@ -20,7 +18,6 @@ export function usePagination(fetchPage, { size = 20 } = {}) {
                 const res = await fetchPage({ page: targetPage, size })
                 if (requestId !== latestRequest.current) return
 
-                // The page emptied (e.g. its last item was verified): step back
                 if (res.data.content.length === 0 && targetPage > 0) {
                     setPage(targetPage - 1)
                     return

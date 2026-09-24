@@ -33,19 +33,45 @@ class FoodServiceTest {
     private FoodService foodService;
 
     @Test
-    void getAllFoods_returnsMappedPage() {
+    void getAllFoods_withoutQuery_returnsMappedPage() {
         Food chocolate = Food.builder().id(1L).name("Chocolate").category("human food").build();
 
         Pageable pageable = PageRequest.of(0, 20);
         when(foodRepository.findAll(pageable))
                 .thenReturn(new PageImpl<>(List.of(chocolate), pageable, 1));
 
-        PageResponse<FoodResponse> result = foodService.getAllFoods(pageable);
+        PageResponse<FoodResponse> result = foodService.getAllFoods(null, pageable);
 
         assertThat(result.content()).hasSize(1);
         assertThat(result.content().get(0).getName()).isEqualTo("Chocolate");
         assertThat(result.page()).isZero();
         assertThat(result.totalElements()).isEqualTo(1);
+        verify(foodRepository, never()).findAllByNameContainingIgnoreCase(any(), any());
+    }
+
+    @Test
+    void getAllFoods_withBlankQuery_ignoresFilter() {
+        Pageable pageable = PageRequest.of(0, 20);
+        when(foodRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(), pageable, 0));
+
+        foodService.getAllFoods("   ", pageable);
+
+        verify(foodRepository).findAll(pageable);
+        verify(foodRepository, never()).findAllByNameContainingIgnoreCase(any(), any());
+    }
+
+    @Test
+    void getAllFoods_withQuery_filtersByTrimmedName() {
+        Food chocolate = Food.builder().id(1L).name("Chocolate").category("human food").build();
+
+        Pageable pageable = PageRequest.of(0, 20);
+        when(foodRepository.findAllByNameContainingIgnoreCase("cho", pageable))
+                .thenReturn(new PageImpl<>(List.of(chocolate), pageable, 1));
+
+        PageResponse<FoodResponse> result = foodService.getAllFoods("  cho ", pageable);
+
+        assertThat(result.content()).extracting(FoodResponse::getName).containsExactly("Chocolate");
+        verify(foodRepository, never()).findAll(any(Pageable.class));
     }
 
     @Test
@@ -95,6 +121,39 @@ class FoodServiceTest {
 
         assertThat(response.getId()).isEqualTo(2L);
         assertThat(response.getName()).isEqualTo("Uvas");
+    }
+
+    @Test
+    void updateFood_existingId_updatesAllFields() {
+        FoodRequest request = new FoodRequest();
+        request.setName("Uvas pasas");
+        request.setCategory("dried fruit");
+        request.setDescription("Raisins");
+
+        Food existing = Food.builder().id(2L).name("Uvas").category("fruit").description("Toxic for dogs").build();
+
+        when(foodRepository.findById(2L)).thenReturn(Optional.of(existing));
+        when(foodRepository.save(existing)).thenReturn(existing);
+
+        FoodResponse response = foodService.updateFood(2L, request);
+
+        assertThat(response.getId()).isEqualTo(2L);
+        assertThat(response.getName()).isEqualTo("Uvas pasas");
+        assertThat(response.getCategory()).isEqualTo("dried fruit");
+        assertThat(response.getDescription()).isEqualTo("Raisins");
+    }
+
+    @Test
+    void updateFood_nonExistentId_throwsFoodNotFoundException() {
+        FoodRequest request = new FoodRequest();
+        request.setName("Uvas");
+        request.setCategory("fruit");
+
+        when(foodRepository.findById(999L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> foodService.updateFood(999L, request))
+                .isInstanceOf(FoodNotFoundException.class);
+        verify(foodRepository, never()).save(any());
     }
 
     @Test

@@ -20,3 +20,7 @@ export const getFoodSafetyByStatus = (params) => axiosClient.get('/api/food-safe
 export const verifyFoodSafety = (id) => axiosClient.put(`/api/food-safety/${id}/verify`)
 
 export const createFoodSafety = (data) => axiosClient.post('/api/food-safety', data)
+
+export const createFood = (data) => axiosClient.post('/api/foods', data)
+
+export const updateFood = (id, data) => axiosClient.put(`/api/foods/${id}`, data)

@@ -38,7 +38,6 @@ function FaqPage() {
     const [askError, setAskError] = useState('')
     const [answeringId, setAnsweringId] = useState(null)
 
-    // UX only: the backend rejects answers from unverified veterinarians anyway
     const canAnswer = user?.role === 'VETERINARIAN' && user?.verified === true
 
     const handleAsk = async (e) => {
@@ -59,7 +58,6 @@ function FaqPage() {
         }
     }
 
-    // Errors propagate to AnswerForm, which displays them
     const handleAnswer = async (faqId, answer) => {
         await answerQuestion(faqId, { answer })
         setAnsweringId(null)
@@ -75,7 +73,6 @@ function FaqPage() {
                 Consultas respondidas por veterinarios verificados.
             </p>
 
-            {/* Formulario de pregunta */}
             <form onSubmit={handleAsk} className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
                 <label
                     htmlFor="faq-question"
@@ -156,7 +153,6 @@ function FaqPage() {
                                 </div>
                             )}
 
-                            {/* Solo veterinarios aprobados pueden responder pendientes */}
                             {canAnswer && faq.status === 'PENDING' && (
                                 <div className="pt-2">
                                     {answeringId === faq.id ? (

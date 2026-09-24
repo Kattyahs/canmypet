@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Home, PawPrint, Search, ClipboardList, HelpCircle, AlertTriangle, LogOut,Stethoscope  } from 'lucide-react'
+import { Home, PawPrint, Search, ClipboardList, HelpCircle, AlertTriangle, LogOut,Stethoscope, ShieldCheck,  } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
 export const NAV_ITEMS = [
@@ -13,6 +13,13 @@ export const NAV_ITEMS = [
         label: 'Panel veterinario',
         Icon: Stethoscope,
         roles: ['VETERINARIAN'],
+        mobilePriority: 3,
+    },
+    {
+        to: '/admin',
+        label: 'Administración',
+        Icon: ShieldCheck,
+        roles: ['ADMIN'],
         mobilePriority: 3,
     },
     { to: '/emergency', label: 'Emergencias', Icon: AlertTriangle, mobilePriority: 7 },

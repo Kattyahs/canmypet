@@ -12,6 +12,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import com.canmypet.userservice.dto.PageResponse;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 import java.util.Optional;
 
@@ -110,5 +116,39 @@ class UserServiceTest {
                 .isInstanceOf(IllegalStateException.class);
 
         verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    void getUsers_withVerifiedFilter_returnsOnlyMatchingUsers() {
+        User pendingVet = User.builder()
+                .id(4L)
+                .name("Mario Torres")
+                .email("mario@example.com")
+                .role(Role.VETERINARIAN)
+                .licenseNumber("VET-2026-00341")
+                .verified(false)
+                .build();
+
+        Pageable pageable = PageRequest.of(0, 20);
+        when(userRepository.findByRoleAndVerified(Role.VETERINARIAN, false, pageable))
+                .thenReturn(new PageImpl<>(List.of(pendingVet), pageable, 1));
+
+        PageResponse<UserResponse> result = userService.getUsers(Role.VETERINARIAN, false, pageable);
+
+        assertThat(result.content()).hasSize(1);
+        assertThat(result.content().get(0).getLicenseNumber()).isEqualTo("VET-2026-00341");
+        verify(userRepository, never()).findByRole(any(), any());
+    }
+
+    @Test
+    void getUsers_withoutVerifiedFilter_returnsEveryUserWithThatRole() {
+        Pageable pageable = PageRequest.of(0, 20);
+        when(userRepository.findByRole(Role.VETERINARIAN, pageable))
+                .thenReturn(new PageImpl<>(List.of(), pageable, 0));
+
+        PageResponse<UserResponse> result = userService.getUsers(Role.VETERINARIAN, null, pageable);
+
+        assertThat(result.totalElements()).isZero();
+        verify(userRepository, never()).findByRoleAndVerified(any(), any(), any());
     }
 }
