@@ -1,6 +1,16 @@
-import { NavLink } from 'react-router-dom'
-import { Home, PawPrint, Search, ClipboardList, HelpCircle, AlertTriangle, LogOut,Stethoscope, ShieldCheck,  } from 'lucide-react'
+import { NavLink, useLocation } from 'react-router-dom'
+import {
+    Home,
+    PawPrint,
+    Search,
+    ClipboardList,
+    HelpCircle,
+    AlertTriangle,
+    Stethoscope,
+    ShieldCheck,
+} from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import UserMenu from './UserMenu'
 
 export const NAV_ITEMS = [
     { to: '/dashboard', label: 'Inicio', Icon: Home, mobilePriority: 1 },
@@ -40,18 +50,11 @@ export function getNavItems(role) {
 
 function Sidebar() {
     const { user, logout } = useAuth()
+    const { pathname } = useLocation()
     const { visibleItems, mobileTabs } = getNavItems(user?.role)
-
-    const initials = user?.name
-        ?.split(' ')
-        .map((n) => n[0])
-        .slice(0, 2)
-        .join('')
-        .toUpperCase()
 
     return (
         <>
-            {/* Sidebar desktop */}
             <aside className="hidden md:flex md:flex-col md:w-[236px] md:h-screen md:sticky md:top-0 bg-bone border-r border-gray-200 p-4">
                 <div className="flex items-center gap-2 mb-8 px-2">
                     <div className="w-6 h-6 rounded bg-brand" />
@@ -82,30 +85,17 @@ function Sidebar() {
                     })}
                 </nav>
 
-                <div className="relative group">
-                    <button className="flex items-center gap-2 w-full px-2 py-2 rounded-md hover:bg-white/60 text-left">
-                        <div className="w-8 h-8 rounded-full bg-brand text-white text-xs font-medium flex items-center justify-center">
-                            {initials}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate">{user?.name}</p>
-                            <p className="text-xs text-gray-500">{user?.role}</p>
-                        </div>
-                    </button>
-
-                    <div className="absolute bottom-full left-0 mb-1 w-full bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block">
-                        <button
-                            onClick={logout}
-                            className="w-full flex items-center gap-2 text-left px-3 py-2 text-sm text-risk-toxic hover:bg-gray-50 rounded-md"
-                        >
-                            <LogOut size={16} />
-                            Cerrar sesión
-                        </button>
-                    </div>
-                </div>
+                <UserMenu key={pathname} user={user} onLogout={logout} placement="up" />
             </aside>
 
-            {/* Sidebar mobile */}
+            <header className="md:hidden sticky top-0 z-10 flex items-center justify-between bg-bone border-b border-gray-200 px-4 py-1">
+                <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded bg-brand" />
+                    <span className="font-semibold text-gray-900">CanMyPet</span>
+                </div>
+                <UserMenu key={pathname} user={user} onLogout={logout} placement="down" />
+            </header>
+
             <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex z-10">
                 {mobileTabs.map(({ to, label, Icon }) => (
                     <NavLink
