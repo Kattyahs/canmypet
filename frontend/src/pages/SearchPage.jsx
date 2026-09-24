@@ -18,9 +18,7 @@ function SearchPage() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
-    // Mascota usada en la consulta que produjo los resultados actuales.
-    // Se guarda aparte de selectedPetId para que el detalle mostrado no cambie
-    // si el usuario modifica el selector despues de consultar.
+
     const [resultPet, setResultPet] = useState(null)
 
     useEffect(() => {
@@ -136,7 +134,6 @@ function SearchPage() {
 
             {loading && <p className="text-sm text-gray-400">Consultando...</p>}
 
-            {/* Sin resultados */}
             {results && results.length === 0 && (
                 <div className="bg-white border border-gray-200 rounded-lg p-6 text-center">
                     <p className="text-sm text-gray-500">
@@ -150,7 +147,6 @@ function SearchPage() {
                 </div>
             )}
 
-            {/* Resultados */}
             {results && results.length > 0 && (
                 <div className="space-y-4">
                     {!resultPet && results.length > 1 && (
@@ -180,7 +176,6 @@ function SearchPage() {
                                     <p className={`text-sm ${config?.text}`}>{config?.verdict}</p>
                                 </div>
 
-                                {/* Detalles */}
                                 <div className="p-5 grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-100">
                                     <div>
                                         <p className="font-mono text-xs uppercase tracking-wide text-gray-500 mb-1">
@@ -212,7 +207,6 @@ function SearchPage() {
                                     </div>
                                 </div>
 
-                                {/* Notas */}
                                 {entry.notes && (
                                     <div className="p-5 border-b border-gray-100">
                                         <p className="font-mono text-xs uppercase tracking-wide text-gray-500 mb-1">
@@ -249,7 +243,6 @@ function SearchPage() {
                                     </div>
                                 )}
 
-                                {/* Acción de emergencia, solo si el riesgo lo amerita */}
                                 {entry.riskLevel !== 'SAFE' && (
                                     <div className="p-5 flex items-center justify-between gap-4">
                                         <p className="text-sm text-gray-600">

@@ -119,7 +119,6 @@ function PetsPage() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Lista */}
                 <div className="space-y-3">
                     {loading && <p className="text-sm text-gray-400">Cargando...</p>}
 
@@ -169,7 +168,6 @@ function PetsPage() {
                     <p className="text-xs text-gray-400 pt-2">Puedes registrar hasta 5 mascotas.</p>
                 </div>
 
-                {/* Formulario */}
                 {editingId && (
                     <div className="bg-white border border-gray-200 rounded-lg p-5 h-fit">
                         <p className="font-mono text-xs uppercase tracking-wide text-brand mb-1">
