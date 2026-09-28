@@ -1,0 +1,1801 @@
+{
+  "foods": [
+    {
+      "name": "Chocolate",
+      "category": "sweets",
+      "description": "Incluye chocolate negro, de leche, blanco y cacao en polvo.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Contiene teobromina y cafeína (metilxantinas). Puede causar vómitos, diarrea, hiperactividad, arritmias, temblores y convulsiones. El chocolate negro y el cacao en polvo son los más peligrosos. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            },
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Contiene teobromina y cafeína (metilxantinas). Puede causar vómitos, diarrea, hiperactividad, arritmias, temblores y convulsiones. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Café",
+      "category": "drink",
+      "description": "Café en grano, molido, instantáneo o preparado.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Contiene cafeína. Puede causar agitación, jadeo, taquicardia, arritmias, temblores y convulsiones. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Contiene cafeína. Puede causar agitación, taquicardia, arritmias, temblores y convulsiones. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Bebida energética",
+      "category": "drink",
+      "description": "Bebidas con cafeína agregada.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Contiene cafeína en alta concentración. Puede causar agitación, arritmias, temblores y convulsiones. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Contiene cafeína en alta concentración. Puede causar agitación, arritmias, temblores y convulsiones. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Uvas",
+      "category": "fruit",
+      "description": "Uvas frescas de cualquier color.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Pueden causar insuficiencia renal aguda. La sensibilidad varía entre perros y no se conoce una cantidad segura. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            },
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "La evidencia en gatos es menos clara que en perros, pero las fuentes veterinarias recomiendan evitarlas por el riesgo de daño renal. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pasas",
+      "category": "fruit",
+      "description": "Uvas deshidratadas, incluidas las que vienen en panes, galletas o cereales.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Pueden causar insuficiencia renal aguda. La sensibilidad varía entre perros y no se conoce una cantidad segura. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "La evidencia en gatos es menos clara que en perros, pero las fuentes veterinarias recomiendan evitarlas por el riesgo de daño renal. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cebolla",
+      "category": "vegetable",
+      "description": "Cruda, cocida, en polvo o en salsas y comidas preparadas.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Daña los glóbulos rojos y puede causar anemia. También irrita el sistema digestivo. Los síntomas pueden aparecer días después. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            },
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Los gatos son aún más sensibles que los perros. Daña los glóbulos rojos y puede causar anemia. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ajo",
+      "category": "vegetable",
+      "description": "Crudo, cocido, en polvo o en comidas preparadas.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Es más potente que la cebolla. Daña los glóbulos rojos y puede causar anemia. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            },
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Los gatos son especialmente sensibles. Daña los glóbulos rojos y puede causar anemia. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cebollín",
+      "category": "vegetable",
+      "description": "Cebollín o ciboulette, fresco o seco.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Pertenece a la misma familia que la cebolla y el ajo. Puede dañar los glóbulos rojos y causar anemia. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Pertenece a la misma familia que la cebolla y el ajo, y los gatos son más sensibles. Puede causar anemia. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Puerro",
+      "category": "vegetable",
+      "description": "Puerro o ajo porro, crudo o cocido.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Pertenece a la misma familia que la cebolla y el ajo. Puede dañar los glóbulos rojos y causar anemia. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Pertenece a la misma familia que la cebolla y el ajo, y los gatos son más sensibles. Puede causar anemia. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Xilitol",
+      "category": "sweets",
+      "description": "Endulzante presente en chicles y dulces sin azúcar, algunas mantequillas de maní, pastas dentales y productos light.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "LETHAL",
+          "notes": "Causa una baja brusca de azúcar en la sangre y puede provocar daño hepático. Los síntomas incluyen vómitos, decaimiento, descoordinación y convulsiones. Incluso cantidades pequeñas pueden ser mortales. Revisa siempre la etiqueta de los productos sin azúcar. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Chicle sin azúcar",
+      "category": "snack",
+      "description": "Chicles y caramelos sin azúcar.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "LETHAL",
+          "notes": "La mayoría contiene xilitol, que causa una baja brusca de azúcar en la sangre y puede provocar daño hepático. Incluso cantidades pequeñas pueden ser mortales. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Nueces de macadamia",
+      "category": "nuts",
+      "description": "Nueces de macadamia solas o en galletas y chocolates.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Pueden causar debilidad, descoordinación, vómitos, temblores y aumento de la temperatura corporal. Los síntomas suelen aparecer dentro de las primeras 12 horas. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Alcohol",
+      "category": "drink",
+      "description": "Cerveza, vino, licores y alimentos o postres con alcohol.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Puede causar vómitos, descoordinación, depresión del sistema nervioso, dificultad para respirar y temblores. Los síntomas aparecen rápido. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Puede causar vómitos, descoordinación, depresión del sistema nervioso, dificultad para respirar y temblores. Los síntomas aparecen rápido. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Masa cruda con levadura",
+      "category": "grain",
+      "description": "Masa de pan, pizza o empanadas sin hornear.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "La masa sigue fermentando en el estómago: se expande y produce alcohol. Puede causar hinchazón abdominal, torsión gástrica e intoxicación por alcohol. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "La masa sigue fermentando en el estómago: se expande y produce alcohol. Puede causar hinchazón abdominal e intoxicación por alcohol. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cerezas",
+      "category": "fruit",
+      "description": "Cerezas con cuesco, tallo y hojas.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "El cuesco, el tallo y las hojas contienen compuestos cianogénicos, y el cuesco puede causar obstrucción intestinal. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Palta",
+      "category": "fruit",
+      "description": "Palta o aguacate, incluida la cáscara, el cuesco y la guacamole.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Contiene persina y mucha grasa. Puede causar malestar digestivo, y el cuesco puede causar obstrucción. Mejor evitarla.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "BIRD",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "La persina puede causar daño cardíaco y la muerte en aves. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        },
+        {
+          "species": "RABBIT",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "La persina puede causar daño cardíaco y la muerte en conejos. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hongos silvestres",
+      "category": "vegetable",
+      "description": "Hongos recolectados en el campo, plazas o jardines.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "TOXIC",
+          "notes": "Algunas especies silvestres son muy tóxicas y difíciles de distinguir de las inofensivas. Trata cualquier ingesta como una emergencia. Si lo comió, contacta de inmediato a un veterinario.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Leche",
+      "category": "dairy",
+      "description": "Leche de vaca líquida o en polvo.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Muchos perros no digieren bien la lactosa y pueden tener diarrea o malestar digestivo.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "La mayoría de los gatos adultos no digiere bien la lactosa y puede tener diarrea o malestar digestivo.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Helado",
+      "category": "dairy",
+      "description": "Helados de crema o de leche.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Tiene mucha azúcar y lactosa, y puede causar malestar digestivo. Nunca le des helados con chocolate, pasas, nueces o xilitol.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            },
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Tiene lactosa y azúcar, y puede causar diarrea o malestar digestivo.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Queso",
+      "category": "dairy",
+      "description": "Quesos comunes, sin ajo, cebolla ni hierbas.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Se tolera en pequeñas cantidades, mejor variedades bajas en grasa. Algunos perros no toleran la lactosa. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Muchos gatos no digieren bien la lactosa y puede causar malestar digestivo.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Yogur natural",
+      "category": "dairy",
+      "description": "Yogur natural sin azúcar ni endulzantes.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo natural, sin azúcar ni endulzantes artificiales (revisa que no tenga xilitol). Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Contiene lactosa y puede causar malestar digestivo.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Huesos cocidos",
+      "category": "meat",
+      "description": "Huesos de pollo, cerdo o vacuno cocidos.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Se astillan con facilidad y pueden causar atragantamiento, heridas u obstrucción del tracto digestivo.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/can-dogs-eat-chicken/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Se astillan con facilidad y pueden causar atragantamiento, heridas u obstrucción del tracto digestivo.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Grasa y restos de carne",
+      "category": "meat",
+      "description": "Grasa, pellejos y sobras de asados o carnes.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Pueden causar malestar digestivo y son un factor de riesgo de pancreatitis.",
+          "sources": [
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Pueden causar malestar digestivo y son un factor de riesgo de pancreatitis.",
+          "sources": [
+            {
+              "name": "Pet Poison Helpline",
+              "url": "https://www.petpoisonhelpline.com/pet-owners/poison-proof-your-home/kitchen/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Carne cruda",
+      "category": "meat",
+      "description": "Carne de vacuno, cerdo o ave sin cocinar.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Puede contener bacterias como Salmonella y E. coli, que afectan a la mascota y a las personas de la casa.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/can-dogs-eat-chicken/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Puede contener bacterias como Salmonella y E. coli, que afectan a la mascota y a las personas de la casa.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Huevo crudo",
+      "category": "meat",
+      "description": "Huevo sin cocinar o preparaciones con huevo crudo.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Puede contener bacterias como Salmonella, y la clara cruda interfiere con la absorción de la biotina.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Puede contener bacterias como Salmonella, y la clara cruda interfiere con la absorción de la biotina.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Papas fritas",
+      "category": "snack",
+      "description": "Papas fritas de bolsa y otros snacks salados.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Tienen mucha sal y grasa. La sal en exceso puede causar sed intensa, vómitos, diarrea y, en casos graves, temblores y convulsiones.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Tienen mucha sal y grasa. La sal en exceso puede causar sed intensa, vómitos, diarrea y, en casos graves, temblores y convulsiones.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Almendras",
+      "category": "nuts",
+      "description": "Almendras solas, saladas o en snacks.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Tienen mucha grasa y pueden causar vómitos, diarrea y pancreatitis. También pueden atorarse en el esófago. Las saladas son peores.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Tienen mucha grasa y pueden causar vómitos, diarrea y pancreatitis.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Nueces",
+      "category": "nuts",
+      "description": "Nueces comunes (de nogal) y pecanas.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Tienen mucha grasa y pueden causar vómitos, diarrea y pancreatitis.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Tienen mucha grasa y pueden causar vómitos, diarrea y pancreatitis.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            },
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Canela",
+      "category": "spice",
+      "description": "Canela en polvo o en rama.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Puede irritar la boca y el sistema digestivo. Evita dársela o que coma preparaciones con mucha canela.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tomate",
+      "category": "vegetable",
+      "description": "Tomate maduro, verde, sus hojas y tallos.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Las partes verdes (hojas, tallos y tomate sin madurar) contienen solanina. Si se le da, que sea solo la pulpa madura. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Naranja",
+      "category": "fruit",
+      "description": "Naranja, mandarina y otros cítricos.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo la pulpa, sin cáscara ni semillas. En exceso puede causar malestar digestivo. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            },
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Los cítricos contienen aceites esenciales y ácido cítrico que pueden causar irritación y malestar digestivo.",
+          "sources": [
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Jamón",
+      "category": "meat",
+      "description": "Jamón y otras carnes procesadas.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "MODERATE",
+          "notes": "Tiene mucha sal y grasa. Si se le da, que sea en trozos muy pequeños y de forma excepcional.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Maní sin sal",
+      "category": "snack",
+      "description": "Maní natural o tostado, sin sal ni cobertura.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo sin sal ni cobertura. Tiene mucha grasa, por lo que debe darse con moderación. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mantequilla de maní",
+      "category": "snack",
+      "description": "Mantequilla o pasta de maní.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo sin sal y sin xilitol: revisa la etiqueta, porque algunas marcas lo usan y es muy peligroso para perros. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            },
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Palomitas de maíz",
+      "category": "snack",
+      "description": "Cabritas o palomitas de maíz.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo naturales, sin sal ni mantequilla, y bien reventadas (los granos sin reventar pueden atorarse). Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pan blanco",
+      "category": "grain",
+      "description": "Pan corriente sin agregados.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo pan simple, sin pasas, ajo, especias ni semillas. Aporta poco valor nutricional. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Miel",
+      "category": "sweets",
+      "description": "Miel de abeja.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Tiene mucha azúcar. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Coco",
+      "category": "fruit",
+      "description": "Pulpa de coco, sin la cáscara fibrosa.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo la pulpa: la cáscara puede causar atragantamiento. Sus aceites pueden causar malestar digestivo en exceso. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            },
+            {
+              "name": "ASPCA Animal Poison Control",
+              "url": "https://www.aspca.org/pet-care/aspca-poison-control/people-foods-avoid-feeding-your-pets"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pollo cocido",
+      "category": "meat",
+      "description": "Pollo cocido, sin piel, huesos ni condimentos.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Buena fuente de proteína. Debe estar bien cocido, sin huesos (se astillan) y sin condimentos. Algunos perros son alérgicos al pollo.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/can-dogs-eat-chicken/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Buena fuente de proteína. Debe estar bien cocido (hervido o al horno), sin piel, huesos ni condimentos. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pavo cocido",
+      "category": "meat",
+      "description": "Pavo cocido, sin piel, huesos ni condimentos.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Retira la piel, la grasa en exceso y los huesos. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Debe estar bien cocido, sin piel, huesos ni condimentos. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Huevo cocido",
+      "category": "meat",
+      "description": "Huevo completamente cocido, sin sal ni aceite.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo completamente cocido. Es una buena fuente de proteína. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Salmón cocido",
+      "category": "fish",
+      "description": "Salmón cocido, sin espinas ni condimentos.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo bien cocido y sin espinas: el salmón crudo o poco cocido puede tener parásitos. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo cocido, sin espinas, piel ni condimentos. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Atún en agua",
+      "category": "fish",
+      "description": "Atún en lata conservado en agua, sin sal agregada.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo en agua (no en aceite) y en pequeñas cantidades, por su contenido de mercurio y sodio. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "En pequeñas cantidades y de forma ocasional. No reemplaza su alimento. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Camarones cocidos",
+      "category": "fish",
+      "description": "Camarones cocidos, sin cáscara, cabeza ni cola.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo bien cocidos y sin cáscara. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Manzana",
+      "category": "fruit",
+      "description": "Manzana sin semillas ni corazón.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Retira siempre las semillas y el corazón. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Plátano",
+      "category": "fruit",
+      "description": "Plátano o banana, sin cáscara.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Tiene mucha azúcar. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Tiene mucha azúcar. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Arándanos",
+      "category": "fruit",
+      "description": "Arándanos frescos.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Son ricos en antioxidantes. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Frutillas",
+      "category": "fruit",
+      "description": "Frutillas frescas, sin hojas.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Tienen azúcar natural. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sandía",
+      "category": "fruit",
+      "description": "Sandía sin cáscara ni pepas.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Retira la cáscara y las pepas, que pueden causar obstrucción. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Retira la cáscara y las pepas. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Melón",
+      "category": "fruit",
+      "description": "Melón sin cáscara ni pepas.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Tiene mucha azúcar. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Mango",
+      "category": "fruit",
+      "description": "Mango sin cáscara ni cuesco.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Retira siempre el cuesco, que contiene compuestos cianogénicos y puede causar obstrucción. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pera",
+      "category": "fruit",
+      "description": "Pera sin semillas ni corazón.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Retira las semillas y el corazón: las semillas contienen trazas de cianuro. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Durazno",
+      "category": "fruit",
+      "description": "Durazno fresco sin cuesco.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo la pulpa, sin el cuesco. Evita los duraznos en conserva por el almíbar. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Piña",
+      "category": "fruit",
+      "description": "Piña fresca sin cáscara ni corona.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Retira la cáscara y la corona. Evita la piña en conserva por el almíbar. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Zanahoria",
+      "category": "vegetable",
+      "description": "Zanahoria cruda o cocida.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Cruda o cocida. Masticarla ayuda a la salud dental.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pepino",
+      "category": "vegetable",
+      "description": "Pepino fresco.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Es bajo en calorías, buena opción para perros con sobrepeso.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Porotos verdes",
+      "category": "vegetable",
+      "description": "Porotos verdes frescos, cocidos o en conserva sin sal.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Sin sal agregada.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Arvejas",
+      "category": "vegetable",
+      "description": "Arvejas frescas o congeladas, cocidas.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Evita las arvejas en conserva con sal agregada.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo cocidas y sin sal. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Brócoli",
+      "category": "vegetable",
+      "description": "Brócoli cocido.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Mejor cocido y en pequeñas cantidades: los tallos crudos pueden causar obstrucción. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo cocido al vapor y sin condimentos. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Zapallo",
+      "category": "vegetable",
+      "description": "Zapallo cocido o puré de zapallo natural.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo zapallo natural, sin azúcar ni especias.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        },
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo puré natural, sin azúcar ni especias. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Apio",
+      "category": "vegetable",
+      "description": "Apio fresco.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Es bajo en calorías.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/fruits-vegetables-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Choclo",
+      "category": "vegetable",
+      "description": "Granos de choclo cocidos.",
+      "evaluations": [
+        {
+          "species": "DOG",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo los granos: la coronta puede causar obstrucción intestinal. Nunca le des la coronta. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "American Kennel Club",
+              "url": "https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Camote",
+      "category": "vegetable",
+      "description": "Camote o batata cocido.",
+      "evaluations": [
+        {
+          "species": "CAT",
+          "lifeStage": null,
+          "riskLevel": "SAFE",
+          "notes": "Solo cocido y en puré, sin condimentos. Solo como premio ocasional y en poca cantidad.",
+          "sources": [
+            {
+              "name": "PetMD",
+              "url": "https://www.petmd.com/cat/nutrition/what-human-foods-can-cats-eat"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
