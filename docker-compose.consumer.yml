@@ -1,0 +1,74 @@
+name: canmypet
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  user-service:
+    image: ghcr.io/kattyahs/canmypet-user-service:${CANMYPET_VERSION}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      USER_SERVICE_DB: ${USER_SERVICE_DB}
+      USER_SERVICE_PORT: ${USER_SERVICE_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      APP_ADMIN_EMAIL: ${ADMIN_EMAIL}
+      APP_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+
+  food-service:
+    image: ghcr.io/kattyahs/canmypet-food-service:${CANMYPET_VERSION}
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      user-service:
+        condition: service_started
+    environment:
+      DB_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      FOOD_SERVICE_DB: ${FOOD_SERVICE_DB}
+      FOOD_SERVICE_PORT: ${FOOD_SERVICE_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      USER_SERVICE_URL: http://user-service:${USER_SERVICE_PORT}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+
+  api-gateway:
+    image: ghcr.io/kattyahs/canmypet-api-gateway:${CANMYPET_VERSION}
+    restart: unless-stopped
+    depends_on:
+      - user-service
+      - food-service
+    environment:
+      GATEWAY_PORT: ${GATEWAY_PORT}
+      USER_SERVICE_URL: http://user-service:${USER_SERVICE_PORT}
+      PET_SERVICE_URL: http://pet-service:8082
+      FOOD_SERVICE_URL: http://food-service:${FOOD_SERVICE_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      PUBLIC_API_KEYS: ${PUBLIC_API_KEYS}
+    ports:
+      - "${GATEWAY_PORT}:${GATEWAY_PORT}"
+
+volumes:
+  postgres_data:
