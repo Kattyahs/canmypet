@@ -105,6 +105,7 @@ services:
       PET_SERVICE_URL: http://pet-service:${PET_SERVICE_PORT}
       FOOD_SERVICE_URL: http://food-service:${FOOD_SERVICE_PORT}
       JWT_SECRET: ${JWT_SECRET}
+      PUBLIC_API_KEYS: ${PUBLIC_API_KEYS}
     ports:
       - "${GATEWAY_PORT}:${GATEWAY_PORT}"
 
