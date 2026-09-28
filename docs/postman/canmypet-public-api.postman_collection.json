@@ -1,22 +1,58 @@
 {
   "info": {
     "name": "CanMyPet - Public API",
-    "description": "Read-only food safety lookups for external consumers, plus the setup requests needed to load and verify data in a fresh CanMyPet instance. See docs/public-api/README.md.",
+    "description": "Read-only food safety lookups for external consumers. The instance comes preloaded with verified demo data, so folder 1 works right away. Folder 2 is optional and only needed to add foods that are not in the preloaded catalog. See docs/public-api/README.md.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:8080" },
-    { "key": "apiKey", "value": "" },
-    { "key": "adminEmail", "value": "" },
-    { "key": "adminPassword", "value": "" },
-    { "key": "vetName", "value": "Demo Veterinarian" },
-    { "key": "vetEmail", "value": "vet@example.com" },
-    { "key": "vetPassword", "value": "changeme123" },
-    { "key": "adminToken", "value": "" },
-    { "key": "vetToken", "value": "" },
-    { "key": "vetId", "value": "" },
-    { "key": "foodId", "value": "" },
-    { "key": "foodSafetyId", "value": "" }
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "apiKey",
+      "value": ""
+    },
+    {
+      "key": "adminEmail",
+      "value": ""
+    },
+    {
+      "key": "adminPassword",
+      "value": ""
+    },
+    {
+      "key": "vetName",
+      "value": "Demo Veterinarian"
+    },
+    {
+      "key": "vetEmail",
+      "value": "vet@example.com"
+    },
+    {
+      "key": "vetPassword",
+      "value": "changeme123"
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "vetToken",
+      "value": ""
+    },
+    {
+      "key": "vetId",
+      "value": ""
+    },
+    {
+      "key": "foodId",
+      "value": ""
+    },
+    {
+      "key": "foodSafetyId",
+      "value": ""
+    }
   ],
   "item": [
     {
@@ -26,14 +62,33 @@
           "name": "Search foods with safety (dog)",
           "request": {
             "method": "GET",
-            "header": [ { "key": "X-API-Key", "value": "{{apiKey}}" } ],
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
             "url": {
-              "raw": "{{baseUrl}}/api/public/v1/foods/safety?query=choco&species=DOG",
-              "host": [ "{{baseUrl}}" ],
-              "path": [ "api", "public", "v1", "foods", "safety" ],
+              "raw": "{{baseUrl}}/api/public/v1/foods/safety?query=uva&species=DOG",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "v1",
+                "foods",
+                "safety"
+              ],
               "query": [
-                { "key": "query", "value": "choco" },
-                { "key": "species", "value": "DOG" }
+                {
+                  "key": "query",
+                  "value": "uva"
+                },
+                {
+                  "key": "species",
+                  "value": "DOG"
+                }
               ]
             }
           },
@@ -54,15 +109,37 @@
           "name": "Search foods with safety (cat, puppy stage)",
           "request": {
             "method": "GET",
-            "header": [ { "key": "X-API-Key", "value": "{{apiKey}}" } ],
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/public/v1/foods/safety?query=choco&species=CAT&lifeStage=PUPPY",
-              "host": [ "{{baseUrl}}" ],
-              "path": [ "api", "public", "v1", "foods", "safety" ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "v1",
+                "foods",
+                "safety"
+              ],
               "query": [
-                { "key": "query", "value": "choco" },
-                { "key": "species", "value": "CAT" },
-                { "key": "lifeStage", "value": "PUPPY" }
+                {
+                  "key": "query",
+                  "value": "choco"
+                },
+                {
+                  "key": "species",
+                  "value": "CAT"
+                },
+                {
+                  "key": "lifeStage",
+                  "value": "PUPPY"
+                }
               ]
             }
           }
@@ -74,11 +151,25 @@
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/api/public/v1/foods/safety?query=choco&species=DOG",
-              "host": [ "{{baseUrl}}" ],
-              "path": [ "api", "public", "v1", "foods", "safety" ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "v1",
+                "foods",
+                "safety"
+              ],
               "query": [
-                { "key": "query", "value": "choco" },
-                { "key": "species", "value": "DOG" }
+                {
+                  "key": "query",
+                  "value": "choco"
+                },
+                {
+                  "key": "species",
+                  "value": "DOG"
+                }
               ]
             }
           },
@@ -99,14 +190,33 @@
           "name": "Error - invalid species (400)",
           "request": {
             "method": "GET",
-            "header": [ { "key": "X-API-Key", "value": "{{apiKey}}" } ],
+            "header": [
+              {
+                "key": "X-API-Key",
+                "value": "{{apiKey}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/public/v1/foods/safety?query=choco&species=PERRO",
-              "host": [ "{{baseUrl}}" ],
-              "path": [ "api", "public", "v1", "foods", "safety" ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "v1",
+                "foods",
+                "safety"
+              ],
               "query": [
-                { "key": "query", "value": "choco" },
-                { "key": "species", "value": "PERRO" }
+                {
+                  "key": "query",
+                  "value": "choco"
+                },
+                {
+                  "key": "species",
+                  "value": "PERRO"
+                }
               ]
             }
           },
@@ -126,22 +236,33 @@
       ]
     },
     {
-      "name": "2. Setup - load and verify data",
-      "description": "Run these in order once, on a fresh instance. The public API only returns evaluations that a verified veterinarian has verified.",
+      "name": "2. Optional - add your own food",
+      "description": "Optional. The instance already comes with 63 verified foods. Run these in order (01 to 07) only to add a food that is not in the catalog: set adminEmail and adminPassword first, and change the food name in request 02 so it does not clash with an existing one.",
       "item": [
         {
           "name": "01 Admin login",
           "request": {
             "method": "POST",
-            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/login",
-              "host": [ "{{baseUrl}}" ],
-              "path": [ "api", "auth", "login" ]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
             }
           },
           "event": [
@@ -162,17 +283,28 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Chocolate\",\n  \"category\": \"human food\",\n  \"description\": \"Contains theobromine and caffeine\"\n}"
+              "raw": "{\n  \"name\": \"Galletas de avena\",\n  \"category\": \"snack\",\n  \"description\": \"Galletas caseras de avena sin chocolate ni pasas\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/foods",
-              "host": [ "{{baseUrl}}" ],
-              "path": [ "api", "foods" ]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "foods"
+              ]
             }
           },
           "event": [
@@ -193,17 +325,28 @@
           "request": {
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{adminToken}}" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"foodId\": {{foodId}},\n  \"species\": \"DOG\",\n  \"lifeStage\": null,\n  \"riskLevel\": \"TOXIC\",\n  \"notes\": \"Contiene teobromina. Puede causar vómitos, arritmias y convulsiones.\",\n  \"sources\": [\n    {\n      \"sourceName\": \"ASPCA Animal Poison Control\",\n      \"sourceUrl\": \"https://www.aspca.org/pet-care/animal-poison-control\"\n    }\n  ]\n}"
+              "raw": "{\n  \"foodId\": {{foodId}},\n  \"species\": \"DOG\",\n  \"lifeStage\": null,\n  \"riskLevel\": \"MODERATE\",\n  \"notes\": \"Ejemplo de evaluación creada a mano. Reemplaza este texto por información con fuentes verificables.\",\n  \"sources\": [\n    {\n      \"sourceName\": \"American Kennel Club\",\n      \"sourceUrl\": \"https://www.akc.org/expert-advice/nutrition/human-foods-dogs-can-and-cant-eat/\"\n    }\n  ]\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/food-safety",
-              "host": [ "{{baseUrl}}" ],
-              "path": [ "api", "food-safety" ]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "food-safety"
+              ]
             }
           },
           "event": [
@@ -223,15 +366,26 @@
           "name": "04 Register veterinarian",
           "request": {
             "method": "POST",
-            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"name\": \"{{vetName}}\",\n  \"email\": \"{{vetEmail}}\",\n  \"password\": \"{{vetPassword}}\",\n  \"role\": \"VETERINARIAN\",\n  \"licenseNumber\": \"DEMO-0001\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/register",
-              "host": [ "{{baseUrl}}" ],
-              "path": [ "api", "auth", "register" ]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
             }
           },
           "event": [
@@ -251,11 +405,23 @@
           "name": "05 Approve veterinarian (admin)",
           "request": {
             "method": "PUT",
-            "header": [ { "key": "Authorization", "value": "Bearer {{adminToken}}" } ],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/users/{{vetId}}/verify",
-              "host": [ "{{baseUrl}}" ],
-              "path": [ "api", "users", "{{vetId}}", "verify" ]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "{{vetId}}",
+                "verify"
+              ]
             }
           },
           "event": [
@@ -274,15 +440,26 @@
           "name": "06 Veterinarian login",
           "request": {
             "method": "POST",
-            "header": [ { "key": "Content-Type", "value": "application/json" } ],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"email\": \"{{vetEmail}}\",\n  \"password\": \"{{vetPassword}}\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/auth/login",
-              "host": [ "{{baseUrl}}" ],
-              "path": [ "api", "auth", "login" ]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
             }
           },
           "event": [
@@ -302,11 +479,23 @@
           "name": "07 Verify food safety entry (veterinarian)",
           "request": {
             "method": "PUT",
-            "header": [ { "key": "Authorization", "value": "Bearer {{vetToken}}" } ],
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{vetToken}}"
+              }
+            ],
             "url": {
               "raw": "{{baseUrl}}/api/food-safety/{{foodSafetyId}}/verify",
-              "host": [ "{{baseUrl}}" ],
-              "path": [ "api", "food-safety", "{{foodSafetyId}}", "verify" ]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "food-safety",
+                "{{foodSafetyId}}",
+                "verify"
+              ]
             }
           },
           "event": [
