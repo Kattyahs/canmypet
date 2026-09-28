@@ -10,5 +10,6 @@ import java.util.List;
 public interface FoodRepository extends JpaRepository<Food, Long> {
     List<Food> findByNameContainingIgnoreCase(String query, Pageable pageable);
     Page<Food> findAllByNameContainingIgnoreCase(String query, Pageable pageable);
+    boolean existsByNameIgnoreCase(String name);
 
 }
