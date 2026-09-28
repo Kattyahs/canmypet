@@ -1,6 +1,5 @@
-import { NavLink, useLocation } from 'react-router-dom'
+import { Link,NavLink, useLocation } from 'react-router-dom'
 import {
-    Home,
     PawPrint,
     Search,
     ClipboardList,
@@ -12,10 +11,10 @@ import {
 import { useAuth } from '../context/AuthContext'
 import UserMenu from './UserMenu'
 
+
 export const NAV_ITEMS = [
-    { to: '/dashboard', label: 'Inicio', Icon: Home, mobilePriority: 1 },
+    { to: '/search', label: 'Buscar alimento', Icon: Search, mobilePriority: 1 },
     { to: '/pets', label: 'Mis mascotas', Icon: PawPrint, mobilePriority: 4 },
-    { to: '/search', label: 'Buscar alimento', Icon: Search, mobilePriority: 2 },
     { to: '/history', label: 'Historial', Icon: ClipboardList, mobilePriority: 6 },
     { to: '/faq', label: 'FAQ', Icon: HelpCircle, mobilePriority: 5 },
     {
@@ -32,7 +31,7 @@ export const NAV_ITEMS = [
         roles: ['ADMIN'],
         mobilePriority: 3,
     },
-    { to: '/emergency', label: 'Emergencias', Icon: AlertTriangle, mobilePriority: 7 },
+    { to: '/emergency', label: 'Emergencias', Icon: AlertTriangle, mobilePriority: 2 },
 ]
 
 const MOBILE_TAB_LIMIT = 5
@@ -56,10 +55,10 @@ function Sidebar() {
     return (
         <>
             <aside className="hidden md:flex md:flex-col md:w-[236px] md:h-screen md:sticky md:top-0 bg-bone border-r border-gray-200 p-4">
-                <div className="flex items-center gap-2 mb-8 px-2">
-                    <div className="w-6 h-6 rounded bg-brand" />
+                <Link to="/" aria-label="CanMyPet, ir al inicio" className="flex items-center gap-2 mb-8 px-2">
+                    <span className="w-6 h-6 rounded bg-brand" />
                     <span className="font-semibold text-gray-900">CanMyPet</span>
-                </div>
+                </Link>
 
                 <nav className="flex-1 space-y-1">
                     {visibleItems.map(({ to, label, Icon }) => {
@@ -89,10 +88,10 @@ function Sidebar() {
             </aside>
 
             <header className="md:hidden sticky top-0 z-10 flex items-center justify-between bg-bone border-b border-gray-200 px-4 py-1">
-                <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded bg-brand" />
+                <Link to="/" aria-label="CanMyPet, ir al inicio" className="flex items-center gap-2 min-h-[44px]">
+                    <span className="w-6 h-6 rounded bg-brand" />
                     <span className="font-semibold text-gray-900">CanMyPet</span>
-                </div>
+                </Link>
                 <UserMenu key={pathname} user={user} onLogout={logout} placement="down" />
             </header>
 

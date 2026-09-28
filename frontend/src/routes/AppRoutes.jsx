@@ -2,7 +2,6 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import LoginPage from '../pages/LoginPage'
 import RegisterPage from '../pages/RegisterPage'
-import DashboardPage from '../pages/DashboardPage'
 import PetsPage from "../pages/PetsPage.jsx";
 import OwnerLayout from '../layouts/OwnerLayout'
 import SearchPage from '../pages/SearchPage'
@@ -12,6 +11,7 @@ import EmergencyPage from '../pages/EmergencyPage'
 import RoleRoute from './RoleRoute'
 import VetPanelPage from '../pages/VetPanelPage'
 import AdminPanelPage from '../pages/AdminPanelPage'
+import HomeRedirect from './HomeRedirect'
 
 function ProtectedRoute({ children }) {
     const { user, loading } = useAuth()
@@ -35,7 +35,7 @@ function PublicRoute({ children }) {
     }
 
     if (user) {
-        return <Navigate to="/dashboard" replace />
+        return <Navigate to="/" replace />
     }
 
     return children
@@ -68,7 +68,8 @@ function AppRoutes() {
                     </ProtectedRoute>
                 }
             >
-                <Route path="/dashboard" element={<DashboardPage />} />
+                <Route path="/" element={<HomeRedirect />} />
+                <Route path="/dashboard" element={<HomeRedirect />} />
                 <Route path="/pets" element={<PetsPage />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/history" element={<HistoryPage />} />
@@ -87,7 +88,7 @@ function AppRoutes() {
 
             </Route>
 
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
     )
 }
