@@ -156,10 +156,10 @@ function PetsPage() {
                                 </button>
                                 <Link
                                     to={`/search?petId=${pet.id}`}
-                                    className="flex items-center gap-1 text-gray-500"
+                                    className="flex items-center gap-1 text-brand font-medium"
                                 >
                                     <Search size={14} />
-                                    Buscar alimento
+                                    Consultar un alimento
                                 </Link>
                             </div>
                         </div>
