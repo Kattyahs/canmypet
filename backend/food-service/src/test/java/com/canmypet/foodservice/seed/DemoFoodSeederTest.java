@@ -1,4 +1,4 @@
-package com.canmypet.foodservice.service.seed;
+package com.canmypet.foodservice.seed;
 
 import com.canmypet.foodservice.model.Food;
 import com.canmypet.foodservice.model.FoodSafety;
