@@ -31,8 +31,18 @@ spring:
           predicates:
             - Path=/api/foods/**, /api/food-safety/**, /api/faq/**, /api/emergency/**
 
+        - id: public-api
+          uri: ${FOOD_SERVICE_URL:http://localhost:8083}
+          predicates:
+            - Path=/api/public/**
+          filters:
+            - ApiKey
+
 server:
   port: ${GATEWAY_PORT:8080}
 
 jwt:
   secret: ${JWT_SECRET}
+
+public-api:
+  keys: ${PUBLIC_API_KEYS:}

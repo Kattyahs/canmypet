@@ -6,7 +6,7 @@ import com.canmypet.foodservice.model.Species;
 import com.canmypet.foodservice.model.VerifiedStatus;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
@@ -20,4 +20,6 @@ public interface FoodSafetyRepository extends JpaRepository<FoodSafety, Long> {
 
     @EntityGraph(attributePaths = {"food"})
     Page<FoodSafety> findByVerifiedStatus(VerifiedStatus verifiedStatus, Pageable pageable);
+    @EntityGraph(attributePaths = {"sources"})
+    List<FoodSafety> findByFoodIdInAndSpeciesAndVerifiedStatus(Collection<Long> foodIds, Species species, VerifiedStatus verifiedStatus);
 }

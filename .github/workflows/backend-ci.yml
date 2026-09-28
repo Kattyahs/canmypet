@@ -73,7 +73,7 @@ jobs:
 
       - name: Build with Maven
         working-directory: backend/api-gateway
-        run: mvn clean compile -B
+        run: mvn clean test -B
 
   integration-test-user-service:
     runs-on: ubuntu-latest
