@@ -24,29 +24,31 @@ canmypet-consumer/
 
 ### Steps
 
-1. Copy `.env.consumer.example` to `.env` and fill in:
+1. Copy `.env.consumer.example` to `.env` and set your API key:
 
-   | Variable | Value |
-   |---|---|
-   | `CANMYPET_VERSION` | The image tag you were given (for example `sha-b54bc7f`) |
-   | `POSTGRES_PASSWORD` | Any password for your local database |
-   | `JWT_SECRET` | A random string: `openssl rand -hex 32` |
-   | `ADMIN_EMAIL`, `ADMIN_PASSWORD` | The admin account created on first start (password: at least 8 characters) |
-   | `PUBLIC_API_KEYS` | Your API key: `openssl rand -hex 32` |
+```
+   PUBLIC_API_KEYS=your_random_key
+```
 
-   Leave the other values as they are. On Windows PowerShell, you can generate a
-   random value with `[guid]::NewGuid().ToString("N") + [guid]::NewGuid().ToString("N")`.
+Generate it with `openssl rand -hex 32`, or on Windows PowerShell with
+`[guid]::NewGuid().ToString("N") + [guid]::NewGuid().ToString("N")`.
+
+That is the only required value. Everything else has a local default in
+`docker-compose.consumer.yml` (see [Defaults](#defaults)). If
+`PUBLIC_API_KEYS` is missing, `docker compose` stops with
+`Set PUBLIC_API_KEYS in .env`.
 2. Start the stack:
-   ```bash
+```bash
    docker compose -f docker-compose.consumer.yml up -d
-   ```
+```
 3. Wait about 30 seconds and check:
-   ```bash
+```bash
    curl -i -H "X-API-Key: YOUR_KEY" "http://localhost:8080/api/public/v1/foods/safety?query=uva&species=DOG"
-   ```
-   A `200` with `Uvas` and `"riskLevel":"TOXIC"` means everything works.
+```
+A `200` with `Uvas` and `"riskLevel":"TOXIC"` means everything works.
 
-Only port `8080` (the gateway) is published. The database and internal services
+Only port `8080` (the gateway) is published, and only on `127.0.0.1`: other
+machines on your network cannot reach it. The database and internal services
 are not reachable from your machine.
 
 | Result | Meaning |
@@ -55,6 +57,58 @@ are not reachable from your machine.
 | `401 INVALID_API_KEY` | The header does not match `PUBLIC_API_KEYS` in your `.env` |
 | `Couldn't connect to server` | Containers are still starting. If it persists, check `docker compose -f docker-compose.consumer.yml logs api-gateway` |
 | `200` with `"results": []` | No food matches that name. Try another one, such as `choco` |
+
+### Defaults
+
+These values are used when they are not set in `.env`. They are meant for a
+local copy only; to change one, uncomment it in `.env`.
+
+| Variable | Default |
+|---|---|
+| `CANMYPET_VERSION` | `sha-b54bc7f` |
+| `GATEWAY_PORT` | `8080` |
+| `POSTGRES_USER` / `POSTGRES_PASSWORD` | `canmypet_user` / `canmypet_local` |
+| `JWT_SECRET` | A fixed local-only value |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | `admin@canmypet.local` / `admin-local-123` |
+| `SPRING_PROFILES_ACTIVE` | `dev` (loads the demo data) |
+
+If port `8080` is taken, set `GATEWAY_PORT` to another value and use that port
+in your requests.
+
+### Alternative: run from the repository
+
+Use this if you want to read the code, try the full application (including
+the frontend) or run a version that has not been published as images yet.
+It builds the services from source inside Docker, so you do not need Java or
+Maven installed.
+
+1. Clone the repository. To match the published images exactly, check out the
+   same commit instead of the latest `main`:
+```bash
+   git clone https://github.com/Kattyahs/canmypet.git
+   cd canmypet
+   git checkout b54bc7f
+```
+2. Copy `.env.example` to `.env` and set `POSTGRES_PASSWORD`, `JWT_SECRET`,
+   `ADMIN_EMAIL`, `ADMIN_PASSWORD` and `PUBLIC_API_KEYS`. Optionally set
+   `DEMO_PASSWORD` to log in as the demo veterinarian (`vet@demo.canmypet`).
+   Keep `SPRING_PROFILES_ACTIVE=dev`, which loads the demo data.
+3. This setup publishes more ports: `8080` (gateway), `8091`, `8082`, `8083`
+   and `POSTGRES_PORT` (default `5432`). If you already run PostgreSQL locally,
+   change `POSTGRES_PORT` (for example to `5433`).
+4. Build and start the five containers (the first build takes 5–10 minutes):
+```bash
+   docker compose up -d --build
+   docker compose ps
+```
+5. Optional frontend: `cd frontend && npm install && npm run dev`, then open
+   `http://localhost:5173`.
+6. To upgrade: `git pull`, then `docker compose down -v` and
+   `docker compose up -d --build`.
+
+In this setup food-service is also published directly on port `8083`, where
+the API key is not checked. That is acceptable for local use, but your backend
+should always call the gateway on port `8080`.
 
 ---
 
@@ -146,9 +200,9 @@ message and may change.
 ### Adding more foods (optional)
 
 The Postman collection `docs/postman/canmypet-public-api.postman_collection.json`
-includes a **2. Setup** folder to add a food, register and approve a
-veterinarian account, and verify the evaluation. You only need it to add foods
-that are not in the preloaded catalog.
+includes a **2. Optional - add your own food** folder to add a food, register
+and approve a veterinarian account, and verify the evaluation. You only need it
+to add foods that are not in the preloaded catalog.
 
 ---
 
@@ -173,7 +227,8 @@ that are not in the preloaded catalog.
 | Follow the logs | `docker compose -f docker-compose.consumer.yml logs -f` |
 | Delete everything and start over | `docker compose -f docker-compose.consumer.yml down -v` |
 
-**Upgrading to a new version:** change `CANMYPET_VERSION` in `.env`, then run
+**Upgrading to a new version:** set `CANMYPET_VERSION` in `.env` to the new
+tag (or replace `docker-compose.consumer.yml` with the new one), then run
 `down -v` followed by `up -d`, so the database is recreated with the new data.
 
 ## 6. Versioning

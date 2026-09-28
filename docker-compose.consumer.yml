@@ -5,19 +5,19 @@ services:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER:-canmypet_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-canmypet_local}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d postgres"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-canmypet_user} -d postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
 
   user-service:
-    image: ghcr.io/kattyahs/canmypet-user-service:${CANMYPET_VERSION}
+    image: ghcr.io/kattyahs/canmypet-user-service:${CANMYPET_VERSION:-sha-b54bc7f}
     restart: unless-stopped
     depends_on:
       postgres:
@@ -25,18 +25,18 @@ services:
     environment:
       DB_HOST: postgres
       POSTGRES_PORT: 5432
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      USER_SERVICE_DB: ${USER_SERVICE_DB}
-      USER_SERVICE_PORT: ${USER_SERVICE_PORT}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS}
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
-      APP_ADMIN_EMAIL: ${ADMIN_EMAIL}
-      APP_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER:-canmypet_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-canmypet_local}
+      USER_SERVICE_DB: ${USER_SERVICE_DB:-canmypet_users}
+      USER_SERVICE_PORT: ${USER_SERVICE_PORT:-8091}
+      JWT_SECRET: ${JWT_SECRET:-local-only-jwt-secret-do-not-use-in-production-0123456789}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-86400000}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      APP_ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@canmypet.local}
+      APP_ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin-local-123}
 
   food-service:
-    image: ghcr.io/kattyahs/canmypet-food-service:${CANMYPET_VERSION}
+    image: ghcr.io/kattyahs/canmypet-food-service:${CANMYPET_VERSION:-sha-b54bc7f}
     restart: unless-stopped
     depends_on:
       postgres:
@@ -46,29 +46,29 @@ services:
     environment:
       DB_HOST: postgres
       POSTGRES_PORT: 5432
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      FOOD_SERVICE_DB: ${FOOD_SERVICE_DB}
-      FOOD_SERVICE_PORT: ${FOOD_SERVICE_PORT}
-      JWT_SECRET: ${JWT_SECRET}
-      USER_SERVICE_URL: http://user-service:${USER_SERVICE_PORT}
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      POSTGRES_USER: ${POSTGRES_USER:-canmypet_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-canmypet_local}
+      FOOD_SERVICE_DB: ${FOOD_SERVICE_DB:-canmypet_foods}
+      FOOD_SERVICE_PORT: ${FOOD_SERVICE_PORT:-8083}
+      JWT_SECRET: ${JWT_SECRET:-local-only-jwt-secret-do-not-use-in-production-0123456789}
+      USER_SERVICE_URL: http://user-service:${USER_SERVICE_PORT:-8091}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
 
   api-gateway:
-    image: ghcr.io/kattyahs/canmypet-api-gateway:${CANMYPET_VERSION}
+    image: ghcr.io/kattyahs/canmypet-api-gateway:${CANMYPET_VERSION:-sha-b54bc7f}
     restart: unless-stopped
     depends_on:
       - user-service
       - food-service
     environment:
-      GATEWAY_PORT: ${GATEWAY_PORT}
-      USER_SERVICE_URL: http://user-service:${USER_SERVICE_PORT}
+      GATEWAY_PORT: ${GATEWAY_PORT:-8080}
+      USER_SERVICE_URL: http://user-service:${USER_SERVICE_PORT:-8091}
       PET_SERVICE_URL: http://pet-service:8082
-      FOOD_SERVICE_URL: http://food-service:${FOOD_SERVICE_PORT}
-      JWT_SECRET: ${JWT_SECRET}
-      PUBLIC_API_KEYS: ${PUBLIC_API_KEYS}
+      FOOD_SERVICE_URL: http://food-service:${FOOD_SERVICE_PORT:-8083}
+      JWT_SECRET: ${JWT_SECRET:-local-only-jwt-secret-do-not-use-in-production-0123456789}
+      PUBLIC_API_KEYS: ${PUBLIC_API_KEYS:?Set PUBLIC_API_KEYS in .env}
     ports:
-      - "${GATEWAY_PORT}:${GATEWAY_PORT}"
+      - "127.0.0.1:${GATEWAY_PORT:-8080}:${GATEWAY_PORT:-8080}"
 
 volumes:
   postgres_data:
