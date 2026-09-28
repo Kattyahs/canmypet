@@ -5,6 +5,16 @@ multiple pet profiles, keep search history, and access emergency guidance.
 Includes a veterinarian role for verifying food safety entries and answering FAQs, and an
 admin panel for approving veterinarians, maintaining the food catalog and editing emergency guides.
 
+## How it works
+
+Each role lands on its own main screen after logging in:
+
+- **Owners** land on the food search. The *My pets* tab answers "can my pet eat this?" with a single verdict adjusted to the pet's species and life stage; the *General search* tab lists the risk for every species, or for a chosen species and stage. Recent consultations and a shortcut to the emergency guides are shown before searching.
+- **Veterinarians** land on the veterinarian panel to verify food safety entries and answer questions.
+- **Admins** land on the admin panel to approve veterinarians, maintain the food catalog and edit emergency guides.
+
+Entries not yet verified by a veterinarian are shown as "not reviewed yet", never as verified.
+
 ## Tech stack
 
 - **Backend:** Java 19 + Spring Boot 3.3.4 + Spring Security (JWT) + Maven
