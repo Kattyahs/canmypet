@@ -32,6 +32,13 @@ public class SearchHistory {
     @Column(name = "food_id", nullable = false)
     private Long foodId;
 
+    @Enumerated(EnumType.STRING)
+    private Species species;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "life_stage")
+    private LifeStage lifeStage;
+
     @Column(name = "searched_at", nullable = false, updatable = false)
     private LocalDateTime searchedAt;
 

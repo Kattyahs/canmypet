@@ -4,7 +4,7 @@ import { ClipboardList } from 'lucide-react'
 import { getMyHistory } from '../api/searchHistory'
 import { getFoodsByIds } from '../api/foods'
 import { getMyPets } from '../api/pets'
-import { getSpeciesLabel } from '../constants/species'
+import { describeConsultation } from '../utils/searchHistory'
 import { usePagination } from '../hooks/usePagination'
 import { getApiErrorMessage } from '../utils/apiError'
 import Pagination from '../components/Pagination'
@@ -33,7 +33,6 @@ function HistoryPage() {
     )
     const [pets, setPets] = useState({})
     const [foods, setFoods] = useState({})
-    // Food ids already requested, so paging back and forth never asks twice
     const requestedFoodIds = useRef(new Set())
 
     useEffect(() => {
@@ -57,7 +56,6 @@ function HistoryPage() {
                 }))
             )
             .catch(() => {
-                // Names fall back to "Alimento #id"; allow a retry on the next page
                 missing.forEach((id) => requestedFoodIds.current.delete(id))
             })
     }, [history])
@@ -106,11 +104,7 @@ function HistoryPage() {
                                     <p className="font-medium text-gray-900">
                                         {food?.name || `Alimento #${entry.foodId}`}
                                     </p>
-                                    <p className="text-xs text-gray-500">
-                                        {pet
-                                            ? `${pet.name} · ${getSpeciesLabel(pet.species)}${pet.lifeStage ? ` · ${pet.lifeStage}` : ''}`
-                                            : 'Consulta general'}
-                                    </p>
+                                    <p className="text-xs text-gray-500">{describeConsultation(entry, pet)}</p>
                                 </div>
 
                                 <div className="flex items-center gap-4">

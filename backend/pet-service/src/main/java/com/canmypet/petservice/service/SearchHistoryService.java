@@ -1,5 +1,6 @@
 package com.canmypet.petservice.service;
 
+import com.canmypet.petservice.dto.PageResponse;
 import com.canmypet.petservice.dto.SearchHistoryRequest;
 import com.canmypet.petservice.dto.SearchHistoryResponse;
 import com.canmypet.petservice.exception.ForbiddenPetAccessException;
@@ -9,10 +10,8 @@ import com.canmypet.petservice.model.SearchHistory;
 import com.canmypet.petservice.repository.PetRepository;
 import com.canmypet.petservice.repository.SearchHistoryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import com.canmypet.petservice.dto.PageResponse;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +43,8 @@ public class SearchHistoryService {
                 .userId(userId)
                 .pet(pet)
                 .foodId(request.getFoodId())
+                .species(pet != null ? pet.getSpecies() : request.getSpecies())
+                .lifeStage(pet != null ? pet.getLifeStage() : request.getLifeStage())
                 .build();
 
         SearchHistory saved = searchHistoryRepository.save(entry);
@@ -56,6 +57,8 @@ public class SearchHistoryService {
                 .userId(entry.getUserId())
                 .petId(entry.getPet() != null ? entry.getPet().getId() : null)
                 .foodId(entry.getFoodId())
+                .species(entry.getSpecies())
+                .lifeStage(entry.getLifeStage())
                 .searchedAt(entry.getSearchedAt())
                 .build();
     }

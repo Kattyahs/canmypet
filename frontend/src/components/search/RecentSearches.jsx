@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getMyHistory } from '../../api/searchHistory'
 import { getFoodsByIds } from '../../api/foods'
+import { consultationKey, describeConsultation, describeTarget } from '../../utils/searchHistory'
 
 const MAX_ITEMS = 3
 const HISTORY_SAMPLE = 10
@@ -14,7 +15,7 @@ const formatDate = (isoString) =>
 const uniqueConsultations = (history) => {
     const seen = new Set()
     return history.filter((item) => {
-        const key = `${item.foodId}:${item.petId ?? 'general'}`
+        const key = consultationKey(item)
         if (seen.has(key)) return false
         seen.add(key)
         return true
@@ -47,7 +48,7 @@ function RecentSearches({ pets, onRepeat }) {
 
     if (!items || items.length === 0) return null
 
-    const petName = (petId) => pets.find((p) => p.id === petId)?.name
+    const findPet = (petId) => (petId ? pets.find((p) => p.id === petId) : null)
 
     return (
         <section aria-labelledby="recent-searches-title" className="bg-white border border-gray-200 rounded-lg">
@@ -61,7 +62,9 @@ function RecentSearches({ pets, onRepeat }) {
             </div>
             <ul>
                 {items.map((item) => {
-                    const name = item.petId ? petName(item.petId) : null
+                    const pet = findPet(item.petId)
+                    const target = pet ? { petId: pet.id } : { species: item.species ?? null, lifeStage: item.lifeStage ?? null }
+                    const labelTarget = pet ? pet.name : item.species ? describeTarget(item) : null
                     return (
                         <li
                             key={item.id}
@@ -70,13 +73,13 @@ function RecentSearches({ pets, onRepeat }) {
                             <div className="min-w-0">
                                 <p className="text-sm font-semibold text-gray-900 truncate">{item.food.name}</p>
                                 <p className="text-xs text-gray-500">
-                                    {name ?? 'Buscador general'} · {formatDate(item.searchedAt)}
+                                {describeConsultation(item, pet)} · {formatDate(item.searchedAt)}
                                 </p>
                             </div>
                             <button
                                 type="button"
-                                onClick={() => onRepeat(item.food, name ? item.petId : null)}
-                                aria-label={`Consultar de nuevo ${item.food.name}${name ? ` para ${name}` : ''}`}
+                                onClick={() => onRepeat(item.food, target)}
+                                aria-label={`Consultar de nuevo ${item.food.name}${labelTarget ? ` para ${labelTarget}` : ''}`}
                                 className="shrink-0 min-h-[44px] text-sm font-medium text-brand"
                             >
                                 Consultar de nuevo
