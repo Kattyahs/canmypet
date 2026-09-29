@@ -46,7 +46,7 @@ class FoodServiceTest {
         assertThat(result.content().get(0).getName()).isEqualTo("Chocolate");
         assertThat(result.page()).isZero();
         assertThat(result.totalElements()).isEqualTo(1);
-        verify(foodRepository, never()).findAllByNameContainingIgnoreCase(any(), any());
+        verify(foodRepository, never()).searchPageByName(any(), any());
     }
 
     @Test
@@ -57,7 +57,7 @@ class FoodServiceTest {
         foodService.getAllFoods("   ", pageable);
 
         verify(foodRepository).findAll(pageable);
-        verify(foodRepository, never()).findAllByNameContainingIgnoreCase(any(), any());
+        verify(foodRepository, never()).searchPageByName(any(), any());
     }
 
     @Test
@@ -65,7 +65,7 @@ class FoodServiceTest {
         Food chocolate = Food.builder().id(1L).name("Chocolate").category("human food").build();
 
         Pageable pageable = PageRequest.of(0, 20);
-        when(foodRepository.findAllByNameContainingIgnoreCase("cho", pageable))
+        when(foodRepository.searchPageByName("cho", pageable))
                 .thenReturn(new PageImpl<>(List.of(chocolate), pageable, 1));
 
         PageResponse<FoodResponse> result = foodService.getAllFoods("  cho ", pageable);
@@ -97,7 +97,7 @@ class FoodServiceTest {
     void searchFoods_capsSuggestionsAtTen() {
         Food chocolate = Food.builder().id(1L).name("Chocolate negro").category("human food").build();
 
-        when(foodRepository.findByNameContainingIgnoreCase("choco", PageRequest.of(0, 10)))
+        when(foodRepository.searchByName("choco", PageRequest.of(0, 10)))
                 .thenReturn(List.of(chocolate));
 
         List<FoodResponse> result = foodService.searchFoods("choco");

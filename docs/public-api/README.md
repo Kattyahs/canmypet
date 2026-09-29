@@ -119,11 +119,11 @@ GET /api/public/v1/foods/safety?query={text}&species={species}&lifeStage={lifeSt
 X-API-Key: {your key}
 ```
 
-| Parameter | Required | Values |
-|---|---|---|
-| `query` | Yes | 2 to 100 characters. Partial, case-insensitive match on the food name (`choco` finds `Chocolate`). Accents and typos are not handled yet (`platano` does not find `Plátano`) |
-| `species` | Yes | `DOG`, `CAT`, `RABBIT`, `BIRD`, `HAMSTER`, `GUINEA_PIG`, `FERRET`, `TURTLE`, `OTHER` |
-| `lifeStage` | No | `PUPPY`, `ADULT`, `SENIOR` |
+| Parameter | Required | Values                                                                                                                                                                       |
+|---|---|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `query` | Yes | 2 to 100 characters. Partial, case-insensitive match on the food name (`choco` finds `Chocolate`) Accents are ignored (`platano` finds `Plátano`); typos are not handled yet |
+| `species` | Yes | `DOG`, `CAT`, `RABBIT`, `BIRD`, `HAMSTER`, `GUINEA_PIG`, `FERRET`, `TURTLE`, `OTHER`                                                                                         |
+| `lifeStage` | No | `PUPPY`, `ADULT`, `SENIOR`                                                                                                                                                   |
 
 ### 200 OK
 

@@ -24,7 +24,7 @@ public class FoodService {
     public PageResponse<FoodResponse> getAllFoods(String query, Pageable pageable) {
         var page = (query == null || query.isBlank())
                 ? foodRepository.findAll(pageable)
-                : foodRepository.findAllByNameContainingIgnoreCase(query.trim(), pageable);
+                : foodRepository.searchPageByName(query.trim(), pageable);
         return PageResponse.from(page, this::toResponse);
     }
 
@@ -36,7 +36,7 @@ public class FoodService {
 
     public List<FoodResponse> searchFoods(String query) {
         return foodRepository
-                .findByNameContainingIgnoreCase(query, PageRequest.of(0, SUGGESTION_LIMIT))
+                .searchByName(query, PageRequest.of(0, SUGGESTION_LIMIT))
                 .stream()
                 .map(this::toResponse)
                 .toList();

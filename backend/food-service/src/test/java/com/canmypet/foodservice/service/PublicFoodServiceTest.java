@@ -65,7 +65,7 @@ class PublicFoodServiceTest {
 
     @Test
     void searchWithSafety_noMatchingFoods_returnsEmptyResults() {
-        when(foodRepository.findByNameContainingIgnoreCase("xyz", TOP_10_BY_NAME)).thenReturn(List.of());
+        when(foodRepository.searchByName("xyz", TOP_10_BY_NAME)).thenReturn(List.of());
 
         PublicFoodSafetySearchResponse response = publicFoodService.searchWithSafety("xyz", Species.DOG, null);
 
@@ -75,7 +75,7 @@ class PublicFoodServiceTest {
 
     @Test
     void searchWithSafety_trimsQueryAndReturnsNullEvaluationForFoodWithoutEntry() {
-        when(foodRepository.findByNameContainingIgnoreCase("uva", TOP_10_BY_NAME)).thenReturn(List.of(grape, raisin));
+        when(foodRepository.searchByName("uva", TOP_10_BY_NAME)).thenReturn(List.of(grape, raisin));
         when(foodSafetyRepository.findByFoodIdInAndSpeciesAndVerifiedStatus(List.of(7L, 15L), Species.DOG, VerifiedStatus.VERIFIED))
                 .thenReturn(List.of(entry(grape, null, RiskLevel.TOXIC)));
 
@@ -135,7 +135,7 @@ class PublicFoodServiceTest {
     }
 
     private void stubGrapeEntries(FoodSafety... entries) {
-        when(foodRepository.findByNameContainingIgnoreCase("uva", TOP_10_BY_NAME)).thenReturn(List.of(grape));
+        when(foodRepository.searchByName("uva", TOP_10_BY_NAME)).thenReturn(List.of(grape));
         when(foodSafetyRepository.findByFoodIdInAndSpeciesAndVerifiedStatus(List.of(7L), Species.DOG, VerifiedStatus.VERIFIED))
                 .thenReturn(List.of(entries));
     }
