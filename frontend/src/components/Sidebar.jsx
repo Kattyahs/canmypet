@@ -10,6 +10,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import UserMenu from './UserMenu'
+import Logo from './Logo'
 
 
 export const NAV_ITEMS = [
@@ -55,9 +56,8 @@ function Sidebar() {
     return (
         <>
             <aside className="hidden md:flex md:flex-col md:w-[236px] md:h-screen md:sticky md:top-0 bg-bone border-r border-gray-200 p-4">
-                <Link to="/" aria-label="CanMyPet, ir al inicio" className="flex items-center gap-2 mb-8 px-2">
-                    <span className="w-6 h-6 rounded bg-brand" />
-                    <span className="font-semibold text-gray-900">CanMyPet</span>
+                <Link to="/" aria-label="CanMyPet?, ir al inicio" className="block mb-8 px-2">
+                    <Logo />
                 </Link>
 
                 <nav className="flex-1 space-y-1">
@@ -88,9 +88,8 @@ function Sidebar() {
             </aside>
 
             <header className="md:hidden sticky top-0 z-10 flex items-center justify-between bg-bone border-b border-gray-200 px-4 py-1">
-                <Link to="/" aria-label="CanMyPet, ir al inicio" className="flex items-center gap-2 min-h-[44px]">
-                    <span className="w-6 h-6 rounded bg-brand" />
-                    <span className="font-semibold text-gray-900">CanMyPet</span>
+                <Link to="/" aria-label="CanMyPet?, ir al inicio" className="flex items-center min-h-[44px]">
+                    <Logo className="h-8" />
                 </Link>
                 <UserMenu key={pathname} user={user} onLogout={logout} placement="down" />
             </header>

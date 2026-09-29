@@ -1,7 +1,10 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
+import { getPageTitle, usePageTitle } from '../hooks/usePageTitle'
 
 function OwnerLayout() {
+    const { pathname } = useLocation()
+    usePageTitle(getPageTitle(pathname))
     return (
         <div className="min-h-screen bg-bone md:flex">
             <Sidebar />
