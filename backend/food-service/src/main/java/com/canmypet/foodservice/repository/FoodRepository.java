@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FoodRepository extends JpaRepository<Food, Long> {
     List<Food> findByNameContainingIgnoreCase(String query, Pageable pageable);
     Page<Food> findAllByNameContainingIgnoreCase(String query, Pageable pageable);
     boolean existsByNameIgnoreCase(String name);
-
+    Optional<Food> findByNameIgnoreCase(String name);
 }

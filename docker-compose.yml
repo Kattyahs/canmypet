@@ -7,7 +7,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "127.0.0.1:${POSTGRES_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
@@ -40,7 +40,7 @@ services:
       APP_ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       APP_DEMO_PASSWORD: ${DEMO_PASSWORD:-}
     ports:
-      - "${USER_SERVICE_PORT}:${USER_SERVICE_PORT}"
+      - "127.0.0.1:${USER_SERVICE_PORT}:${USER_SERVICE_PORT}"
 
   pet-service:
     build:
@@ -64,7 +64,7 @@ services:
       USER_SERVICE_URL: http://user-service:${USER_SERVICE_PORT}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
     ports:
-      - "${PET_SERVICE_PORT}:${PET_SERVICE_PORT}"
+      - "127.0.0.1:${PET_SERVICE_PORT}:${PET_SERVICE_PORT}"
 
   food-service:
     build:
@@ -88,7 +88,7 @@ services:
       USER_SERVICE_URL: http://user-service:${USER_SERVICE_PORT}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
     ports:
-      - "${FOOD_SERVICE_PORT}:${FOOD_SERVICE_PORT}"
+      - "127.0.0.1:${FOOD_SERVICE_PORT}:${FOOD_SERVICE_PORT}"
 
   api-gateway:
     build:
