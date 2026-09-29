@@ -13,6 +13,7 @@ import SearchResult from '../components/search/SearchResult'
 import Spinner from '../components/Spinner'
 import RecentSearches from '../components/search/RecentSearches'
 import EmergencyBanner from '../components/search/EmergencyBanner'
+import { consultationKey } from '../utils/searchHistory'
 
 const TABS = [
     { id: 'pets', label: 'Mis mascotas', Icon: PawPrint },
@@ -52,12 +53,20 @@ function SearchPage() {
     const selectedPet = pets.find((p) => String(p.id) === String(petId)) ?? null
     const activeTab = tab ?? (pets.length > 0 ? 'pets' : 'general')
 
-    const track = (foodId, forPetId) => {
-        const key = `${foodId}:${forPetId ?? 'general'}`
+    const track = (foodId, target) => {
+        const payload = target.petId
+            ? { petId: target.petId, foodId }
+            : { foodId, species: target.species || null, lifeStage: target.lifeStage || null }
+        const key = consultationKey(payload)
         if (tracked.current.has(key)) return
         tracked.current.add(key)
-        recordSearch({ petId: forPetId, foodId }).catch(() => tracked.current.delete(key))
+        recordSearch(payload).catch(() => tracked.current.delete(key))
     }
+
+    const generalTarget = (species = generalSpecies, lifeStage = generalStage) => ({
+        species,
+        lifeStage: species ? lifeStage : '',
+    })
 
     const loadEntries = (target) => {
         const lookupId = ++latestLookup.current
@@ -79,8 +88,8 @@ function SearchPage() {
         setFood(selected)
         setQuery(selected.name)
         loadEntries(selected)
-        if (activeTab === 'general') track(selected.id, null)
-        else if (petId) track(selected.id, petId)
+        if (activeTab === 'general') track(selected.id, generalTarget())
+        else if (petId) track(selected.id, { petId })
     }
 
     const handleQueryChange = (value) => {
@@ -91,48 +100,54 @@ function SearchPage() {
             setLookup(null)
         }
     }
-
     const handleSelectPet = (id) => {
         setSelectedPetId(id)
-        if (food) track(food.id, id)
+        if (food) track(food.id, { petId: id })
     }
 
-    const showTab = (id) => {
+    const showTab = (id, target = generalTarget()) => {
         setTab(id)
         if (!food) return
-        if (id === 'general') track(food.id, null)
-        else if (petId) track(food.id, petId)
+        if (id === 'general') track(food.id, target)
+        else if (petId) track(food.id, { petId })
     }
 
     const showAllSpecies = () => {
         setGeneralSpecies('')
         setGeneralStage('')
-        showTab('general')
+        showTab('general', generalTarget('', ''))
     }
 
     const pickEntry = (entry) => {
         setGeneralSpecies(entry.species)
         setGeneralStage(entry.lifeStage ?? '')
+        if (food) track(food.id, generalTarget(entry.species, entry.lifeStage ?? ''))
     }
 
-    const repeatSearch = (repeated, forPetId) => {
-        if (forPetId) {
+    const repeatSearch = (repeated, target) => {
+        if (target.petId) {
             setTab('pets')
-            setSelectedPetId(forPetId)
+            setSelectedPetId(target.petId)
         } else {
             setTab('general')
-            setGeneralSpecies('')
-            setGeneralStage('')
+            setGeneralSpecies(target.species ?? '')
+            setGeneralStage(target.species ? target.lifeStage ?? '' : '')
         }
         setFood(repeated)
         setQuery(repeated.name)
         loadEntries(repeated)
-        track(repeated.id, forPetId)
+        track(repeated.id, target)
     }
 
     const handleSpeciesChange = (value) => {
         setGeneralSpecies(value)
         if (!value) setGeneralStage('')
+        if (food) track(food.id, generalTarget(value))
+    }
+
+    const handleStageChange = (value) => {
+        setGeneralStage(value)
+        if (food) track(food.id, generalTarget(generalSpecies, value))
     }
 
     const firstName = user?.name?.split(' ')[0]
@@ -234,7 +249,7 @@ function SearchPage() {
                             <select
                                 id="general-stage"
                                 value={generalStage}
-                                onChange={(e) => setGeneralStage(e.target.value)}
+                                onChange={(e) => handleStageChange(e.target.value)}
                                 disabled={!generalSpecies}
                                 className={SELECT}
                             >

@@ -146,7 +146,7 @@ describe('SearchPage', () => {
             'MODERATE',
         ])
         expect(screen.getAllByText('Sin revisar aún').length).toBeGreaterThan(0)
-        expect(recordSearch).toHaveBeenLastCalledWith({ petId: null, foodId: 10 })
+        expect(recordSearch).toHaveBeenLastCalledWith({ foodId: 10, species: null, lifeStage: null })
     })
 
     it('shows the verdict for a species chosen in the general search', async () => {
@@ -162,6 +162,24 @@ describe('SearchPage', () => {
         await user.selectOptions(stage, 'PUPPY')
 
         expect(screen.getByRole('heading', { name: 'No. Es muy peligroso' })).toBeInTheDocument()
+    })
+    it('records each species and stage combination of the general search once', async () => {
+        const user = userEvent.setup()
+        getMyPets.mockResolvedValue({ data: [] })
+        renderPage()
+
+        await screen.findByLabelText('Especie')
+        await chooseChocolate(user)
+        await user.selectOptions(screen.getByLabelText('Especie'), 'DOG')
+        await user.selectOptions(screen.getByLabelText('Etapa de vida'), 'PUPPY')
+        await user.selectOptions(screen.getByLabelText('Etapa de vida'), '')
+        await user.selectOptions(screen.getByLabelText('Etapa de vida'), 'PUPPY')
+
+        expect(recordSearch.mock.calls.map(([payload]) => payload)).toEqual([
+            { foodId: 10, species: null, lifeStage: null },
+            { foodId: 10, species: 'DOG', lifeStage: null },
+            { foodId: 10, species: 'DOG', lifeStage: 'PUPPY' },
+        ])
     })
 
     it('never renders a non-http source as a link', async () => {
@@ -194,15 +212,17 @@ describe('SearchPage', () => {
                 { id: 5, petId: 1, foodId: 10, searchedAt: '2026-09-24T10:00:00' },
                 { id: 4, petId: 1, foodId: 10, searchedAt: '2026-09-23T10:00:00' },
                 { id: 3, petId: null, foodId: 11, searchedAt: '2026-09-22T10:00:00' },
+                { id: 2, petId: null, foodId: 11, species: 'CAT', lifeStage: 'SENIOR', searchedAt: '2026-09-21T10:00:00' },
             ])
         )
         getFoodsByIds.mockResolvedValue({ data: [CHOCOLATE, GRAPES] })
         renderPage()
 
         const recent = await screen.findByRole('region', { name: 'Consultas recientes' })
-        expect(within(recent).getAllByRole('listitem')).toHaveLength(2)
-        expect(within(recent).getByText(/popi ·/i)).toBeInTheDocument()
-        expect(within(recent).getByText(/buscador general ·/i)).toBeInTheDocument()
+        expect(within(recent).getAllByRole('listitem')).toHaveLength(3)
+        expect(within(recent).getByText(/popi · perro · adulto ·/i)).toBeInTheDocument()
+        expect(within(recent).getByText(/todas las especies ·/i)).toBeInTheDocument()
+        expect(within(recent).getByText(/gato · senior ·/i)).toBeInTheDocument()
         expect(screen.getByRole('link', { name: /abrir guía de emergencia/i })).toHaveAttribute('href', '/emergency')
     })
 
@@ -229,5 +249,21 @@ describe('SearchPage', () => {
 
         expect(screen.getByRole('tab', { name: /buscador general/i })).toHaveAttribute('aria-selected', 'true')
         expect(await screen.findByRole('table')).toBeInTheDocument()
+    })
+    it('repeats a general consultation restoring its species and stage', async () => {
+        const user = userEvent.setup()
+        getMyHistory.mockResolvedValue(
+            historyPage([{ id: 3, petId: null, foodId: 10, species: 'DOG', lifeStage: 'PUPPY', searchedAt: '2026-09-22T10:00:00' }])
+        )
+        getFoodsByIds.mockResolvedValue({ data: [CHOCOLATE] })
+        renderPage()
+
+        await user.click(await screen.findByRole('button', { name: 'Consultar de nuevo Chocolate para Perro · Cachorro' }))
+
+        expect(screen.getByRole('tab', { name: /buscador general/i })).toHaveAttribute('aria-selected', 'true')
+        expect(screen.getByLabelText('Especie')).toHaveValue('DOG')
+        expect(screen.getByLabelText('Etapa de vida')).toHaveValue('PUPPY')
+        expect(await screen.findByRole('heading', { name: 'No. Es muy peligroso' })).toBeInTheDocument()
+        expect(recordSearch).toHaveBeenLastCalledWith({ foodId: 10, species: 'DOG', lifeStage: 'PUPPY' })
     })
 })

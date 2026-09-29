@@ -115,9 +115,9 @@ docker exec canmypet-postgres pg_dumpall -U <POSTGRES_USER> > backup.sql
 | GET | `/api/pets` | Yes | List the current user's pets |
 | POST | `/api/pets` | Yes | Create a pet |
 | PUT | `/api/pets/{id}` | Yes (owner) | Update a pet |
-| DELETE | `/api/pets/{id}` | Yes (owner) | Delete a pet |
+| DELETE | `/api/pets/{id}` | Yes (owner) | Delete a pet. Its search history is kept, without the pet but with its species and life stage |
 | GET | `/api/search-history/me` | Yes | Get the current user's search history (paginated, newest first) |
-| POST | `/api/search-history` | Yes | Record a search |
+| POST | `/api/search-history` | Yes | Record a search. With `petId`, species and life stage are copied from the pet; otherwise `species` and `lifeStage` are optional (a `lifeStage` without `species` returns 400) |
 
 ### Foods & Food Safety (food-service)
 
