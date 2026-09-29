@@ -1,0 +1,73 @@
+{
+  "emergencyGuides": [
+    {
+      "riskLevel": "MODERATE",
+      "steps": "1. Retira el alimento y anota qué comió, cuánto y a qué hora.\n2. Observa a tu mascota durante las próximas 24 horas: vómitos, diarrea, decaimiento o falta de apetito.\n3. Ofrécele agua fresca y no le des más comida por unas horas.\n4. Si aparece cualquier síntoma o tienes dudas, llama a tu veterinario.",
+      "emergencyContactsInfo": "Tu clínica veterinaria habitual. Si es fuera de horario, una clínica veterinaria de urgencia 24 horas."
+    },
+    {
+      "riskLevel": "TOXIC",
+      "steps": "1. Retira el alimento y guarda el envase o una muestra.\n2. Llama a tu veterinario o a una clínica de urgencia de inmediato, aunque tu mascota se vea bien: algunos síntomas aparecen horas después.\n3. No induzcas el vómito ni le des leche, aceite ni remedios caseros sin indicación veterinaria.\n4. Ten a mano el peso de tu mascota, qué comió, cuánto y a qué hora.",
+      "emergencyContactsInfo": "Clínica veterinaria de urgencia 24 horas más cercana. Llama antes de ir para que te esperen."
+    },
+    {
+      "riskLevel": "LETHAL",
+      "steps": "1. Es una emergencia: ve a una clínica veterinaria de urgencia ahora mismo.\n2. Llama en el camino para avisar que vas y qué comió.\n3. No induzcas el vómito ni esperes a que aparezcan síntomas.\n4. Lleva el envase o una muestra del alimento.",
+      "emergencyContactsInfo": "Clínica veterinaria de urgencia 24 horas más cercana. Si tu mascota convulsiona, no respira bien o pierde el conocimiento, sal de inmediato."
+    }
+  ],
+  "faqs": [
+    {
+      "question": "¿Mi perro puede comer plátano todos los días?",
+      "answer": "Puede comerlo como premio ocasional y en trozos pequeños. Tiene mucha azúcar, así que no conviene darlo a diario, sobre todo si tu perro tiene sobrepeso."
+    },
+    {
+      "question": "Mi gato tomó un poco de leche, ¿es grave?",
+      "answer": "Por lo general no es grave. Muchos gatos adultos no digieren bien la lactosa y pueden tener diarrea o gases. Si aparecen síntomas fuertes o duran más de un día, consulta a tu veterinario."
+    },
+    {
+      "question": "¿Por qué la palta es peligrosa si es tan saludable para las personas?",
+      "answer": "Contiene persina, que en perros y gatos suele causar molestias digestivas, pero en aves y conejos puede ser mucho más grave. Además, el cuesco puede causar obstrucciones."
+    },
+    {
+      "question": "¿Puedo darle huesos de pollo crudos a mi perro?",
+      "answer": null
+    },
+    {
+      "question": "¿Qué frutas son seguras para un gato senior?",
+      "answer": null
+    }
+  ],
+  "pendingEvaluations": [
+    {
+      "food": "Zanahoria",
+      "species": "RABBIT",
+      "lifeStage": null,
+      "riskLevel": "MODERATE",
+      "notes": "Solo como premio ocasional y en poca cantidad: tiene mucha azúcar. La base de su dieta debe ser heno.",
+      "sources": [
+        { "name": "House Rabbit Society", "url": "https://rabbit.org" }
+      ]
+    },
+    {
+      "food": "Pepino",
+      "species": "GUINEA_PIG",
+      "lifeStage": null,
+      "riskLevel": "SAFE",
+      "notes": "Buena opción en porciones pequeñas: aporta agua y pocas calorías.",
+      "sources": [
+        { "name": "RSPCA", "url": "https://www.rspca.org.uk" }
+      ]
+    },
+    {
+      "food": "Manzana",
+      "species": "HAMSTER",
+      "lifeStage": null,
+      "riskLevel": "MODERATE",
+      "notes": "Un trocito pequeño, sin semillas ni corazón, de vez en cuando. En exceso puede causar diarrea.",
+      "sources": [
+        { "name": "RSPCA", "url": "https://www.rspca.org.uk" }
+      ]
+    }
+  ]
+}

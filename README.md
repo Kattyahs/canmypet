@@ -62,8 +62,29 @@ graph TD
 1. Copy `.env.example` to `.env` and fill in real values (database credentials, JWT secret, etc.).
 2. Run `docker compose up --build`.
 3. Wait for all 5 containers (`postgres`, `user-service`, `pet-service`, `food-service`, `api-gateway`) to report healthy/running: `docker compose ps`.
-4. API Gateway (single entry point for all requests): `http://localhost:8080`
+4. API Gateway (single entry point for all requests): `http://localhost:8080`. It is the only port reachable from other machines; the database and the services listen on `127.0.0.1` only.
 5. Frontend: run `npm install` and `npm run dev` inside `frontend/`, then open `http://localhost:5173`
+
+### Demo accounts and data
+
+With `SPRING_PROFILES_ACTIVE=dev` (the value in `.env.example`), the services seed demo data on startup. The seeders are idempotent: restarting never duplicates data, and anything that already exists is skipped.
+
+| Account | Role | Notes |
+|---|---|---|
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` from `.env` | ADMIN | Created by the admin bootstrap in every profile |
+| `owner@demo.canmypet` | OWNER | Two pets: Popi (dog, adult) and Michi (cat, senior) |
+| `vet@demo.canmypet` | VETERINARIAN (verified) | Verifier of the preloaded food catalog |
+| `vet.pending@demo.canmypet` | VETERINARIAN (pending) | Waiting for admin approval |
+
+All demo accounts use the password in `DEMO_PASSWORD`. If it is empty, they are created with a random password and nobody can log in with them.
+
+The instance also starts with 63 foods with verified evaluations, the three emergency guides, five FAQ entries (three answered) and three pending evaluations for the veterinarian panel. The data lives in `backend/food-service/src/main/resources/seed/`.
+
+`docker compose down -v` deletes the database volume, including every account you created. Back it up first if you want to keep it:
+
+```bash
+docker exec canmypet-postgres pg_dumpall -U <POSTGRES_USER> > backup.sql
+```
 
 ### API documentation
 

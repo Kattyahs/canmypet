@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.core.annotation.Order;
+
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @Profile("dev")
+@Order(1)
 @RequiredArgsConstructor
 public class DemoFoodSeeder implements CommandLineRunner {
 
