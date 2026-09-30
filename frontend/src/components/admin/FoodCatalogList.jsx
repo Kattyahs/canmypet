@@ -8,6 +8,8 @@ import EmptyState from '../EmptyState'
 import ErrorMessage from '../ErrorMessage'
 import Pagination from '../Pagination'
 import FoodForm from './FoodForm'
+import FoodThumb from '../FoodThumb'
+import { getFoodCategoryLabel } from '../../constants/foodCategories'
 
 const PAGE_SIZE = 10
 
@@ -74,10 +76,13 @@ function FoodCatalogList({ query, onUpdated }) {
                             key={food.id}
                             className="bg-white border border-gray-200 rounded-lg p-4 flex flex-col md:flex-row md:items-start md:justify-between gap-3"
                         >
-                            <div className="min-w-0">
-                                <p className="font-medium text-gray-900">{food.name}</p>
-                                <p className="text-sm text-gray-500">{food.category}</p>
-                                {food.description && <p className="text-sm text-gray-700 mt-1">{food.description}</p>}
+                            <div className="min-w-0 flex items-start gap-3">
+                                <FoodThumb name={food.name} category={food.category} size="md" />
+                                <div className="min-w-0">
+                                    <p className="font-medium text-gray-900">{food.name}</p>
+                                    <p className="text-sm text-gray-500">{getFoodCategoryLabel(food.category)}</p>
+                                    {food.description && <p className="text-sm text-gray-700 mt-1">{food.description}</p>}
+                                </div>
                             </div>
                             <button
                                 type="button"

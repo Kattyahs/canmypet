@@ -1,0 +1,70 @@
+const MEALDB_BASE = 'https://www.themealdb.com/images/ingredients'
+
+const MEALDB_INGREDIENTS = {
+    chocolate: 'Dark Chocolate',
+    cafe: 'Coffee',
+    uvas: 'Grapes',
+    pasas: 'Raisins',
+    cebolla: 'Onion',
+    ajo: 'Garlic',
+    cebollin: 'Chives',
+    puerro: 'Leek',
+    'nueces de macadamia': 'Macadamia Nuts',
+    'masa cruda con levadura': 'Yeast',
+    cerezas: 'Cherry',
+    palta: 'Avocado',
+    'hongos silvestres': 'Wild Mushrooms',
+    leche: 'Milk',
+    helado: 'Ice Cream',
+    queso: 'Cheese',
+    'yogur natural': 'Yogurt',
+    'grasa y restos de carne': 'Lard',
+    'carne cruda': 'Beef',
+    'huevo crudo': 'Eggs',
+    'papas fritas': 'Fries',
+    almendras: 'Almonds',
+    nueces: 'Walnuts',
+    canela: 'Cinnamon',
+    tomate: 'Tomato',
+    naranja: 'Orange',
+    jamon: 'Ham',
+    'mani sin sal': 'Peanuts',
+    'mantequilla de mani': 'Peanut Butter',
+    'palomitas de maiz': 'Toffee Popcorn',
+    'pan blanco': 'Bread',
+    miel: 'Honey',
+    coco: 'Desiccated Coconut',
+    'pollo cocido': 'Chicken',
+    'huevo cocido': 'Egg',
+    'salmon cocido': 'Salmon',
+    'atun en agua': 'Tuna',
+    'camarones cocidos': 'Prawns',
+    manzana: 'Apples',
+    platano: 'Banana',
+    arandanos: 'Blueberries',
+    frutillas: 'Strawberries',
+    sandia: 'Watermelon',
+    melon: 'Melon',
+    mango: 'Mango',
+    pera: 'Pears',
+    durazno: 'Peaches',
+    pina: 'Pineapple',
+    zanahoria: 'Carrots',
+    pepino: 'Cucumber',
+    'porotos verdes': 'Green Beans',
+    arvejas: 'Peas',
+    brocoli: 'Broccoli',
+    zapallo: 'Pumpkin',
+    apio: 'Celery',
+    choclo: 'Sweetcorn',
+    camote: 'Sweet Potatoes',
+}
+
+const normalize = (value) =>
+    (value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase()
+
+export function getFoodImageUrl(foodName, { small = false } = {}) {
+    const ingredient = MEALDB_INGREDIENTS[normalize(foodName)]
+    if (!ingredient) return null
+    return `${MEALDB_BASE}/${encodeURIComponent(small ? `${ingredient}-Small` : ingredient)}.png`
+}
