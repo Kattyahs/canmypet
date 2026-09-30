@@ -3,11 +3,11 @@ import { PawPrint, Plus } from 'lucide-react'
 import { getSpeciesLabel } from '../../constants/species'
 import { LIFE_STAGE_LABELS } from '../../constants/lifeStages'
 
-function PetPicker({ pets, selectedPetId, onSelect }) {
+function PetPicker({ pets, selectedPetId, onSelect, label = '¿Para cuál de tus mascotas?', showAddPet = true }) {
     return (
         <div className="flex flex-col gap-2">
             <p id="pet-picker-label" className="font-mono text-xs uppercase tracking-wide text-gray-500">
-                ¿Para cuál de tus mascotas?
+                {label}
             </p>
             <div role="group" aria-labelledby="pet-picker-label" className="flex flex-wrap gap-2">
                 {pets.map((pet) => {
@@ -43,13 +43,17 @@ function PetPicker({ pets, selectedPetId, onSelect }) {
                         </button>
                     )
                 })}
-                <Link
-                    to="/pets"
-                    className="flex items-center gap-1.5 min-h-[48px] px-3.5 rounded-full border border-dashed border-gray-300 text-sm text-gray-600 hover:bg-bone"
-                >
-                    <Plus size={16} aria-hidden="true" />
-                    Agregar mascota
-                </Link>
+                {showAddPet && (
+                    <Link
+                        to="/pets"
+                        className="flex items-center gap-1.5 min-h-[48px] px-3.5 rounded-full border border-dashed border-gray-300 text-sm text-gray-600 hover:bg-bone"
+                    >
+                        <Plus size={16} aria-hidden="true" />
+                        Agregar mascota
+                    </Link>
+
+                )}
+
             </div>
         </div>
     )

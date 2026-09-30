@@ -87,7 +87,7 @@ describe('SearchPage', () => {
 
         expect(await screen.findByRole('heading', { name: 'No. Es tóxico' })).toBeInTheDocument()
         expect(screen.getByText('Contiene teobromina.')).toBeInTheDocument()
-        expect(screen.getByRole('link', { name: /ya lo comió/i })).toHaveAttribute('href', '/emergency/TOXIC')
+        expect(screen.getByRole('link', { name: /ya lo comió/i })).toHaveAttribute('href', '/emergency/start?petId=1&foodId=10')
         expect(recordSearch).toHaveBeenCalledWith({ petId: 1, foodId: 10 })
         expect(recordSearch).toHaveBeenCalledTimes(1)
     })
@@ -223,7 +223,7 @@ describe('SearchPage', () => {
         expect(within(recent).getByText(/popi · perro · adulto ·/i)).toBeInTheDocument()
         expect(within(recent).getByText(/todas las especies ·/i)).toBeInTheDocument()
         expect(within(recent).getByText(/gato · senior ·/i)).toBeInTheDocument()
-        expect(screen.getByRole('link', { name: /abrir guía de emergencia/i })).toHaveAttribute('href', '/emergency')
+        expect(screen.getByRole('link', { name: /mi mascota comió algo/i })).toHaveAttribute('href', '/emergency/start')
     })
 
     it('repeats a consultation for the same pet', async () => {
