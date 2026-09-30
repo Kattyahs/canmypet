@@ -46,4 +46,7 @@ public class Pet {
 
     @Column(name = "owner_id", nullable = false)
     private Long ownerId;
+
+    @Column(name = "photo_key", length = 64)
+    private String photoKey;
 }

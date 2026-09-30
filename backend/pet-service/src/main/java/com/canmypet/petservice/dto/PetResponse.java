@@ -23,4 +23,6 @@ public class PetResponse {
     private LifeStage lifeStage;
     private String medicalConditions;
     private Long ownerId;
+    private boolean hasPhoto;
+    private String photoVersion;
 }
