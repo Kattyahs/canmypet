@@ -31,7 +31,7 @@ const TONE_STYLES = {
 }
 
 const OPTION =
-    'w-full min-h-[52px] px-4 flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white text-left text-sm font-medium text-gray-900 hover:bg-bone focus:outline-none focus-visible:ring-2 focus-visible:ring-brand'
+    'w-full min-h-[52px] px-4 flex items-center justify-between gap-3 rounded-xl border border-gray-200 bg-white text-left text-sm font-medium text-gray-900 hover:bg-brand-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-brand'
 
 const describeAnimal = (animal) => (animal.name ? animal.name : `Tu ${getSpeciesLabel(animal.species).toLowerCase()}`)
 
@@ -52,7 +52,7 @@ function StepHeader({ step, onBack }) {
                 ) : (
                     <span />
                 )}
-                <span className="font-mono text-xs uppercase tracking-wide text-gray-500">
+                <span className="text-sm font-semibold text-gray-700">
                     Paso {index + 1} de {STEPS.length}
                 </span>
             </div>
@@ -89,7 +89,7 @@ function AnimalStep({ pets, onChoose }) {
             )}
             {otherOpen && (
                 <div>
-                    <p id="emergency-species-label" className="font-mono text-xs uppercase tracking-wide text-gray-500 mb-2">
+                    <p id="emergency-species-label" className="text-sm font-semibold text-gray-700 mb-2">
                         Especie
                     </p>
                     <div role="group" aria-labelledby="emergency-species-label" className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -98,7 +98,7 @@ function AnimalStep({ pets, onChoose }) {
                                 key={s.value}
                                 type="button"
                                 onClick={() => onChoose({ species: s.value, lifeStage: null })}
-                                className="min-h-[48px] px-3 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-900 hover:bg-bone"
+                                className="min-h-[48px] px-3 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-900 hover:bg-brand-muted"
                             >
                                 {s.label}
                             </button>
@@ -197,7 +197,7 @@ function EmergencyResult({ animal, food, elapsed, onRestart }) {
 
     return (
         <section aria-label="Indicaciones de emergencia" className="space-y-4">
-            <div className={`border rounded-lg p-5 ${TONE_STYLES[advice.tone]}`}>
+            <div className={`border rounded-2xl p-5 md:p-6 ${TONE_STYLES[advice.tone]}`}>
                 <div className="flex items-center gap-3">
                     {food.name && <FoodThumb name={food.name} category={food.category} size="md" />}
                     <p className="text-sm">
@@ -208,7 +208,7 @@ function EmergencyResult({ animal, food, elapsed, onRestart }) {
                     {config && <config.Icon size={26} aria-hidden="true" />}
                     <h2 className="text-2xl font-bold">{advice.title}</h2>
                     {config && (
-                        <span className={`font-mono text-xs font-semibold px-2 py-0.5 rounded border bg-white ${config.border}`}>
+                        <span className={`text-xs font-semibold tracking-wide px-2.5 py-1 rounded-full border bg-white ${config.border}`}>
                             {config.label}
                         </span>
                     )}
@@ -222,11 +222,11 @@ function EmergencyResult({ animal, food, elapsed, onRestart }) {
             </div>
             {needsClinic && <NearbyClinics />}
             {state.guide && (
-                <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+                <div className="bg-white border border-gray-100 rounded-2xl shadow-card overflow-hidden">
                     <div className="p-5 border-b border-gray-100">
                         <div className="flex items-center gap-2 mb-2">
                             <ListChecks size={16} className="text-gray-500" aria-hidden="true" />
-                            <p className="font-mono text-xs uppercase tracking-wide text-gray-500">
+                            <p className="text-sm font-semibold text-gray-700">
                                 {riskLevel ? 'Qué hacer' : 'Qué hacer mientras tanto'}
                             </p>
                         </div>
@@ -236,7 +236,7 @@ function EmergencyResult({ animal, food, elapsed, onRestart }) {
                         <div className="p-5">
                             <div className="flex items-center gap-2 mb-2">
                                 <Phone size={16} className="text-gray-500" aria-hidden="true" />
-                                <p className="font-mono text-xs uppercase tracking-wide text-gray-500">
+                                <p className="text-sm font-semibold text-gray-700">
                                     Contactos de emergencia
                                 </p>
                             </div>
@@ -247,8 +247,8 @@ function EmergencyResult({ animal, food, elapsed, onRestart }) {
             )}
 
             {state.entry?.notes && (
-                <div className="bg-white border border-gray-200 rounded-lg p-5">
-                    <p className="font-mono text-xs uppercase tracking-wide text-gray-500 mb-2">Sobre este alimento</p>
+                <div className="bg-white border border-gray-100 rounded-2xl shadow-card p-5">
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Sobre este alimento</p>
                     <p className="text-sm text-gray-700 leading-relaxed">{state.entry.notes}</p>
                 </div>
             )}
@@ -259,7 +259,7 @@ function EmergencyResult({ animal, food, elapsed, onRestart }) {
                 <button
                     type="button"
                     onClick={onRestart}
-                    className="inline-flex items-center gap-2 min-h-[44px] px-4 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white"
+                    className="inline-flex items-center gap-2 min-h-[44px] px-4 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 bg-white"
                 >
                     <RotateCcw size={16} aria-hidden="true" />
                     Empezar de nuevo
@@ -322,7 +322,7 @@ function EmergencyFlowPage() {
 
     return (
         <div className="max-w-2xl">
-            <h1 className="text-2xl font-semibold text-gray-900 mb-1">Mi mascota comió algo</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">Mi mascota comió algo</h1>
             <p className="text-sm text-gray-500 mb-6">Tres preguntas y te decimos qué hacer ahora.</p>
 
             {loading ? (
@@ -330,7 +330,7 @@ function EmergencyFlowPage() {
             ) : step === 'result' ? (
                 <EmergencyResult animal={animal} food={food} elapsed={elapsed} onRestart={restart} />
             ) : (
-                <div className="bg-white border border-gray-200 rounded-lg p-4 md:p-6">
+                <div className="bg-white border border-gray-100 rounded-2xl shadow-card p-4 md:p-6">
                     <StepHeader step={step} onBack={step === 'animal' ? null : back} />
                     {step === 'animal' && <AnimalStep pets={pets} onChoose={setAnimal} />}
                     {step === 'food' && <FoodStep onChoose={setFood} />}

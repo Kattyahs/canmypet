@@ -52,7 +52,7 @@ function NearbyClinics({ apiKey = EMBED_KEY }) {
         place.source === 'device' ? 'Cerca de tu ubicación.' : `Cerca del centro de ${findCity(cityId).name}.`
 
     return (
-        <section aria-labelledby="nearby-clinics-title" className="bg-white border border-gray-200 rounded-lg p-4 md:p-5 space-y-4">
+        <section aria-labelledby="nearby-clinics-title" className="bg-white border border-gray-100 rounded-2xl shadow-card p-4 md:p-5 space-y-4">
             <div>
                 <h2 id="nearby-clinics-title" className="text-lg font-semibold text-gray-900">
                     Veterinarias de urgencia cercanas
@@ -65,7 +65,7 @@ function NearbyClinics({ apiKey = EMBED_KEY }) {
                     type="button"
                     onClick={useMyLocation}
                     disabled={locating}
-                    className="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 rounded-md bg-brand text-white text-sm font-medium disabled:opacity-60"
+                    className="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 rounded-xl bg-brand text-white text-sm font-medium disabled:opacity-60"
                 >
                     <LocateFixed size={16} aria-hidden="true" />
                     {locating ? 'Buscando tu ubicación...' : 'Usar mi ubicación'}
@@ -77,7 +77,7 @@ function NearbyClinics({ apiKey = EMBED_KEY }) {
                     id="nearby-clinics-city"
                     value={place.source === 'device' ? '' : cityId}
                     onChange={(e) => chooseCity(e.target.value)}
-                    className="min-h-[44px] px-3 border border-gray-300 rounded-md text-base md:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand"
+                    className="min-h-[44px] px-3 border border-gray-200 rounded-xl text-base md:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand"
                 >
                     {place.source === 'device' && <option value="">Tu ubicación</option>}
                     {CHILE_CITIES.map((city) => (

@@ -37,14 +37,14 @@ function AnswerForm({ onSubmit, onCancel, disabled = false }) {
                 aria-label="Respuesta"
                 placeholder="Escribe tu respuesta..."
                 disabled={disabled || submitting}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand disabled:bg-gray-50"
+                className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand disabled:bg-gray-50"
             />
             {error && <p className="text-sm text-risk-toxic">{error}</p>}
             <div className="flex gap-2">
                 <button
                     type="submit"
                     disabled={disabled || submitting || !text.trim()}
-                    className="min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-md disabled:opacity-60"
+                    className="min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-xl hover:bg-brand-dark disabled:opacity-60"
                 >
                     {submitting ? 'Enviando...' : 'Enviar respuesta'}
                 </button>
@@ -53,7 +53,7 @@ function AnswerForm({ onSubmit, onCancel, disabled = false }) {
                         type="button"
                         onClick={onCancel}
                         disabled={submitting}
-                        className="min-h-[44px] px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700"
+                        className="min-h-[44px] px-4 border border-gray-200 text-sm font-medium rounded-xl text-gray-700"
                     >
                         Cancelar
                     </button>

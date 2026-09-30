@@ -68,9 +68,9 @@ function PendingQuestionsTab({ canAct }) {
 
             <ul aria-busy={loading} className="space-y-3">
                 {questions.map((faq) => (
-                    <li key={faq.id} className="bg-white border border-gray-200 rounded-lg p-4">
+                    <li key={faq.id} className="bg-white border border-gray-100 rounded-2xl shadow-card p-4">
                         <p className="font-medium text-gray-900">{faq.question}</p>
-                        <p className="font-mono text-xs text-gray-400 mt-1 mb-3">{formatDate(faq.createdAt)}</p>
+                        <p className="text-xs text-gray-400 mt-1 mb-3">{formatDate(faq.createdAt)}</p>
 
                         {answeringId === faq.id ? (
                             <AnswerForm

@@ -43,7 +43,14 @@ function SegmentedTabs({ options, value, onChange, label, idPrefix, panelId, cla
                         }`}
                     >
                         {Icon && <Icon size={16} className="hidden sm:block" aria-hidden="true" />}
-                        {option.label}
+                        {option.shortLabel ? (
+                            <>
+                                <span className="sm:hidden">{option.shortLabel}</span>
+                                <span className="hidden sm:inline">{option.label}</span>
+                            </>
+                        ) : (
+                            option.label
+                        )}
                         {option.count !== undefined && <span className="text-xs opacity-80">· {option.count}</span>}
                     </button>
                 )
