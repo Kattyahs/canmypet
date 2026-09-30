@@ -140,10 +140,10 @@ describe('SearchPage', () => {
         expect(screen.getByRole('textbox')).toHaveValue('Chocolate')
         const rows = within(screen.getByRole('table')).getAllByRole('row').slice(1)
         expect(rows.map((row) => within(row).getAllByRole('cell')[2].textContent)).toEqual([
-            'LETHAL',
-            'TOXIC',
-            'TOXIC',
-            'MODERATE',
+            'LETAL',
+            'TÓXICO',
+            'TÓXICO',
+            'PRECAUCIÓN',
         ])
         expect(screen.getAllByText('Sin revisar aún').length).toBeGreaterThan(0)
         expect(recordSearch).toHaveBeenLastCalledWith({ foodId: 10, species: null, lifeStage: null })

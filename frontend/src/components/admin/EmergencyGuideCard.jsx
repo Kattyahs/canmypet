@@ -110,7 +110,7 @@ function EmergencyGuideCard({ level }) {
             <div className={`${config.bg} ${config.border} border-b px-4 py-3 flex flex-wrap items-center justify-between gap-2`}>
                 <h2 id={headingId} className={`flex items-center gap-2 font-mono text-sm font-medium uppercase ${config.text}`}>
                     <config.Icon size={16} aria-hidden="true" />
-                    {level}
+                    {config.label}
                 </h2>
                 {!loading && !loadError && !exists && (
                     <span className="text-xs text-gray-600">Todavía no hay guía para este nivel</span>
@@ -119,7 +119,7 @@ function EmergencyGuideCard({ level }) {
 
             <div className="p-4">
                 {loading ? (
-                    <Spinner label={`Cargando guía ${level}...`} />
+                    <Spinner label={`Cargando guía ${config.label}...`} />
                 ) : loadError ? (
                     <ErrorMessage
                         message={getApiErrorMessage(loadError, { fallback: 'No se pudo cargar la guía.' })}
