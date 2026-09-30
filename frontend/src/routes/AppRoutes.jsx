@@ -13,6 +13,7 @@ import VetPanelPage from '../pages/VetPanelPage'
 import AdminPanelPage from '../pages/AdminPanelPage'
 import HomeRedirect from './HomeRedirect'
 import Spinner from '../components/Spinner'
+import EmergencyFlowPage from '../pages/EmergencyFlowPage'
 
 function ProtectedRoute({ children }) {
     const { user, loading } = useAuth()
@@ -74,6 +75,7 @@ function AppRoutes() {
                 <Route path="/history" element={<HistoryPage />} />
                 <Route path="/faq" element={<FaqPage />} />
                 <Route path="/emergency" element={<EmergencyPage />} />
+                <Route path="/emergency/start" element={<EmergencyFlowPage />} />
                 <Route path="/emergency/:riskLevel" element={<EmergencyPage />} />
 
                 <Route element={<RoleRoute allowedRoles={['VETERINARIAN']} />}>

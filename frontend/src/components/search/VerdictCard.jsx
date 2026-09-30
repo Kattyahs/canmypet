@@ -14,7 +14,7 @@ const HEADLINES = {
 
 const LABEL = 'font-mono text-[11px] uppercase tracking-wide text-gray-500 mb-1'
 
-function VerdictCard({ entry, question, stageNote, onShowOtherSpecies }) {
+function VerdictCard({ entry, question, stageNote, onShowOtherSpecies, emergencyHref }) {
     const config = RISK_CONFIG[entry.riskLevel]
     const Icon = config.Icon
     const pending = entry.verifiedStatus !== 'VERIFIED'
@@ -38,7 +38,7 @@ function VerdictCard({ entry, question, stageNote, onShowOtherSpecies }) {
                 </div>
                 {entry.riskLevel !== 'SAFE' && (
                     <Link
-                        to={`/emergency/${entry.riskLevel}`}
+                        to={emergencyHref ?? `/emergency/${entry.riskLevel}`}
                         className="shrink-0 inline-flex items-center justify-center gap-2 min-h-[44px] px-4 rounded-md bg-risk-toxic text-white text-sm font-semibold"
                     >
                         <AlertTriangle size={16} aria-hidden="true" />

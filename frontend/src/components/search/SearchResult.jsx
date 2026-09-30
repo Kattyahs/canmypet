@@ -50,7 +50,7 @@ function SearchResult({
         )
     }
 
-    const renderResolved = (species, lifeStage, question) => {
+    const renderResolved = (species, lifeStage, question, emergencyParams) => {
         const { entry, usedGeneralForStage, speciesEntries } = resolveEntry(lookup.entries, species, lifeStage || null)
         const speciesLabel = getSpeciesLabel(species).toLowerCase()
 
@@ -65,6 +65,7 @@ function SearchResult({
                             : null
                     }
                     onShowOtherSpecies={onShowAllSpecies}
+                    emergencyHref={`/emergency/start?${new URLSearchParams({ ...emergencyParams, foodId: food.id })}`}
                 />
             )
         }
@@ -102,7 +103,8 @@ function SearchResult({
             selectedPet.lifeStage,
             <>
                 ¿Puede <strong>{selectedPet.name}</strong> comer <strong>{food.name.toLowerCase()}</strong>?
-            </>
+            </>,
+            { petId: selectedPet.id }
         )
     }
 
@@ -124,7 +126,8 @@ function SearchResult({
         <>
             <strong>{food.name}</strong> · {getSpeciesLabel(generalSpecies)}
             {generalStage ? ` · ${getLifeStageLabel(generalStage)}` : ''}
-        </>
+        </>,
+        generalStage ? { species: generalSpecies, lifeStage: generalStage } : { species: generalSpecies }
     )
 }
 

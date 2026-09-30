@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { Phone, ListChecks, FileQuestion } from 'lucide-react'
+import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Phone, ListChecks, FileQuestion, ArrowRight } from 'lucide-react'
 import { getEmergencyGuide } from '../api/emergency'
 import { RISK_CONFIG } from '../components/RiskBadge'
 import Spinner from '../components/Spinner'
@@ -55,7 +55,18 @@ function EmergencyPage() {
             <p className="text-sm text-gray-500 mb-6">
                 Qué hacer si tu mascota ingirió algo peligroso.
             </p>
+            <Link
+                to="/emergency/start"
+                className="flex items-center justify-between gap-3 mb-6 p-4 md:px-5 rounded-lg bg-risk-toxic text-white"
+            >
+                <span>
+                    <span className="block font-semibold">Mi mascota comió algo</span>
+                    <span className="block text-sm text-white/90">Tres preguntas y te decimos qué hacer ahora.</span>
+                </span>
+                <ArrowRight size={20} className="shrink-0" aria-hidden="true" />
+            </Link>
 
+            <p className="font-mono text-xs uppercase tracking-wide text-gray-500 mb-2">Guías por nivel de riesgo</p>
             <div className="flex flex-wrap gap-2 mb-6">
                 {LEVELS.map((level) => {
                     const levelConfig = RISK_CONFIG[level]
