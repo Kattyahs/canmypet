@@ -7,6 +7,7 @@ const SIZES = {
     md: { box: 'w-12 h-12', icon: 22 },
     lg: { box: 'w-20 h-20', icon: 32 },
     picker: { box: 'w-16 h-16 sm:w-20 sm:h-20', icon: 28 },
+    xl: { box: 'w-28 h-28', icon: 44 },
 }
 
 function PetAvatar({ pet, size = 'sm', selected = false, previewUrl = null }) {
