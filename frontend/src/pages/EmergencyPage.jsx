@@ -1,37 +1,46 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Phone, ListChecks } from 'lucide-react'
+import { Phone, ListChecks, FileQuestion } from 'lucide-react'
 import { getEmergencyGuide } from '../api/emergency'
 import { RISK_CONFIG } from '../components/RiskBadge'
+import Spinner from '../components/Spinner'
+import EmptyState from '../components/EmptyState'
+import ErrorMessage from '../components/ErrorMessage'
+import { getApiErrorMessage } from '../utils/apiError'
 
 const LEVELS = ['MODERATE', 'TOXIC', 'LETHAL']
 
 function EmergencyPage() {
     const { riskLevel } = useParams()
     const navigate = useNavigate()
-    const [selectedLevel, setSelectedLevel] = useState(riskLevel || 'TOXIC')
+    const [selectedLevel, setSelectedLevel] = useState(LEVELS.includes(riskLevel) ? riskLevel : 'TOXIC')
     const [guide, setGuide] = useState(null)
     const [loading, setLoading] = useState(true)
     const [notFound, setNotFound] = useState(false)
+    const [error, setError] = useState('')
+
+    const load = useCallback(async () => {
+        setLoading(true)
+        setNotFound(false)
+        setError('')
+        setGuide(null)
+        try {
+            const res = await getEmergencyGuide(selectedLevel)
+            setGuide(res.data)
+        } catch (err) {
+            if (err.response?.status === 404) {
+                setNotFound(true)
+            } else {
+                setError(getApiErrorMessage(err, { fallback: 'No se pudo cargar la guía de emergencia.' }))
+            }
+        } finally {
+            setLoading(false)
+        }
+    }, [selectedLevel])
 
     useEffect(() => {
-        const load = async () => {
-            setLoading(true)
-            setNotFound(false)
-            try {
-                const res = await getEmergencyGuide(selectedLevel)
-                setGuide(res.data)
-            } catch (err) {
-                if (err.response?.status === 404) {
-                    setNotFound(true)
-                    setGuide(null)
-                }
-            } finally {
-                setLoading(false)
-            }
-        }
         load()
-    }, [selectedLevel])
+    }, [load])
 
     const handleSelectLevel = (level) => {
         setSelectedLevel(level)
@@ -47,7 +56,6 @@ function EmergencyPage() {
                 Qué hacer si tu mascota ingirió algo peligroso.
             </p>
 
-            {/* Selector de nivel */}
             <div className="flex flex-wrap gap-2 mb-6">
                 {LEVELS.map((level) => {
                     const levelConfig = RISK_CONFIG[level]
@@ -55,43 +63,47 @@ function EmergencyPage() {
                     return (
                         <button
                             key={level}
+                            type="button"
+                            aria-pressed={isSelected}
                             onClick={() => handleSelectLevel(level)}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-md border text-sm font-mono uppercase ${
+                            className={`flex items-center gap-2 min-h-[44px] px-4 rounded-md border text-sm font-mono uppercase ${
                                 isSelected
                                     ? `${levelConfig.bg} ${levelConfig.border} ${levelConfig.text} font-medium`
                                     : 'border-gray-200 text-gray-500 bg-white'
                             }`}
                         >
-                            <levelConfig.Icon size={14} />
-                            {level}
+                            <levelConfig.Icon size={14} aria-hidden="true" />
+                            {levelConfig.label}
                         </button>
                     )
                 })}
             </div>
 
-            {loading && <p className="text-sm text-gray-400">Cargando...</p>}
+            {loading && <Spinner label="Cargando guía..." />}
+
+            {error && <ErrorMessage message={error} onRetry={load} />}
 
             {notFound && (
-                <div className="bg-white border border-gray-200 rounded-lg p-6 text-center">
-                    <p className="text-sm text-gray-500">
-                        Todavía no hay una guía registrada para el nivel {selectedLevel}.
-                    </p>
-                </div>
+                <EmptyState
+                    icon={FileQuestion}
+                    title="Todavía no hay una guía para este nivel"
+                    description="Mientras tanto, contacta a tu veterinario o a una clínica de urgencias."
+                />
             )}
 
             {guide && (
                 <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-                    <div className={`${config?.bg} ${config?.border} border-b p-5`}>
+                    <div className={`${config.bg} ${config.border} border-b p-5`}>
                         <div className="flex items-center gap-2">
-                            {config?.Icon && <config.Icon size={24} className={config.text} />}
-                            <h2 className={`text-xl font-bold ${config?.text}`}>{guide.riskLevel}</h2>
+                            <config.Icon size={24} className={config.text} aria-hidden="true" />
+                            <h2 className={`text-xl font-bold font-mono uppercase ${config.text}`}>{config.label}</h2>
                         </div>
-                        <p className={`text-sm mt-1 ${config?.text}`}>{config?.verdict}</p>
+                        <p className={`text-sm mt-1 ${config.text}`}>{config.verdict}</p>
                     </div>
 
                     <div className="p-5 border-b border-gray-100">
                         <div className="flex items-center gap-2 mb-2">
-                            <ListChecks size={16} className="text-gray-500" />
+                            <ListChecks size={16} className="text-gray-500" aria-hidden="true" />
                             <p className="font-mono text-xs uppercase tracking-wide text-gray-500">
                                 Qué hacer
                             </p>
@@ -102,7 +114,7 @@ function EmergencyPage() {
                     {guide.emergencyContactsInfo && (
                         <div className="p-5">
                             <div className="flex items-center gap-2 mb-2">
-                                <Phone size={16} className="text-gray-500" />
+                                <Phone size={16} className="text-gray-500" aria-hidden="true" />
                                 <p className="font-mono text-xs uppercase tracking-wide text-gray-500">
                                     Contactos de emergencia
                                 </p>
@@ -116,7 +128,7 @@ function EmergencyPage() {
             )}
 
             <p className="text-xs text-gray-400 mt-6 text-center">
-                CanMyPet ofrece orientación informativa y no sustituye una consulta veterinaria.
+                CanMyPet? ofrece orientación informativa y no sustituye una consulta veterinaria.
             </p>
         </div>
     )

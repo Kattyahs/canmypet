@@ -16,7 +16,6 @@ function VetPanelPage() {
     const [checking, setChecking] = useState(false)
     const [showForm, setShowForm] = useState(false)
     const [notice, setNotice] = useState('')
-    // Changing the key remounts PendingEntriesTab, which reloads the list
     const [entriesVersion, setEntriesVersion] = useState(0)
 
     const canAct = user?.verified === true

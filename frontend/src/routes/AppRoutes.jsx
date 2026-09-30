@@ -12,13 +12,13 @@ import RoleRoute from './RoleRoute'
 import VetPanelPage from '../pages/VetPanelPage'
 import AdminPanelPage from '../pages/AdminPanelPage'
 import HomeRedirect from './HomeRedirect'
+import Spinner from '../components/Spinner'
 
 function ProtectedRoute({ children }) {
     const { user, loading } = useAuth()
 
     if (loading) {
-        return <div className="min-h-screen flex items-center justify-center">Cargando...</div>
-    }
+        return <div className="min-h-screen bg-bone flex items-center justify-center"><Spinner /></div>    }
 
     if (!user) {
         return <Navigate to="/login" replace />
@@ -31,8 +31,7 @@ function PublicRoute({ children }) {
     const { user, loading } = useAuth()
 
     if (loading) {
-        return <div className="min-h-screen flex items-center justify-center">Cargando...</div>
-    }
+        return <div className="min-h-screen bg-bone flex items-center justify-center"><Spinner /></div>    }
 
     if (user) {
         return <Navigate to="/" replace />

@@ -13,6 +13,11 @@ const MIN_QUERY_LENGTH = 2
 
 const isHttpUrl = (value) => /^https?:\/\/\S+$/i.test(value)
 
+const normalize = (value) =>
+    value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase()
+
+const findExactMatch = (foods, query) => foods.find((food) => normalize(food.name) === normalize(query))
+
 const LABEL = 'block font-mono text-xs uppercase tracking-wide text-gray-500 mb-1.5'
 const INPUT =
     'w-full min-h-[44px] px-3 border border-gray-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand'
@@ -23,6 +28,7 @@ function ProposeEntryForm({ onCreated, onCancel }) {
     const [foodSuggestions, setFoodSuggestions] = useState([])
     const [selectedFood, setSelectedFood] = useState(null)
     const [searching, setSearching] = useState(false)
+    const [searchFailed, setSearchFailed] = useState(false)
     const latestSearch = useRef(0)
     const [sources, setSources] = useState([{ ...EMPTY_SOURCE }])
     const [submitting, setSubmitting] = useState(false)
@@ -36,6 +42,7 @@ function ProposeEntryForm({ onCreated, onCancel }) {
     const handleFoodQuery = async (value) => {
         setFoodQuery(value)
         setSelectedFood(null)
+        setSearchFailed(false)
         setError('')
         const searchId = ++latestSearch.current
 
@@ -50,8 +57,11 @@ function ProposeEntryForm({ onCreated, onCancel }) {
             const res = await searchFoods(value.trim())
             if (searchId === latestSearch.current) setFoodSuggestions(res.data)
         } catch {
-            if (searchId === latestSearch.current) setFoodSuggestions([])
-        } finally {
+            if (searchId === latestSearch.current) {
+                setFoodSuggestions([])
+                setSearchFailed(true)
+            }
+        }finally {
             if (searchId === latestSearch.current) setSearching(false)
         }
     }
@@ -72,8 +82,16 @@ function ProposeEntryForm({ onCreated, onCancel }) {
     const addSource = () => setSources((prev) => [...prev, { ...EMPTY_SOURCE }])
     const removeSource = (index) => setSources((prev) => prev.filter((_, i) => i !== index))
 
-    const validate = (filledSources) => {
-        if (!selectedFood) return 'Elige un alimento de la lista de sugerencias.'
+    const handleFoodKeyDown = (e) => {
+        if (e.key === 'Enter' && foodSuggestions.length > 0) {
+            e.preventDefault()
+            selectFood(findExactMatch(foodSuggestions, foodQuery) ?? foodSuggestions[0])
+        }
+        if (e.key === 'Escape') setFoodSuggestions([])
+    }
+
+    const validate = (food, filledSources) => {
+        if (!food) return 'Elige un alimento de la lista de sugerencias.'
         if (!form.species || !form.riskLevel) return 'Completa especie y nivel de riesgo.'
         for (const source of filledSources) {
             if (!source.sourceName.trim()) return 'Cada fuente necesita un nombre.'
@@ -87,17 +105,19 @@ function ProposeEntryForm({ onCreated, onCancel }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const filledSources = sources.filter((s) => s.sourceName.trim() || s.sourceUrl.trim())
-        const validationError = validate(filledSources)
+        const food = selectedFood ?? findExactMatch(foodSuggestions, foodQuery)
+        const validationError = validate(food, filledSources)
         if (validationError) {
             setError(validationError)
             return
         }
+        if (!selectedFood) selectFood(food)
 
         setSubmitting(true)
         setError('')
         try {
             await createFoodSafety({
-                foodId: selectedFood.id,
+                foodId: food.id,
                 species: form.species,
                 lifeStage: form.lifeStage || null,
                 riskLevel: form.riskLevel,
@@ -126,6 +146,7 @@ function ProposeEntryForm({ onCreated, onCancel }) {
     const showNoResults =
         !selectedFood &&
         !searching &&
+        !searchFailed &&
         foodQuery.trim().length >= MIN_QUERY_LENGTH &&
         foodSuggestions.length === 0
 
@@ -145,6 +166,7 @@ function ProposeEntryForm({ onCreated, onCancel }) {
                         autoComplete="off"
                         value={foodQuery}
                         onChange={(e) => handleFoodQuery(e.target.value)}
+                        onKeyDown={handleFoodKeyDown}
                         placeholder="Escribe al menos 2 letras"
                         className={INPUT}
                     />
@@ -165,6 +187,11 @@ function ProposeEntryForm({ onCreated, onCancel }) {
                     )}
                     {showNoResults && (
                         <p className="text-xs text-gray-500 mt-1">No encontramos alimentos con ese nombre.</p>
+                    )}
+                    {searchFailed && (
+                        <p role="alert" className="text-xs text-risk-toxic mt-1">
+                            No pudimos buscar alimentos en este momento. Intenta de nuevo.
+                        </p>
                     )}
                 </div>
 

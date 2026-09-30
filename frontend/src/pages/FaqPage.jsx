@@ -48,7 +48,6 @@ function FaqPage() {
         try {
             await askQuestion({ question: newQuestion.trim() })
             setNewQuestion('')
-            // Newest first: the new question lands on the first page
             if (page === 0) reload()
             else goToPage(0)
         } catch (err) {
