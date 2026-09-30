@@ -9,10 +9,10 @@ function SpeciesRiskTable({ foodName, foodCategory, entries, onSelectEntry, capt
     const hasPending = rows.some((e) => e.verifiedStatus !== 'VERIFIED')
 
     return (
-        <section aria-label={`Riesgo de ${foodName} por especie`} className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+        <section aria-label={`Riesgo de ${foodName} por especie`} className="bg-white border border-gray-100 rounded-2xl shadow-card overflow-hidden">
             <div className="px-5 md:px-6 pt-5 pb-4 border-b border-gray-100 flex flex-wrap items-baseline justify-between gap-2">
                 <div className="flex items-center gap-3">
-                    <FoodThumb name={foodName} category={foodCategory} size="md" />
+                    <FoodThumb name={foodName} category={foodCategory} size="lg" />
                     <div>
                         <h2 className="text-xl font-semibold text-gray-900">{foodName}</h2>
                         <p className="text-sm text-gray-500 mt-1">{caption}</p>
@@ -22,8 +22,8 @@ function SpeciesRiskTable({ foodName, foodCategory, entries, onSelectEntry, capt
             </div>
 
             <table className="w-full text-left">
-                <thead className="bg-gray-50">
-                <tr className="font-mono text-[11px] uppercase text-gray-500">
+                <thead className="bg-bone">
+                <tr className="text-xs text-gray-500">
                     <th scope="col" className="px-5 md:px-6 py-2.5 font-medium">Especie</th>
                     <th scope="col" className="px-3 py-2.5 font-medium hidden md:table-cell">Aplica a</th>
                     <th scope="col" className="px-3 py-2.5 font-medium">Riesgo</th>
@@ -36,7 +36,7 @@ function SpeciesRiskTable({ foodName, foodCategory, entries, onSelectEntry, capt
                     const pending = entry.verifiedStatus !== 'VERIFIED'
                     const species = getSpeciesLabel(entry.species)
                     return (
-                        <tr key={entry.id} className="border-t border-gray-100">
+                        <tr key={entry.id} className="border-t border-gray-100 hover:bg-brand-muted/60">
                             <td className="px-5 md:px-6 py-3 text-sm font-semibold text-gray-900">
                                 {species}
                                 {entry.lifeStage && (
@@ -59,7 +59,7 @@ function SpeciesRiskTable({ foodName, foodCategory, entries, onSelectEntry, capt
                                     type="button"
                                     onClick={() => onSelectEntry(entry)}
                                     aria-label={`Ver detalle para ${species}${entry.lifeStage ? ` ${getLifeStageLabel(entry.lifeStage).toLowerCase()}` : ''}`}
-                                    className="min-h-[44px] min-w-[44px] text-sm font-medium text-brand"
+                                    className="min-h-[44px] min-w-[44px] px-2 rounded-lg text-sm font-medium text-brand hover:bg-brand-soft"
                                 >
                                     Ver ›
                                 </button>
@@ -71,7 +71,7 @@ function SpeciesRiskTable({ foodName, foodCategory, entries, onSelectEntry, capt
             </table>
 
             {hasPending && (
-                <p className="px-5 md:px-6 py-4 border-t border-gray-100 bg-gray-50/50 text-sm text-gray-600">
+                <p className="px-5 md:px-6 py-4 border-t border-gray-100 bg-bone/60 text-sm text-gray-600">
                     "Sin revisar aún" significa que un veterinario todavía no validó esa evaluación. Tómala como orientación.
                 </p>
             )}

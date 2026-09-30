@@ -43,13 +43,13 @@ function RiskBadge({ level, size = 'sm' }) {
 
     return (
         <span
-            className={`inline-flex items-center gap-1 rounded font-mono uppercase ${text} ${bg} ${border} border ${
-                size === 'sm' ? 'text-xs px-1.5 py-0.5' : 'text-sm px-2 py-1'
+            className={`inline-flex items-center gap-1 rounded-full font-semibold tracking-wide ${text} ${bg} ${border} border ${
+                size === 'sm' ? 'text-[11px] px-2 py-0.5' : 'text-xs px-2.5 py-1'
             }`}
         >
-      <Icon size={size === 'sm' ? 12 : 14} />
+            <Icon size={size === 'sm' ? 12 : 14} aria-hidden="true" />
             {label}
-    </span>
+        </span>
     )
 }
 

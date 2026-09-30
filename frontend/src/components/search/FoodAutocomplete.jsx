@@ -62,13 +62,13 @@ function FoodAutocomplete({ id, label, query, onQueryChange, onSelect }) {
 
     return (
         <div className="flex flex-col gap-2">
-            <label htmlFor={id} className="font-mono text-xs uppercase tracking-wide text-gray-500">
+            <label htmlFor={id} className="text-sm font-medium text-gray-700">
                 {label}
             </label>
             <div className="relative">
                 <Search
-                    size={18}
-                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                    size={20}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
                     aria-hidden="true"
                 />
                 <input
@@ -78,17 +78,17 @@ function FoodAutocomplete({ id, label, query, onQueryChange, onSelect }) {
                     value={query}
                     onChange={(e) => handleChange(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder="Chocolate, uvas, cebolla..."
-                    className="w-full min-h-[44px] pl-10 pr-3 border border-gray-300 rounded-md text-base md:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand"
+                    placeholder="Busca un alimento, como zanahoria"
+                    className="w-full min-h-[52px] pl-12 pr-4 border border-gray-200 rounded-full text-base bg-white shadow-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent"
                 />
                 {suggestions.length > 0 && (
-                    <ul className="absolute z-10 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-64 overflow-y-auto">
+                    <ul className="absolute z-10 left-0 right-0 mt-2 py-1 bg-white border border-gray-100 rounded-2xl shadow-raised max-h-72 overflow-y-auto">
                         {suggestions.map((food) => (
                             <li key={food.id}>
                                 <button
                                     type="button"
                                     onClick={() => choose(food)}
-                                    className="w-full min-h-[44px] px-3 py-2 flex items-center gap-3 text-left hover:bg-bone"
+                                    className="w-full min-h-[48px] px-4 py-2 flex items-center gap-3 text-left hover:bg-brand-muted focus:outline-none focus-visible:bg-brand-muted"
                                 >
                                     <FoodThumb name={food.name} category={food.category} />
                                     <span className="min-w-0">
@@ -102,12 +102,12 @@ function FoodAutocomplete({ id, label, query, onQueryChange, onSelect }) {
                 )}
             </div>
             {showNoResults && (
-                <p className="text-xs text-gray-500">
+                <p className="px-4 text-xs text-gray-500">
                     No encontramos «{query.trim()}». Prueba con otro nombre, por ejemplo «palta» o «plátano».
                 </p>
             )}
             {showError && (
-                <p role="alert" className="text-xs text-red-700">
+                <p role="alert" className="px-4 text-xs text-red-700">
                     No pudimos buscar alimentos en este momento. Intenta de nuevo en unos segundos.
                 </p>
             )}
