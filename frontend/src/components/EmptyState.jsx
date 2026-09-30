@@ -1,9 +1,9 @@
 function EmptyState({ icon: Icon, title, description, children }) {
     return (
-        <div className="bg-white border border-gray-200 rounded-lg p-8 text-center">
+        <div className="bg-white border border-gray-100 rounded-2xl shadow-card p-8 text-center">
             {Icon && (
-                <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-bone flex items-center justify-center">
-                    <Icon size={20} className="text-gray-400" aria-hidden="true" />
+                <div className="w-10 h-10 mx-auto mb-3 rounded-full bg-brand-muted flex items-center justify-center">
+                    <Icon size={20} className="text-brand" aria-hidden="true" />
                 </div>
             )}
             <p className="font-medium text-gray-900">{title}</p>

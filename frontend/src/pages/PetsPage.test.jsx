@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import PetsPage from './PetsPage'
-import { getMyPets, createPet, updatePet, uploadPetPhoto, deletePetPhoto, getPetPhoto } from '../api/pets'
+import { getMyPets, createPet, updatePet, deletePet, uploadPetPhoto, deletePetPhoto, getPetPhoto } from '../api/pets'
 import { resizeImage } from '../utils/resizeImage'
 import { clearPetPhotoCache } from '../utils/petPhotos'
 
@@ -11,6 +11,7 @@ vi.mock('../api/pets', () => ({
     getMyPets: vi.fn(),
     createPet: vi.fn(),
     updatePet: vi.fn(),
+    deletePet: vi.fn(),
     uploadPetPhoto: vi.fn(),
     deletePetPhoto: vi.fn(),
     getPetPhoto: vi.fn(),
@@ -41,8 +42,7 @@ describe('PetsPage', () => {
     it('shows the life stage in Spanish', async () => {
         getMyPets.mockResolvedValue({ data: [{ ...POPI, lifeStage: 'PUPPY' }] })
         renderPage()
-        expect(await screen.findByText('Cachorro')).toBeInTheDocument()
-        expect(screen.getByText('Perro')).toBeInTheDocument()
+        expect(await screen.findByText('Perro · Cachorro')).toBeInTheDocument()
     })
 
     it('invites to register the first pet when there are none', async () => {
@@ -129,5 +129,56 @@ describe('PetsPage', () => {
 
         const alert = await screen.findByText(/la mascota se guardó, pero la foto no/i)
         expect(alert).toHaveTextContent('La foto pesa demasiado.')
+    })
+
+    it('opens the form in a dialog that closes with Escape', async () => {
+        getMyPets.mockResolvedValue({ data: [POPI] })
+        const user = userEvent.setup()
+        renderPage()
+
+        await user.click(await screen.findByRole('button', { name: 'Editar perfil' }))
+        expect(screen.getByRole('dialog', { name: 'Editar perfil de Popi' })).toBeInTheDocument()
+        expect(screen.getByLabelText('Nombre')).toHaveFocus()
+
+        await user.keyboard('{Escape}')
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+
+    it('deletes a pet after confirming', async () => {
+        getMyPets.mockResolvedValueOnce({ data: [POPI] }).mockResolvedValue({ data: [] })
+        deletePet.mockResolvedValue({})
+        const user = userEvent.setup()
+        renderPage()
+
+        await user.click(await screen.findByRole('button', { name: 'Más opciones para Popi' }))
+        await user.click(screen.getByRole('menuitem', { name: 'Eliminar mascota' }))
+        expect(screen.getByRole('dialog', { name: '¿Eliminar a Popi?' })).toBeInTheDocument()
+        await user.click(screen.getByRole('button', { name: 'Eliminar' }))
+
+        await waitFor(() => expect(deletePet).toHaveBeenCalledWith(1))
+        expect(await screen.findByText('Aún no tienes mascotas registradas')).toBeInTheDocument()
+    })
+
+    it('does not delete when the owner cancels', async () => {
+        getMyPets.mockResolvedValue({ data: [POPI] })
+        const user = userEvent.setup()
+        renderPage()
+
+        await user.click(await screen.findByRole('button', { name: 'Más opciones para Popi' }))
+        await user.click(screen.getByRole('menuitem', { name: 'Eliminar mascota' }))
+        await user.click(screen.getByRole('button', { name: 'Cancelar' }))
+
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+        expect(deletePet).not.toHaveBeenCalled()
+    })
+
+    it('stops offering new pets at the limit of five', async () => {
+        const five = [1, 2, 3, 4, 5].map((id) => ({ ...POPI, id, name: `Mascota ${id}` }))
+        getMyPets.mockResolvedValue({ data: five })
+        renderPage()
+
+        expect(await screen.findByText('Mascota 5')).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: /nueva mascota/i })).toBeDisabled()
+        expect(screen.queryByRole('button', { name: /agregar mascota/i })).not.toBeInTheDocument()
     })
 })
