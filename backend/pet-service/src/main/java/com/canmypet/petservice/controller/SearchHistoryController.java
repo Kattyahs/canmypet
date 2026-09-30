@@ -26,9 +26,10 @@ public class SearchHistoryController {
     @GetMapping("/me")
     public ResponseEntity<PageResponse<SearchHistoryResponse>> getMyHistory(
             @AuthenticationPrincipal JwtPrincipal principal,
+            @RequestParam(required = false) Long petId,
             @PageableDefault(size = 20, sort = "searchedAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return ResponseEntity.ok(searchHistoryService.getHistoryForUser(principal.userId(), pageable));
+        return ResponseEntity.ok(searchHistoryService.getHistoryForUser(principal.userId(), petId, pageable));
     }
 
     @PostMapping
