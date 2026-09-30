@@ -1,7 +1,8 @@
 import { useEffect, useId, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { ChevronDown, LogOut } from 'lucide-react'
 
-function UserMenu({ user, onLogout, placement = 'up' }) {
+function UserMenu({ user, onLogout, placement = 'up', links = [] }) {
     const [open, setOpen] = useState(false)
     const containerRef = useRef(null)
     const triggerRef = useRef(null)
@@ -83,8 +84,22 @@ function UserMenu({ user, onLogout, placement = 'up' }) {
                             <p className="text-xs text-gray-500">{user?.role}</p>
                         </div>
                     )}
+                    {links.map(({ to, label, Icon }, index) => (
+                        <Link
+                            key={to}
+                            to={to}
+                            ref={index === 0 ? itemRef : undefined}
+                            role="menuitem"
+                            onClick={() => setOpen(false)}
+                            className="w-full flex items-center gap-2 min-h-[44px] px-3 text-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:bg-gray-50"
+                        >
+                            <Icon size={16} aria-hidden="true" />
+                            {label}
+                        </Link>
+                    ))}
+                    {links.length > 0 && <div role="separator" className="my-1 border-t border-gray-100" />}
                     <button
-                        ref={itemRef}
+                        ref={links.length === 0 ? itemRef : undefined}
                         type="button"
                         role="menuitem"
                         onClick={onLogout}

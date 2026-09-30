@@ -53,4 +53,16 @@ describe('getNavItems', () => {
     it('treats a missing role as having no role-restricted items', () => {
         expect(paths(getNavItems(undefined).visibleItems)).not.toContain('/vet')
     })
+
+    it('keeps nothing out of reach on mobile: what does not fit goes to the account menu', () => {
+        expect(getNavItems('OWNER').overflowItems).toEqual([])
+        expect(paths(getNavItems('VETERINARIAN').overflowItems)).toEqual(['/history'])
+        expect(paths(getNavItems('ADMIN').overflowItems)).toEqual(['/history'])
+    })
+
+    it('ends the mobile bar with emergencies for every role', () => {
+        for (const role of ['OWNER', 'VETERINARIAN', 'ADMIN']) {
+            expect(paths(getNavItems(role).mobileTabs).at(-1)).toBe('/emergency')
+        }
+    })
 })

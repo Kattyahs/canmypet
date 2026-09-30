@@ -2,16 +2,18 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import UserMenu from './UserMenu'
+import { MemoryRouter } from 'react-router-dom'
+import { ClipboardList } from 'lucide-react'
 
 const USER = { name: 'Kattya Herrera', role: 'OWNER' }
 
 function renderMenu(props = {}) {
     const onLogout = vi.fn()
     render(
-        <div>
+        <MemoryRouter>
             <p>Fuera del menú</p>
             <UserMenu user={USER} onLogout={onLogout} {...props} />
-        </div>
+        </MemoryRouter>
     )
     return { onLogout, trigger: screen.getByRole('button', { name: 'Menú de Kattya Herrera' }) }
 }
@@ -80,5 +82,20 @@ describe('UserMenu', () => {
         await user.click(trigger)
 
         expect(screen.getByRole('menu')).toHaveTextContent('Kattya Herrera')
+    })
+
+    it('lists the links that do not fit in the mobile bar before logging out', async () => {
+        const user = userEvent.setup()
+        const { trigger } = renderMenu({
+            placement: 'down',
+            links: [{ to: '/history', label: 'Historial', Icon: ClipboardList }],
+        })
+
+        await user.click(trigger)
+
+        const items = screen.getAllByRole('menuitem')
+        expect(items.map((item) => item.textContent)).toEqual(['Historial', 'Cerrar sesión'])
+        expect(items[0]).toHaveAttribute('href', '/history')
+        expect(items[0]).toHaveFocus()
     })
 })
