@@ -22,6 +22,15 @@ describe('SegmentedTabs', () => {
         expect(screen.getByRole('tab', { name: /pendientes\s*· 3/i })).toBeInTheDocument()
     })
 
+    it('links each tab to its panel when ids are given', () => {
+        render(
+            <SegmentedTabs options={OPTIONS} value="mine" onChange={() => {}} label="Modo" idPrefix="mode" panelId="mode-panel" />
+        )
+        const tab = screen.getByRole('tab', { name: 'Mis mascotas' })
+        expect(tab).toHaveAttribute('id', 'mode-mine')
+        expect(tab).toHaveAttribute('aria-controls', 'mode-panel')
+    })
+
     it('reports the clicked option', async () => {
         const onChange = vi.fn()
         render(<SegmentedTabs options={OPTIONS} value="mine" onChange={onChange} label="Modo" />)

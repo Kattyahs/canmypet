@@ -13,16 +13,18 @@ import SearchResult from '../components/search/SearchResult'
 import Spinner from '../components/Spinner'
 import RecentSearches from '../components/search/RecentSearches'
 import EmergencyBanner from '../components/search/EmergencyBanner'
+import SegmentedTabs from '../components/ui/SegmentedTabs'
+import Card from '../components/ui/Card'
 import { consultationKey } from '../utils/searchHistory'
 
 const TABS = [
-    { id: 'pets', label: 'Mis mascotas', Icon: PawPrint },
-    { id: 'general', label: 'Buscador general', Icon: Search },
+    { value: 'pets', label: 'Mis mascotas', Icon: PawPrint },
+    { value: 'general', label: 'Buscador general', Icon: Search },
 ]
 
-const FIELD_LABEL = 'font-mono text-xs uppercase tracking-wide text-gray-500'
+const FIELD_LABEL = 'text-sm font-medium text-gray-700'
 const SELECT =
-    'min-h-[44px] px-3 border border-gray-300 rounded-md text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand disabled:bg-gray-50 disabled:text-gray-400 disabled:border-gray-200'
+    'min-h-[52px] px-4 border border-gray-200 rounded-xl text-base md:text-sm bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-brand disabled:bg-bone disabled:text-gray-400'
 
 function SearchPage() {
     const { user } = useAuth()
@@ -153,136 +155,128 @@ function SearchPage() {
     const firstName = user?.name?.split(' ')[0]
 
     return (
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-6">
             <div>
-                {firstName && <p className="font-mono text-xs uppercase tracking-wide text-gray-500 mb-1">Hola, {firstName}</p>}
-                <h1 className="text-2xl font-semibold text-gray-900 mb-1">Buscar alimento</h1>
-                <p className="text-sm text-gray-500">Comprueba si un alimento es seguro antes de dárselo a tu mascota.</p>
+                {firstName && <p className="text-sm text-gray-500 mb-1">Hola, {firstName}</p>}
+                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">¿Qué puede comer tu mascota?</h1>
+                <p className="text-sm text-gray-500">Busca un alimento y descubre si es seguro antes de dárselo.</p>
             </div>
 
-            <div role="tablist" aria-label="Tipo de búsqueda" className="flex gap-1 border-b border-gray-200">
-                {TABS.map(({ id, label, Icon }) => {
-                    const selected = activeTab === id
-                    return (
-                        <button
-                            key={id}
-                            id={`search-tab-${id}`}
-                            type="button"
-                            role="tab"
-                            aria-selected={selected}
-                            aria-controls="search-panel"
-                            onClick={() => showTab(id)}
-                            className={`flex-1 md:flex-none flex items-center justify-center gap-2 min-h-[44px] px-3 text-sm -mb-px border-b-2 ${
-                                selected
-                                    ? 'border-brand text-brand font-semibold'
-                                    : 'border-transparent text-gray-500 hover:text-gray-700'
-                            }`}
-                        >
-                            <Icon size={16} aria-hidden="true" />
-                            {label}
-                        </button>
-                    )
-                })}
-            </div>
+            <Card className="flex flex-col gap-5">
+                <SegmentedTabs
+                    options={TABS}
+                    value={activeTab}
+                    onChange={(id) => showTab(id)}
+                    label="Tipo de búsqueda"
+                    idPrefix="search-tab"
+                    panelId="search-panel"
+                    className="md:max-w-md"
+                />
 
-            <div id="search-panel" role="tabpanel" aria-labelledby={`search-tab-${activeTab}`} className="flex flex-col gap-5">
-                {petsLoading ? (
-                    <Spinner label="Cargando tus mascotas..." />
-                ) : activeTab === 'pets' ? (
-                    <section className="bg-white border border-gray-200 rounded-lg p-4 md:p-5 flex flex-col gap-5">
-                        {pets.length > 0 ? (
-                            <PetPicker pets={pets} selectedPetId={petId} onSelect={handleSelectPet} />
-                        ) : (
-                            <div className="flex flex-col gap-2">
-                                <p className="text-sm text-gray-700">Todavía no registras mascotas.</p>
-                                <div className="flex flex-wrap gap-3">
-                                    <Link to="/pets" className="text-sm font-medium text-brand">
-                                        Registrar una mascota
-                                    </Link>
-                                    <button type="button" onClick={() => showTab('general')} className="text-sm font-medium text-brand">
-                                        Usar el buscador general
-                                    </button>
+                <div id="search-panel" role="tabpanel" aria-labelledby={`search-tab-${activeTab}`} className="flex flex-col gap-5">
+                    {petsLoading ? (
+                        <Spinner label="Cargando tus mascotas..." />
+                    ) : activeTab === 'pets' ? (
+                        <>
+                            {pets.length > 0 ? (
+                                <PetPicker pets={pets} selectedPetId={petId} onSelect={handleSelectPet} />
+                            ) : (
+                                <div className="flex flex-col gap-2 p-4 rounded-xl bg-brand-muted">
+                                    <p className="text-sm text-gray-700">Todavía no registras mascotas.</p>
+                                    <div className="flex flex-wrap gap-x-4">
+                                        <Link to="/pets" className="min-h-[44px] inline-flex items-center text-sm font-medium text-brand">
+                                            Registrar una mascota
+                                        </Link>
+                                        <button
+                                            type="button"
+                                            onClick={() => showTab('general')}
+                                            className="min-h-[44px] text-sm font-medium text-brand"
+                                        >
+                                            Usar el buscador general
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                        <FoodAutocomplete
-                            id="food-search-pets"
-                            label="¿Qué comió o quiere comer?"
-                            query={query}
-                            onQueryChange={handleQueryChange}
-                            onSelect={handleSelectFood}
-                        />
-                    </section>
-                ) : (
-                    <section className="bg-white border border-gray-200 rounded-lg p-4 md:p-5 grid grid-cols-1 md:grid-cols-4 gap-4 md:items-end">
-                        <div className="md:col-span-2">
+                            )}
                             <FoodAutocomplete
-                                id="food-search-general"
-                                label="Alimento"
+                                id="food-search-pets"
+                                label="¿Qué comió o quiere comer?"
                                 query={query}
                                 onQueryChange={handleQueryChange}
                                 onSelect={handleSelectFood}
                             />
+                        </>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:items-end">
+                            <div className="md:col-span-2">
+                                <FoodAutocomplete
+                                    id="food-search-general"
+                                    label="Alimento"
+                                    query={query}
+                                    onQueryChange={handleQueryChange}
+                                    onSelect={handleSelectFood}
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="general-species" className={FIELD_LABEL}>
+                                    Especie
+                                </label>
+                                <select
+                                    id="general-species"
+                                    value={generalSpecies}
+                                    onChange={(e) => handleSpeciesChange(e.target.value)}
+                                    className={SELECT}
+                                >
+                                    <option value="">Todas las especies</option>
+                                    {SPECIES.map((s) => (
+                                        <option key={s.value} value={s.value}>
+                                            {s.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="general-stage" className={FIELD_LABEL}>
+                                    Etapa de vida
+                                </label>
+                                <select
+                                    id="general-stage"
+                                    value={generalStage}
+                                    onChange={(e) => handleStageChange(e.target.value)}
+                                    disabled={!generalSpecies}
+                                    className={SELECT}
+                                >
+                                    <option value="">{generalSpecies ? 'Cualquier etapa' : 'Elige una especie primero'}</option>
+                                    {Object.entries(LIFE_STAGE_LABELS).map(([value, label]) => (
+                                        <option key={value} value={value}>
+                                            {label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="general-species" className={FIELD_LABEL}>
-                                Especie
-                            </label>
-                            <select
-                                id="general-species"
-                                value={generalSpecies}
-                                onChange={(e) => handleSpeciesChange(e.target.value)}
-                                className={SELECT}
-                            >
-                                <option value="">Todas las especies</option>
-                                {SPECIES.map((s) => (
-                                    <option key={s.value} value={s.value}>
-                                        {s.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <label htmlFor="general-stage" className={FIELD_LABEL}>
-                                Etapa de vida
-                            </label>
-                            <select
-                                id="general-stage"
-                                value={generalStage}
-                                onChange={(e) => handleStageChange(e.target.value)}
-                                disabled={!generalSpecies}
-                                className={SELECT}
-                            >
-                                <option value="">{generalSpecies ? 'Cualquier etapa' : 'Elige una especie primero'}</option>
-                                {Object.entries(LIFE_STAGE_LABELS).map(([value, label]) => (
-                                    <option key={value} value={value}>
-                                        {label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </section>
-                )}
-                {!food && !petsLoading && (
-                    <>
-                        <RecentSearches pets={pets} onRepeat={repeatSearch} />
-                        <EmergencyBanner />
-                    </>
-                )}
-                {food && lookup && (
-                    <SearchResult
-                        food={food}
-                        lookup={lookup}
-                        activeTab={activeTab}
-                        selectedPet={selectedPet}
-                        generalSpecies={generalSpecies}
-                        generalStage={generalStage}
-                        onRetry={() => loadEntries(food)}
-                        onShowAllSpecies={showAllSpecies}
-                        onPickEntry={pickEntry}
-                    />
-                )}
-            </div>
+                    )}
+                </div>
+            </Card>
+
+            {!food && !petsLoading && (
+                <>
+                    <RecentSearches pets={pets} onRepeat={repeatSearch} />
+                    <EmergencyBanner />
+                </>
+            )}
+            {food && lookup && (
+                <SearchResult
+                    food={food}
+                    lookup={lookup}
+                    activeTab={activeTab}
+                    selectedPet={selectedPet}
+                    generalSpecies={generalSpecies}
+                    generalStage={generalStage}
+                    onRetry={() => loadEntries(food)}
+                    onShowAllSpecies={showAllSpecies}
+                    onPickEntry={pickEntry}
+                />
+            )}
         </div>
     )
 }

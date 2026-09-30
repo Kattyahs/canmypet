@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ChevronRight } from 'lucide-react'
 import { getMyHistory } from '../../api/searchHistory'
 import { getFoodsByIds } from '../../api/foods'
 import { consultationKey, describeConsultation, describeTarget } from '../../utils/searchHistory'
@@ -52,41 +53,41 @@ function RecentSearches({ pets, onRepeat }) {
     const findPet = (petId) => (petId ? pets.find((p) => p.id === petId) : null)
 
     return (
-        <section aria-labelledby="recent-searches-title" className="bg-white border border-gray-200 rounded-lg">
-            <div className="flex items-center justify-between px-4 md:px-5 py-3 border-b border-gray-100">
-                <h2 id="recent-searches-title" className="text-base font-semibold text-gray-900">
+        <section aria-labelledby="recent-searches-title" className="flex flex-col gap-3">
+            <div className="flex items-center justify-between">
+                <h2 id="recent-searches-title" className="text-lg font-semibold text-gray-900">
                     Consultas recientes
                 </h2>
-                <Link to="/history" className="text-sm text-brand">
+                <Link to="/history" className="min-h-[44px] inline-flex items-center text-sm font-medium text-brand">
                     Ver historial
                 </Link>
             </div>
-            <ul>
+            <ul className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {items.map((item) => {
                     const pet = findPet(item.petId)
                     const target = pet ? { petId: pet.id } : { species: item.species ?? null, lifeStage: item.lifeStage ?? null }
                     const labelTarget = pet ? pet.name : item.species ? describeTarget(item) : null
                     return (
-                        <li
-                            key={item.id}
-                            className="flex items-center justify-between gap-3 px-4 md:px-5 py-2 border-t border-gray-100 first:border-t-0"
-                        >
-                            <div className="min-w-0 flex items-center gap-3">
-                                <FoodThumb name={item.food.name} category={item.food.category} />
-                                <div className="min-w-0">
-                                    <p className="text-sm font-semibold text-gray-900 truncate">{item.food.name}</p>
-                                    <p className="text-xs text-gray-500">
-                                        {describeConsultation(item, pet)} · {formatDate(item.searchedAt)}
-                                    </p>
-                                </div>
-                            </div>
+                        <li key={item.id}>
                             <button
                                 type="button"
                                 onClick={() => onRepeat(item.food, target)}
                                 aria-label={`Consultar de nuevo ${item.food.name}${labelTarget ? ` para ${labelTarget}` : ''}`}
-                                className="shrink-0 min-h-[44px] text-sm font-medium text-brand"
+                                className="w-full h-full flex sm:flex-col items-center sm:items-stretch gap-3 p-3 bg-white border border-gray-100 rounded-2xl shadow-card text-left transition-shadow hover:shadow-raised focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                             >
-                                Consultar de nuevo
+                                <span className="sm:hidden">
+                                    <FoodThumb name={item.food.name} category={item.food.category} size="md" />
+                                </span>
+                                <span className="hidden sm:block">
+                                    <FoodThumb name={item.food.name} category={item.food.category} size="cover" />
+                                </span>
+                                <span className="flex-1 min-w-0 sm:px-1">
+                                    <span className="block text-sm font-semibold text-gray-900 truncate">{item.food.name}</span>
+                                    <span className="block text-xs text-gray-500">
+                                        {describeConsultation(item, pet)} · {formatDate(item.searchedAt)}
+                                    </span>
+                                </span>
+                                <ChevronRight size={18} className="sm:hidden shrink-0 text-gray-400" aria-hidden="true" />
                             </button>
                         </li>
                     )

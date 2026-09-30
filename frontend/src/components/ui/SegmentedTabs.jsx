@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 
-function SegmentedTabs({ options, value, onChange, label, className = '' }) {
+function SegmentedTabs({ options, value, onChange, label, idPrefix, panelId, className = '' }) {
     const buttonsRef = useRef([])
 
     const focusAt = (index) => {
@@ -23,24 +23,28 @@ function SegmentedTabs({ options, value, onChange, label, className = '' }) {
         <div role="tablist" aria-label={label} className={`flex p-1 bg-bone rounded-xl gap-1 ${className}`}>
             {options.map((option, index) => {
                 const selected = option.value === value
+                const Icon = option.Icon
                 return (
                     <button
                         key={option.value}
                         ref={(el) => {
                             buttonsRef.current[index] = el
                         }}
+                        id={idPrefix ? `${idPrefix}-${option.value}` : undefined}
                         type="button"
                         role="tab"
                         aria-selected={selected}
+                        aria-controls={panelId}
                         tabIndex={selected ? 0 : -1}
                         onClick={() => onChange(option.value)}
                         onKeyDown={(event) => handleKeyDown(event, index)}
-                        className={`flex-1 min-h-[40px] px-3 rounded-lg text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
+                        className={`flex-1 inline-flex items-center justify-center gap-2 min-h-[40px] px-3 rounded-lg text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand ${
                             selected ? 'bg-brand-soft text-brand font-semibold' : 'text-gray-600 hover:text-gray-900'
                         }`}
                     >
+                        {Icon && <Icon size={16} className="hidden sm:block" aria-hidden="true" />}
                         {option.label}
-                        {option.count !== undefined && <span className="ml-1 text-xs opacity-80">· {option.count}</span>}
+                        {option.count !== undefined && <span className="text-xs opacity-80">· {option.count}</span>}
                     </button>
                 )
             })}
