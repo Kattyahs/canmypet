@@ -1,4 +1,4 @@
-import { Link,NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import {
     PawPrint,
     Search,
@@ -12,15 +12,15 @@ import { useAuth } from '../context/AuthContext'
 import UserMenu from './UserMenu'
 import Logo from './Logo'
 
-
 export const NAV_ITEMS = [
-    { to: '/search', label: 'Buscar alimento', Icon: Search, mobilePriority: 1 },
-    { to: '/pets', label: 'Mis mascotas', Icon: PawPrint, mobilePriority: 4 },
-    { to: '/history', label: 'Historial', Icon: ClipboardList, mobilePriority: 6 },
-    { to: '/faq', label: 'FAQ', Icon: HelpCircle, mobilePriority: 5 },
+    { to: '/search', label: 'Buscar alimento', mobileLabel: 'Buscar', Icon: Search, mobilePriority: 1 },
+    { to: '/pets', label: 'Mis mascotas', mobileLabel: 'Mascotas', Icon: PawPrint, mobilePriority: 4 },
+    { to: '/history', label: 'Historial', mobileLabel: 'Historial', Icon: ClipboardList, mobilePriority: 6 },
+    { to: '/faq', label: 'FAQ', mobileLabel: 'FAQ', Icon: HelpCircle, mobilePriority: 5 },
     {
         to: '/vet',
         label: 'Panel veterinario',
+        mobileLabel: 'Panel',
         Icon: Stethoscope,
         roles: ['VETERINARIAN'],
         mobilePriority: 3,
@@ -28,11 +28,12 @@ export const NAV_ITEMS = [
     {
         to: '/admin',
         label: 'Administración',
+        mobileLabel: 'Admin',
         Icon: ShieldCheck,
         roles: ['ADMIN'],
         mobilePriority: 3,
     },
-    { to: '/emergency', label: 'Emergencias', Icon: AlertTriangle, mobilePriority: 2 },
+    { to: '/emergency', label: 'Emergencias', mobileLabel: 'Emergencia', Icon: AlertTriangle, mobilePriority: 2 },
 ]
 
 const MOBILE_TAB_LIMIT = 5
@@ -45,13 +46,23 @@ export function getNavItems(role) {
             .slice(0, MOBILE_TAB_LIMIT)
     )
     const mobileTabs = visibleItems.filter((item) => mobileSet.has(item))
-    return { visibleItems, mobileTabs }
+    const overflowItems = visibleItems.filter((item) => !mobileSet.has(item))
+    return { visibleItems, mobileTabs, overflowItems }
+}
+
+const mobileTabClass = (isEmergency) => ({ isActive }) => {
+    const color = isEmergency ? 'text-risk-toxic' : isActive ? 'text-brand' : 'text-gray-500'
+    const indicator = isActive ? (isEmergency ? 'before:bg-risk-toxic' : 'before:bg-brand') : 'before:bg-transparent'
+    const background = isEmergency && isActive ? 'bg-red-50' : ''
+    return `relative flex-1 min-w-0 min-h-[56px] flex flex-col items-center justify-center gap-1 px-1 text-[11px] leading-none before:absolute before:top-0 before:inset-x-3 before:h-0.5 before:rounded-full ${color} ${indicator} ${background} ${
+        isActive || isEmergency ? 'font-semibold' : 'font-medium'
+    }`
 }
 
 function Sidebar() {
     const { user, logout } = useAuth()
     const { pathname } = useLocation()
-    const { visibleItems, mobileTabs } = getNavItems(user?.role)
+    const { visibleItems, mobileTabs, overflowItems } = getNavItems(user?.role)
 
     return (
         <>
@@ -91,24 +102,22 @@ function Sidebar() {
                 <Link to="/" aria-label="CanMyPet?, ir al inicio" className="flex items-center min-h-[44px]">
                     <Logo className="h-8" />
                 </Link>
-                <UserMenu key={pathname} user={user} onLogout={logout} placement="down" />
+                <UserMenu key={pathname} user={user} onLogout={logout} placement="down" links={overflowItems} />
             </header>
 
-            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex z-10">
-                {mobileTabs.map(({ to, label, Icon }) => (
-                    <NavLink
-                        key={to}
-                        to={to}
-                        className={({ isActive }) =>
-                            `flex-1 flex flex-col items-center gap-0.5 py-2 text-xs ${
-                                isActive ? 'text-brand' : 'text-gray-500'
-                            }`
-                        }
-                    >
-                        <Icon size={20} />
-                        {label}
-                    </NavLink>
-                ))}
+            <nav
+                aria-label="Navegación principal"
+                className="md:hidden fixed bottom-0 inset-x-0 z-10 flex bg-white border-t border-gray-200 pb-[env(safe-area-inset-bottom)] shadow-[0_-1px_8px_rgba(15,23,42,0.06)]"
+            >
+                {mobileTabs.map(({ to, label, mobileLabel, Icon }) => {
+                    const isEmergency = to === '/emergency'
+                    return (
+                        <NavLink key={to} to={to} aria-label={label} className={mobileTabClass(isEmergency)}>
+                            <Icon size={22} aria-hidden="true" strokeWidth={isEmergency ? 2.4 : 2} />
+                            <span className="block max-w-full truncate">{mobileLabel}</span>
+                        </NavLink>
+                    )
+                })}
             </nav>
         </>
     )
