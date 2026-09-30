@@ -7,6 +7,7 @@ const MIN_QUERY_LENGTH = 2
 function FoodAutocomplete({ id, label, query, onQueryChange, onSelect }) {
     const [suggestions, setSuggestions] = useState([])
     const [searched, setSearched] = useState(false)
+    const [failed, setFailed] = useState(false)
     const latestSearch = useRef(0)
 
     const handleChange = async (value) => {
@@ -16,6 +17,7 @@ function FoodAutocomplete({ id, label, query, onQueryChange, onSelect }) {
         if (value.trim().length < MIN_QUERY_LENGTH) {
             setSuggestions([])
             setSearched(false)
+            setFailed(false)
             return
         }
 
@@ -24,11 +26,13 @@ function FoodAutocomplete({ id, label, query, onQueryChange, onSelect }) {
             if (searchId === latestSearch.current) {
                 setSuggestions(res.data)
                 setSearched(true)
+                setFailed(false)
             }
         } catch {
             if (searchId === latestSearch.current) {
                 setSuggestions([])
                 setSearched(true)
+                setFailed(true)
             }
         }
     }
@@ -37,6 +41,7 @@ function FoodAutocomplete({ id, label, query, onQueryChange, onSelect }) {
         latestSearch.current += 1
         setSuggestions([])
         setSearched(false)
+        setFailed(false)
         onSelect(food)
     }
 
@@ -49,7 +54,9 @@ function FoodAutocomplete({ id, label, query, onQueryChange, onSelect }) {
         if (e.key === 'Escape') setSuggestions([])
     }
 
-    const showNoResults = searched && suggestions.length === 0 && query.trim().length >= MIN_QUERY_LENGTH
+    const typedEnough = query.trim().length >= MIN_QUERY_LENGTH
+    const showNoResults = searched && !failed && suggestions.length === 0 && typedEnough
+    const showError = searched && failed && typedEnough
 
     return (
         <div className="flex flex-col gap-2">
@@ -90,7 +97,14 @@ function FoodAutocomplete({ id, label, query, onQueryChange, onSelect }) {
                 )}
             </div>
             {showNoResults && (
-                <p className="text-xs text-gray-500">No encontramos alimentos con ese nombre.</p>
+                <p className="text-xs text-gray-500">
+                    No encontramos «{query.trim()}». Prueba con otro nombre, por ejemplo «palta» o «plátano».
+                </p>
+            )}
+            {showError && (
+                <p role="alert" className="text-xs text-red-700">
+                    No pudimos buscar alimentos en este momento. Intenta de nuevo en unos segundos.
+                </p>
             )}
         </div>
     )

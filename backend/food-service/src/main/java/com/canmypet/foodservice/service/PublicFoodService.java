@@ -40,7 +40,7 @@ public class PublicFoodService {
     public PublicFoodSafetySearchResponse searchWithSafety(String query, Species species, LifeStage lifeStage) {
         String normalizedQuery = validateQuery(query);
 
-        List<Food> foods = foodRepository.findByNameContainingIgnoreCase(normalizedQuery, SUGGESTIONS);
+        List<Food> foods = foodRepository.searchByName(normalizedQuery, SUGGESTIONS);
         if (foods.isEmpty()) {
             return new PublicFoodSafetySearchResponse(species, lifeStage, List.of());
         }
