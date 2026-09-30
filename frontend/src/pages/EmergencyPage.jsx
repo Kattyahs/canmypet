@@ -7,6 +7,7 @@ import Spinner from '../components/Spinner'
 import EmptyState from '../components/EmptyState'
 import ErrorMessage from '../components/ErrorMessage'
 import { getApiErrorMessage } from '../utils/apiError'
+import NearbyClinics from '../components/emergency/NearbyClinics'
 
 const LEVELS = ['MODERATE', 'TOXIC', 'LETHAL']
 
@@ -137,7 +138,9 @@ function EmergencyPage() {
                     )}
                 </div>
             )}
-
+            <div className="mt-6">
+                <NearbyClinics />
+            </div>
             <p className="text-xs text-gray-400 mt-6 text-center">
                 CanMyPet? ofrece orientación informativa y no sustituye una consulta veterinaria.
             </p>

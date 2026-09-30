@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import EmergencyPage from './EmergencyPage'
 import { getEmergencyGuide } from '../api/emergency'
-
+vi.mock('../components/emergency/NearbyClinics', () => ({ default: () => <section aria-label="Veterinarias cercanas" /> }))
 vi.mock('../api/emergency', () => ({ getEmergencyGuide: vi.fn() }))
 
 function renderAt(path) {
