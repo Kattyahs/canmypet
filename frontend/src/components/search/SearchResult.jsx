@@ -65,6 +65,7 @@ function SearchResult({
                             : null
                     }
                     onShowOtherSpecies={onShowAllSpecies}
+                    foodCategory={food.category}
                     emergencyHref={`/emergency/start?${new URLSearchParams({ ...emergencyParams, foodId: food.id })}`}
                 />
             )
@@ -74,6 +75,7 @@ function SearchResult({
             return (
                 <SpeciesRiskTable
                     foodName={food.name}
+                    foodCategory={food.category}
                     entries={speciesEntries}
                     onSelectEntry={onPickEntry}
                     caption={`No hay una evaluación general para ${speciesLabel}; estas son las que existen por etapa.`}
@@ -113,6 +115,7 @@ function SearchResult({
         return (
             <SpeciesRiskTable
                 foodName={food.name}
+                foodCategory={food.category}
                 entries={lookup.entries}
                 onSelectEntry={onPickEntry}
                 caption={`Riesgo en ${count} ${count === 1 ? 'especie' : 'especies'} con información registrada`}

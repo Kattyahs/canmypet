@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react'
 import { Search } from 'lucide-react'
 import { searchFoods } from '../../api/foods'
+import { getFoodCategoryLabel } from '../../constants/foodCategories'
+import FoodThumb from '../FoodThumb'
 
 const MIN_QUERY_LENGTH = 2
 
@@ -86,10 +88,13 @@ function FoodAutocomplete({ id, label, query, onQueryChange, onSelect }) {
                                 <button
                                     type="button"
                                     onClick={() => choose(food)}
-                                    className="w-full min-h-[44px] px-3 py-2 text-left hover:bg-bone"
+                                    className="w-full min-h-[44px] px-3 py-2 flex items-center gap-3 text-left hover:bg-bone"
                                 >
-                                    <span className="block text-sm text-gray-900">{food.name}</span>
-                                    <span className="block text-xs text-gray-500">{food.category}</span>
+                                    <FoodThumb name={food.name} category={food.category} />
+                                    <span className="min-w-0">
+                                        <span className="block text-sm text-gray-900">{food.name}</span>
+                                        <span className="block text-xs text-gray-500">{getFoodCategoryLabel(food.category)}</span>
+                                    </span>
                                 </button>
                             </li>
                         ))}

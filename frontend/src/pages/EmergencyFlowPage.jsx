@@ -14,6 +14,7 @@ import { resolveEntry } from '../utils/foodSafety'
 import { ELAPSED_OPTIONS, getElapsedLabel, getEmergencyAdvice } from '../utils/emergencyAdvice'
 import { getApiErrorMessage } from '../utils/apiError'
 import NearbyClinics from '../components/emergency/NearbyClinics'
+import FoodThumb from '../components/FoodThumb'
 
 const STEPS = ['animal', 'food', 'time']
 const STEP_TITLES = {
@@ -197,9 +198,12 @@ function EmergencyResult({ animal, food, elapsed, onRestart }) {
     return (
         <section aria-label="Indicaciones de emergencia" className="space-y-4">
             <div className={`border rounded-lg p-5 ${TONE_STYLES[advice.tone]}`}>
-                <p className="text-sm">
-                    <strong>{who}</strong> comió <strong>{what}</strong> {when}.
-                </p>
+                <div className="flex items-center gap-3">
+                    {food.name && <FoodThumb name={food.name} category={food.category} size="md" />}
+                    <p className="text-sm">
+                        <strong>{who}</strong> comió <strong>{what}</strong> {when}.
+                    </p>
+                </div>
                 <div className="flex flex-wrap items-center gap-2.5 mt-2">
                     {config && <config.Icon size={26} aria-hidden="true" />}
                     <h2 className="text-2xl font-bold">{advice.title}</h2>

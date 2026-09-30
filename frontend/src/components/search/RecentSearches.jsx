@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { getMyHistory } from '../../api/searchHistory'
 import { getFoodsByIds } from '../../api/foods'
 import { consultationKey, describeConsultation, describeTarget } from '../../utils/searchHistory'
+import FoodThumb from '../FoodThumb'
 
 const MAX_ITEMS = 3
 const HISTORY_SAMPLE = 10
@@ -70,11 +71,14 @@ function RecentSearches({ pets, onRepeat }) {
                             key={item.id}
                             className="flex items-center justify-between gap-3 px-4 md:px-5 py-2 border-t border-gray-100 first:border-t-0"
                         >
-                            <div className="min-w-0">
-                                <p className="text-sm font-semibold text-gray-900 truncate">{item.food.name}</p>
-                                <p className="text-xs text-gray-500">
-                                {describeConsultation(item, pet)} · {formatDate(item.searchedAt)}
-                                </p>
+                            <div className="min-w-0 flex items-center gap-3">
+                                <FoodThumb name={item.food.name} category={item.food.category} />
+                                <div className="min-w-0">
+                                    <p className="text-sm font-semibold text-gray-900 truncate">{item.food.name}</p>
+                                    <p className="text-xs text-gray-500">
+                                        {describeConsultation(item, pet)} · {formatDate(item.searchedAt)}
+                                    </p>
+                                </div>
                             </div>
                             <button
                                 type="button"

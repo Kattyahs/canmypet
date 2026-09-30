@@ -4,6 +4,7 @@ import { RISK_CONFIG } from '../RiskBadge'
 import { getSpeciesLabel } from '../../constants/species'
 import { getLifeStageLabel } from '../../constants/lifeStages'
 import { isSafeUrl } from '../../utils/foodSafety'
+import FoodThumb from '../FoodThumb'
 
 const HEADLINES = {
     SAFE: 'Sí, puede comerlo',
@@ -14,7 +15,7 @@ const HEADLINES = {
 
 const LABEL = 'font-mono text-[11px] uppercase tracking-wide text-gray-500 mb-1'
 
-function VerdictCard({ entry, question, stageNote, onShowOtherSpecies, emergencyHref }) {
+function VerdictCard({ entry, question, stageNote, onShowOtherSpecies, emergencyHref, foodCategory }) {
     const config = RISK_CONFIG[entry.riskLevel]
     const Icon = config.Icon
     const pending = entry.verifiedStatus !== 'VERIFIED'
@@ -25,16 +26,19 @@ function VerdictCard({ entry, question, stageNote, onShowOtherSpecies, emergency
     return (
         <section aria-label="Resultado" className="bg-white border border-gray-200 rounded-lg overflow-hidden">
             <div className={`${config.bg} ${config.border} border-b px-5 py-5 md:px-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4`}>
-                <div className="flex flex-col gap-1.5">
-                    <p className={`text-sm ${config.text}`}>{question}</p>
-                    <div className={`flex flex-wrap items-center gap-2.5 ${config.text}`}>
-                        <Icon size={28} aria-hidden="true" />
-                        <h2 className="text-2xl md:text-[28px] font-bold">{HEADLINES[entry.riskLevel]}</h2>
-                        <span className={`font-mono text-xs font-semibold px-2 py-0.5 rounded border ${config.border} bg-white`}>
-                            {entry.riskLevel}
-                        </span>
+                <div className="flex items-start gap-4">
+                    <FoodThumb name={entry.foodName} category={foodCategory} size="lg" className="hidden sm:inline-flex" />
+                    <div className="flex flex-col gap-1.5">
+                        <p className={`text-sm ${config.text}`}>{question}</p>
+                        <div className={`flex flex-wrap items-center gap-2.5 ${config.text}`}>
+                            <Icon size={28} aria-hidden="true" />
+                            <h2 className="text-2xl md:text-[28px] font-bold">{HEADLINES[entry.riskLevel]}</h2>
+                            <span className={`font-mono text-xs font-semibold px-2 py-0.5 rounded border ${config.border} bg-white`}>
+                                {entry.riskLevel}
+                            </span>
+                        </div>
+                        <p className={`text-sm ${config.text}`}>{config.verdict}</p>
                     </div>
-                    <p className={`text-sm ${config.text}`}>{config.verdict}</p>
                 </div>
                 {entry.riskLevel !== 'SAFE' && (
                     <Link
@@ -74,40 +78,40 @@ function VerdictCard({ entry, question, stageNote, onShowOtherSpecies, emergency
                                 <li key={source.id} className="text-sm">
                                     {isSafeUrl(source.sourceUrl) ? (
 
-                                       <a  href={source.sourceUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center gap-1 text-brand"
+                                        <a  href={source.sourceUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-1 text-brand"
                                         >
-                                    {source.sourceName}
-                                        <ExternalLink size={12} aria-hidden="true" />
-                                </a>
-                                ) : (
-                                <span className="text-gray-700">{source.sourceName}</span>
+                                            {source.sourceName}
+                                            <ExternalLink size={12} aria-hidden="true" />
+                                        </a>
+                                    ) : (
+                                        <span className="text-gray-700">{source.sourceName}</span>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="text-sm text-gray-500">Sin fuentes registradas</p>
                     )}
-                </li>
-                ))}
-            </ul>
-            ) : (
-            <p className="text-sm text-gray-500">Sin fuentes registradas</p>
-            )}
-        </div>
-</div>
+                </div>
+            </div>
 
-    <div className="px-5 py-5 md:px-6 flex flex-col gap-3">
-        {entry.notes && <p className="text-sm leading-relaxed text-gray-700">{entry.notes}</p>}
-        {onShowOtherSpecies && (
-            <button
-                type="button"
-                onClick={onShowOtherSpecies}
-                className="self-start min-h-[44px] text-sm font-medium text-brand"
-            >
-                Ver cómo afecta a otras especies ›
-            </button>
-        )}
-    </div>
-</section>
-)
+            <div className="px-5 py-5 md:px-6 flex flex-col gap-3">
+                {entry.notes && <p className="text-sm leading-relaxed text-gray-700">{entry.notes}</p>}
+                {onShowOtherSpecies && (
+                    <button
+                        type="button"
+                        onClick={onShowOtherSpecies}
+                        className="self-start min-h-[44px] text-sm font-medium text-brand"
+                    >
+                        Ver cómo afecta a otras especies ›
+                    </button>
+                )}
+            </div>
+        </section>
+    )
 }
 
 export default VerdictCard

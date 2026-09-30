@@ -5,6 +5,7 @@ import { getMyHistory } from '../api/searchHistory'
 import { getFoodsByIds } from '../api/foods'
 import { getMyPets } from '../api/pets'
 import { describeConsultation } from '../utils/searchHistory'
+import FoodThumb from '../components/FoodThumb'
 import { usePagination } from '../hooks/usePagination'
 import { getApiErrorMessage } from '../utils/apiError'
 import Pagination from '../components/Pagination'
@@ -100,11 +101,14 @@ function HistoryPage() {
                                 key={entry.id}
                                 className="p-4 flex items-center justify-between gap-4 flex-wrap"
                             >
-                                <div>
-                                    <p className="font-medium text-gray-900">
-                                        {food?.name || `Alimento #${entry.foodId}`}
-                                    </p>
-                                    <p className="text-xs text-gray-500">{describeConsultation(entry, pet)}</p>
+                                <div className="flex items-center gap-3 min-w-0">
+                                    <FoodThumb name={food?.name} category={food?.category} />
+                                    <div className="min-w-0">
+                                        <p className="font-medium text-gray-900">
+                                            {food?.name || `Alimento #${entry.foodId}`}
+                                        </p>
+                                        <p className="text-xs text-gray-500">{describeConsultation(entry, pet)}</p>
+                                    </div>
                                 </div>
 
                                 <div className="flex items-center gap-4">
