@@ -30,9 +30,12 @@ public class FaqController {
     @GetMapping
     public ResponseEntity<PageResponse<FaqResponse>> getFaqs(
             @RequestParam(required = false) FaqStatus status,
+            @RequestParam(defaultValue = "false") boolean mine,
+            @AuthenticationPrincipal JwtPrincipal principal,
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return ResponseEntity.ok(faqService.getFaqs(status, pageable));
+        Long askedBy = mine ? principal.userId() : null;
+        return ResponseEntity.ok(faqService.getFaqs(status, askedBy, pageable));
     }
 
     @PostMapping

@@ -20,11 +20,11 @@ public class SearchHistoryService {
     private final SearchHistoryRepository searchHistoryRepository;
     private final PetRepository petRepository;
 
-    public PageResponse<SearchHistoryResponse> getHistoryForUser(Long userId, Pageable pageable) {
-        return PageResponse.from(
-                searchHistoryRepository.findByUserId(userId, pageable),
-                this::toResponse
-        );
+    public PageResponse<SearchHistoryResponse> getHistoryForUser(Long userId, Long petId, Pageable pageable) {
+        var page = (petId == null)
+                ? searchHistoryRepository.findByUserId(userId, pageable)
+                : searchHistoryRepository.findByUserIdAndPet_Id(userId, petId, pageable);
+        return PageResponse.from(page, this::toResponse);
     }
 
     public SearchHistoryResponse recordSearch(SearchHistoryRequest request, Long userId) {

@@ -62,7 +62,7 @@ class SearchHistoryServiceTest {
                 .thenReturn(new PageImpl<>(List.of(entry), pageable, 1));
 
         PageResponse<SearchHistoryResponse> result =
-                searchHistoryService.getHistoryForUser(userId, pageable);
+                searchHistoryService.getHistoryForUser(userId, null, pageable);
 
         assertThat(result.content()).hasSize(1);
         SearchHistoryResponse response = result.content().get(0);
@@ -71,6 +71,36 @@ class SearchHistoryServiceTest {
         assertThat(response.getSpecies()).isEqualTo(Species.DOG);
         assertThat(response.getLifeStage()).isEqualTo(LifeStage.ADULT);
         assertThat(result.totalElements()).isEqualTo(1);
+    }
+
+    @Test
+    void getHistoryForUser_withPetId_filtersByThatPetInTheDatabase() {
+        Long userId = 1L;
+        Pet pet = Pet.builder().id(10L).name("Michi").ownerId(userId).build();
+        SearchHistory entry = SearchHistory.builder().id(2L).userId(userId).pet(pet).foodId(7L).build();
+
+        Pageable pageable = PageRequest.of(0, 20);
+        when(searchHistoryRepository.findByUserIdAndPet_Id(userId, 10L, pageable))
+                .thenReturn(new PageImpl<>(List.of(entry), pageable, 1));
+
+        PageResponse<SearchHistoryResponse> result =
+                searchHistoryService.getHistoryForUser(userId, 10L, pageable);
+
+        assertThat(result.content()).extracting(SearchHistoryResponse::getPetId).containsExactly(10L);
+        verify(searchHistoryRepository, never()).findByUserId(any(), any(Pageable.class));
+    }
+
+    @Test
+    void getHistoryForUser_withAnotherUsersPetId_onlySearchesTheCallersHistory() {
+        Pageable pageable = PageRequest.of(0, 20);
+        when(searchHistoryRepository.findByUserIdAndPet_Id(2L, 10L, pageable))
+                .thenReturn(new PageImpl<>(List.of(), pageable, 0));
+
+        PageResponse<SearchHistoryResponse> result =
+                searchHistoryService.getHistoryForUser(2L, 10L, pageable);
+
+        assertThat(result.content()).isEmpty();
+        verify(searchHistoryRepository).findByUserIdAndPet_Id(2L, 10L, pageable);
     }
 
     @Test

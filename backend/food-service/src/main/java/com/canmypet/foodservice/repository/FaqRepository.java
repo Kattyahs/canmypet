@@ -8,4 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FaqRepository extends JpaRepository<Faq, Long> {
     Page<Faq> findByStatus(FaqStatus status, Pageable pageable);
+
+    Page<Faq> findByAskedBy(Long askedBy, Pageable pageable);
+
+    Page<Faq> findByStatusAndAskedBy(FaqStatus status, Long askedBy, Pageable pageable);
 }

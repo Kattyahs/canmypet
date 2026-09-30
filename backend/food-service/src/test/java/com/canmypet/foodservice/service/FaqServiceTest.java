@@ -47,7 +47,7 @@ class FaqServiceTest {
         Pageable pageable = PageRequest.of(0, 20);
         when(faqRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(faq), pageable, 1));
 
-        PageResponse<FaqResponse> result = faqService.getFaqs(null, pageable);
+        PageResponse<FaqResponse> result = faqService.getFaqs(null, null, pageable);
 
         assertThat(result.content()).hasSize(1);
         assertThat(result.content().get(0).getQuestion()).isEqualTo("Puedo darle uvas?");
@@ -62,12 +62,39 @@ class FaqServiceTest {
         when(faqRepository.findByStatus(FaqStatus.PENDING, pageable))
                 .thenReturn(new PageImpl<>(List.of(pending), pageable, 1));
 
-        PageResponse<FaqResponse> result = faqService.getFaqs(FaqStatus.PENDING, pageable);
+        PageResponse<FaqResponse> result = faqService.getFaqs(FaqStatus.PENDING, null, pageable);
 
         assertThat(result.content()).hasSize(1);
         assertThat(result.content().get(0).getStatus()).isEqualTo(FaqStatus.PENDING);
-        // The filter runs in the database, not after loading everything
         verify(faqRepository, never()).findAll(any(Pageable.class));
+    }
+
+    @Test
+    void getFaqs_mine_returnsOnlyTheCallersQuestions() {
+        Faq mine = Faq.builder().id(3L).question("Puedo darle zanahoria?").askedBy(9001L).status(FaqStatus.ANSWERED).build();
+
+        Pageable pageable = PageRequest.of(0, 20);
+        when(faqRepository.findByAskedBy(9001L, pageable)).thenReturn(new PageImpl<>(List.of(mine), pageable, 1));
+
+        PageResponse<FaqResponse> result = faqService.getFaqs(null, 9001L, pageable);
+
+        assertThat(result.content()).extracting(FaqResponse::getAskedBy).containsExactly(9001L);
+        verify(faqRepository, never()).findAll(any(Pageable.class));
+    }
+
+    @Test
+    void getFaqs_mineWithStatus_combinesBothFilters() {
+        Faq pending = Faq.builder().id(4L).question("Puedo darle palta?").askedBy(9001L).status(FaqStatus.PENDING).build();
+
+        Pageable pageable = PageRequest.of(0, 20);
+        when(faqRepository.findByStatusAndAskedBy(FaqStatus.PENDING, 9001L, pageable))
+                .thenReturn(new PageImpl<>(List.of(pending), pageable, 1));
+
+        PageResponse<FaqResponse> result = faqService.getFaqs(FaqStatus.PENDING, 9001L, pageable);
+
+        assertThat(result.content()).hasSize(1);
+        verify(faqRepository, never()).findByStatus(any(), any(Pageable.class));
+        verify(faqRepository, never()).findByAskedBy(any(), any(Pageable.class));
     }
 
     @Test

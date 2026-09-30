@@ -11,6 +11,7 @@ import com.canmypet.foodservice.model.Faq;
 import com.canmypet.foodservice.model.FaqStatus;
 import com.canmypet.foodservice.repository.FaqRepository;
 import com.canmypet.foodservice.dto.PageResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +27,17 @@ public class FaqService {
     private final FaqRepository faqRepository;
     private final UserServiceClient userServiceClient;
 
-    public PageResponse<FaqResponse> getFaqs(FaqStatus status, Pageable pageable) {
-        var page = (status == null)
-                ? faqRepository.findAll(pageable)
-                : faqRepository.findByStatus(status, pageable);
+    public PageResponse<FaqResponse> getFaqs(FaqStatus status, Long askedBy, Pageable pageable) {
+        Page<Faq> page;
+        if (askedBy == null) {
+            page = (status == null)
+                    ? faqRepository.findAll(pageable)
+                    : faqRepository.findByStatus(status, pageable);
+        } else {
+            page = (status == null)
+                    ? faqRepository.findByAskedBy(askedBy, pageable)
+                    : faqRepository.findByStatusAndAskedBy(status, askedBy, pageable);
+        }
         return PageResponse.from(page, this::toResponse);
     }
 

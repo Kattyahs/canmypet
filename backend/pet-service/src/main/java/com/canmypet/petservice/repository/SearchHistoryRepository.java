@@ -10,4 +10,7 @@ public interface SearchHistoryRepository extends JpaRepository<SearchHistory, Lo
 
     @EntityGraph(attributePaths = {"pet"})
     Page<SearchHistory> findByUserId(Long userId, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"pet"})
+    Page<SearchHistory> findByUserIdAndPet_Id(Long userId, Long petId, Pageable pageable);
 }
