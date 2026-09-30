@@ -9,7 +9,7 @@ describe('googleMaps', () => {
         const url = new URL(buildEmbedUrl(SANTIAGO, 'test-key'))
         expect(url.origin + url.pathname).toBe('https://www.google.com/maps/embed/v1/search')
         expect(url.searchParams.get('key')).toBe('test-key')
-        expect(url.searchParams.get('q')).toBe('veterinaria de urgencia, Santiago, Chile')
+        expect(url.searchParams.get('q')).toBe('veterinaria de urgencia 24 horas, Santiago, Chile')
         expect(url.searchParams.get('center')).toBe('-33.438,-70.65')
     })
 
@@ -17,12 +17,12 @@ describe('googleMaps', () => {
         const url = new URL(buildEmbedUrl(DEVICE))
         expect(url.origin + url.pathname).toBe('https://maps.google.com/maps')
         expect(url.searchParams.get('output')).toBe('embed')
-        expect(url.searchParams.get('q')).toBe('veterinaria de urgencia')
+        expect(url.searchParams.get('q')).toBe('veterinaria de urgencia 24 horas')
         expect(url.searchParams.get('ll')).toBe('-36.827,-73.05')
         expect(url.searchParams.has('key')).toBe(false)
     })
 
     it('opens the same search in Google Maps, centred on the place', () => {
-        expect(buildOpenUrl(DEVICE)).toBe('https://www.google.com/maps/search/veterinaria+de+urgencia/@-36.827,-73.05,14z')
+        expect(buildOpenUrl(DEVICE)).toBe('https://www.google.com/maps/search/veterinaria+de+urgencia+24+horas/@-36.827,-73.05,14z')
     })
 })

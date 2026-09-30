@@ -18,7 +18,7 @@ describe('NearbyClinics', () => {
         render(<NearbyClinics apiKey="" />)
 
         expect(screen.getByText('Cerca del centro de Santiago.')).toBeInTheDocument()
-        expect(mapSrc().searchParams.get('q')).toBe('veterinaria de urgencia, Santiago, Chile')
+        expect(mapSrc().searchParams.get('q')).toBe('veterinaria de urgencia 24 horas, Santiago, Chile')
         expect(asked).toBe(false)
     })
 
@@ -36,7 +36,7 @@ describe('NearbyClinics', () => {
         expect(mapSrc().searchParams.get('ll')).toBe('-36.82,-73.05')
         expect(screen.getByRole('link', { name: /abrir en google maps/i })).toHaveAttribute(
             'href',
-            'https://www.google.com/maps/search/veterinaria+de+urgencia/@-36.82,-73.05,14z'
+            'https://www.google.com/maps/search/veterinaria+de+urgencia+24+horas/@-36.82,-73.05,14z'
         )
     })
 
@@ -52,7 +52,7 @@ describe('NearbyClinics', () => {
         expect(screen.getByRole('alert')).toHaveTextContent('No diste permiso para usar tu ubicación')
 
         await user.selectOptions(screen.getByLabelText('Ciudad'), 'concepcion')
-        expect(mapSrc().searchParams.get('q')).toBe('veterinaria de urgencia, Concepción, Chile')
+        expect(mapSrc().searchParams.get('q')).toBe('veterinaria de urgencia 24 horas, Concepción, Chile')
     })
 
     it('uses the official embed when a key is configured', () => {
