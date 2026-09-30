@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import axiosClient from '../api/axiosClient'
+import Logo from '../components/Logo'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 const ROLES = [
     {
@@ -17,6 +19,7 @@ const ROLES = [
 ]
 
 function RegisterPage() {
+    usePageTitle('Crear cuenta')
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -51,9 +54,8 @@ function RegisterPage() {
     return (
         <div className="min-h-screen bg-bone flex items-center justify-center px-4 py-8">
             <div className="w-full max-w-sm">
-                <div className="flex items-center gap-2 mb-8">
-                    <div className="w-6 h-6 rounded bg-brand" />
-                    <span className="font-semibold text-gray-900">CanMyPet</span>
+                <div className="mb-8">
+                    <Logo className="h-10" />
                 </div>
 
                 <h1 className="text-2xl font-semibold text-gray-900 mb-1">Crear cuenta</h1>
@@ -162,7 +164,7 @@ function RegisterPage() {
                     </button>
 
                     <p className="text-xs text-gray-400 text-center mt-4">
-                        CanMyPet ofrece orientación informativa y no sustituye una consulta veterinaria.
+                        CanMyPet? ofrece orientación informativa y no sustituye una consulta veterinaria.
                     </p>
                 </form>
 
