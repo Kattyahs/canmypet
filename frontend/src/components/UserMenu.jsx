@@ -2,6 +2,14 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronDown, LogOut } from 'lucide-react'
 
+export const ROLE_LABELS = {
+    OWNER: 'Dueño/a de mascota',
+    VETERINARIAN: 'Veterinario/a',
+    ADMIN: 'Administrador/a',
+}
+
+const roleLabel = (role) => ROLE_LABELS[role] ?? role
+
 function UserMenu({ user, onLogout, placement = 'up', links = [] }) {
     const [open, setOpen] = useState(false)
     const containerRef = useRef(null)
@@ -53,15 +61,15 @@ function UserMenu({ user, onLogout, placement = 'up', links = [] }) {
                 aria-expanded={open}
                 aria-controls={menuId}
                 aria-label={`Menú de ${user?.name ?? 'usuario'}`}
-                className="flex items-center gap-2 w-full min-h-[44px] px-2 py-2 rounded-md hover:bg-white/60 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                className="flex items-center gap-2 w-full min-h-[44px] px-2 py-2 rounded-xl hover:bg-bone text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
-                <span className="w-8 h-8 shrink-0 rounded-full bg-brand text-white text-xs font-medium flex items-center justify-center">
+                <span className="w-9 h-9 shrink-0 rounded-full bg-brand-soft text-brand font-semibold text-xs flex items-center justify-center">
                     {initials}
                 </span>
                 {placement === 'up' && (
                     <span className="flex-1 min-w-0">
                         <span className="block text-sm font-medium text-gray-900 truncate">{user?.name}</span>
-                        <span className="block text-xs text-gray-500">{user?.role}</span>
+                        <span className="block text-xs text-gray-500 truncate">{roleLabel(user?.role)}</span>
                     </span>
                 )}
                 <ChevronDown
@@ -76,12 +84,12 @@ function UserMenu({ user, onLogout, placement = 'up', links = [] }) {
                     id={menuId}
                     role="menu"
                     aria-label="Opciones de la cuenta"
-                    className={`absolute ${menuPosition} z-20 bg-white border border-gray-200 rounded-md shadow-lg py-1`}
+                    className={`absolute ${menuPosition} z-20 bg-white border border-gray-100 rounded-xl shadow-raised py-1`}
                 >
                     {placement === 'down' && (
                         <div className="px-3 py-2 border-b border-gray-100">
                             <p className="text-sm font-medium text-gray-900 truncate">{user?.name}</p>
-                            <p className="text-xs text-gray-500">{user?.role}</p>
+                            <p className="text-xs text-gray-500">{roleLabel(user?.role)}</p>
                         </div>
                     )}
                     {links.map(({ to, label, Icon }, index) => (

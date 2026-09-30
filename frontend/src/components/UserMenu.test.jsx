@@ -19,6 +19,12 @@ function renderMenu(props = {}) {
 }
 
 describe('UserMenu', () => {
+    it('shows the role in Spanish instead of the internal code', () => {
+        renderMenu({ placement: 'up' })
+        expect(screen.getByText('Dueño/a de mascota')).toBeInTheDocument()
+        expect(screen.queryByText('OWNER')).not.toBeInTheDocument()
+    })
+
     it('opens on click and stays open without hovering', async () => {
         const user = userEvent.setup()
         const { trigger } = renderMenu()
