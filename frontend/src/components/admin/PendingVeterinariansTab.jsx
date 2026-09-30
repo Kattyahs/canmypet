@@ -72,7 +72,7 @@ function PendingVeterinariansTab() {
     return (
         <div>
             {notice && (
-                <p role="status" className="bg-green-50 border border-green-100 rounded-lg p-3 mb-4 text-sm text-gray-900">
+                <p role="status" className="bg-green-50 border border-green-100 rounded-xl p-3 mb-4 text-sm text-gray-900">
                     {notice}
                 </p>
             )}
@@ -98,7 +98,7 @@ function PendingVeterinariansTab() {
 
                     <ul aria-busy={loading} className="space-y-3">
                         {veterinarians.map((vet) => (
-                            <li key={vet.id} className="bg-white border border-gray-200 rounded-lg p-4">
+                            <li key={vet.id} className="bg-white border border-gray-100 rounded-2xl shadow-card p-4">
                                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                                     <div className="min-w-0">
                                         <p className="font-medium text-gray-900">{vet.name}</p>
@@ -113,7 +113,7 @@ function PendingVeterinariansTab() {
                                         onClick={() => handleApprove(vet)}
                                         disabled={approvingId !== null}
                                         aria-label={`Aprobar a ${vet.name}`}
-                                        className="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-md disabled:opacity-60 shrink-0"
+                                        className="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-xl hover:bg-brand-dark disabled:opacity-60 shrink-0"
                                     >
                                         <Check size={16} aria-hidden="true" />
                                         {approvingId === vet.id ? 'Aprobando...' : 'Aprobar'}

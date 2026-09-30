@@ -4,7 +4,7 @@ import FoodForm from './FoodForm'
 import FoodCatalogList from './FoodCatalogList'
 
 const INPUT =
-    'w-full min-h-[44px] pl-9 pr-3 border border-gray-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand'
+    'w-full min-h-[44px] pl-9 pr-3 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand'
 
 function FoodsTab() {
     const [searchInput, setSearchInput] = useState('')
@@ -60,7 +60,7 @@ function FoodsTab() {
                     </div>
                     <button
                         type="submit"
-                        className="min-h-[44px] px-4 border border-gray-300 bg-white text-sm font-medium rounded-md text-gray-700"
+                        className="min-h-[44px] px-4 border border-gray-200 bg-white text-sm font-medium rounded-xl text-gray-700"
                     >
                         Buscar
                     </button>
@@ -69,7 +69,7 @@ function FoodsTab() {
                             type="button"
                             onClick={clearSearch}
                             aria-label="Quitar búsqueda"
-                            className="inline-flex items-center justify-center min-h-[44px] min-w-[44px] border border-gray-300 bg-white rounded-md text-gray-700"
+                            className="inline-flex items-center justify-center min-h-[44px] min-w-[44px] border border-gray-200 bg-white rounded-xl text-gray-700"
                         >
                             <X size={16} aria-hidden="true" />
                         </button>
@@ -83,7 +83,7 @@ function FoodsTab() {
                             setNotice('')
                             setShowCreateForm(true)
                         }}
-                        className="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-md"
+                        className="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-xl hover:bg-brand-dark"
                     >
                         <Plus size={16} aria-hidden="true" />
                         Nuevo alimento
@@ -94,7 +94,7 @@ function FoodsTab() {
             {showCreateForm && <FoodForm onSaved={handleCreated} onCancel={() => setShowCreateForm(false)} />}
 
             {notice && (
-                <p role="status" className="bg-green-50 border border-green-100 rounded-lg p-3 text-sm text-gray-900">
+                <p role="status" className="bg-green-50 border border-green-100 rounded-xl p-3 text-sm text-gray-900">
                     {notice}
                 </p>
             )}

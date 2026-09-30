@@ -5,9 +5,9 @@ import { RISK_CONFIG } from '../RiskBadge'
 import Spinner from '../Spinner'
 import ErrorMessage from '../ErrorMessage'
 
-const LABEL = 'block font-mono text-xs uppercase tracking-wide text-gray-500 mb-1.5'
+const LABEL = 'block text-sm font-semibold text-gray-700 mb-1.5'
 const TEXTAREA =
-    'w-full px-3 py-2 border border-gray-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand'
+    'w-full px-3 py-2 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand'
 
 const EMPTY_GUIDE = { steps: '', emergencyContactsInfo: '' }
 
@@ -106,9 +106,9 @@ function EmergencyGuideCard({ level }) {
     const headingId = `guide-${level}-title`
 
     return (
-        <section aria-labelledby={headingId} className="bg-white border border-gray-200 rounded-lg overflow-hidden">
+        <section aria-labelledby={headingId} className="bg-white border border-gray-100 rounded-2xl shadow-card overflow-hidden">
             <div className={`${config.bg} ${config.border} border-b px-4 py-3 flex flex-wrap items-center justify-between gap-2`}>
-                <h2 id={headingId} className={`flex items-center gap-2 font-mono text-sm font-medium uppercase ${config.text}`}>
+                <h2 id={headingId} className={`flex items-center gap-2 text-sm font-semibold tracking-wide ${config.text}`}>
                     <config.Icon size={16} aria-hidden="true" />
                     {config.label}
                 </h2>
@@ -160,7 +160,7 @@ function EmergencyGuideCard({ level }) {
                             </p>
                         )}
                         {notice && (
-                            <p role="status" className="text-sm text-gray-900 bg-green-50 border border-green-100 rounded-md p-2">
+                            <p role="status" className="text-sm text-gray-900 bg-green-50 border border-green-100 rounded-xl p-2">
                                 {notice}
                             </p>
                         )}
@@ -168,7 +168,7 @@ function EmergencyGuideCard({ level }) {
                         <button
                             type="submit"
                             disabled={saving || !isDirty}
-                            className="min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-md disabled:opacity-60"
+                            className="min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-xl hover:bg-brand-dark disabled:opacity-60"
                         >
                             {saving ? 'Guardando...' : exists ? 'Guardar cambios' : 'Crear guía'}
                         </button>

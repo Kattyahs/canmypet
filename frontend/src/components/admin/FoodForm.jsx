@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { createFood, updateFood } from '../../api/foods'
 import { getApiErrorMessage } from '../../utils/apiError'
 
-const LABEL = 'block font-mono text-xs uppercase tracking-wide text-gray-500 mb-1.5'
+const LABEL = 'block text-sm font-semibold text-gray-700 mb-1.5'
 const INPUT =
-    'w-full min-h-[44px] px-3 border border-gray-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand'
+    'w-full min-h-[44px] px-3 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand'
 
 function FoodForm({ food, onSaved, onCancel }) {
     const isEdit = Boolean(food)
@@ -58,7 +58,7 @@ function FoodForm({ food, onSaved, onCancel }) {
         <form
             onSubmit={handleSubmit}
             aria-label={isEdit ? `Editar ${food.name}` : 'Nuevo alimento'}
-            className="bg-white border border-gray-200 rounded-lg p-4 space-y-4"
+            className="bg-white border border-gray-100 rounded-2xl shadow-card p-4 space-y-4"
             noValidate
         >
             <div className="grid gap-4 md:grid-cols-2">
@@ -114,7 +114,7 @@ function FoodForm({ food, onSaved, onCancel }) {
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-md disabled:opacity-60"
+                    className="min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-xl hover:bg-brand-dark disabled:opacity-60"
                 >
                     {submitting ? 'Guardando...' : isEdit ? 'Guardar cambios' : 'Crear alimento'}
                 </button>
@@ -122,7 +122,7 @@ function FoodForm({ food, onSaved, onCancel }) {
                     type="button"
                     onClick={onCancel}
                     disabled={submitting}
-                    className="min-h-[44px] px-4 border border-gray-300 bg-white text-sm font-medium rounded-md text-gray-700 disabled:opacity-60"
+                    className="min-h-[44px] px-4 border border-gray-200 bg-white text-sm font-medium rounded-xl text-gray-700 disabled:opacity-60"
                 >
                     Cancelar
                 </button>

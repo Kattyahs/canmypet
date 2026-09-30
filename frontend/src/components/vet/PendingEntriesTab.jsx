@@ -10,6 +10,7 @@ import Spinner from '../Spinner'
 import EmptyState from '../EmptyState'
 import ErrorMessage from '../ErrorMessage'
 import Pagination from '../Pagination'
+import FoodThumb from '../FoodThumb'
 
 const PAGE_SIZE = 10
 
@@ -88,10 +89,11 @@ function PendingEntriesTab({ canAct }) {
 
             <ul aria-busy={loading} className="space-y-3">
                 {entries.map((entry) => (
-                    <li key={entry.id} className="bg-white border border-gray-200 rounded-lg p-4">
-                        <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
-                            <div>
-                                <p className="font-medium text-gray-900">{entry.foodName}</p>
+                    <li key={entry.id} className="bg-white border border-gray-100 rounded-2xl shadow-card p-4 md:p-5">
+                        <div className="flex items-start gap-3 mb-3">
+                            <FoodThumb name={entry.foodName} size="md" />
+                            <div className="flex-1 min-w-0">
+                                <p className="font-semibold text-gray-900">{entry.foodName}</p>
                                 <p className="text-sm text-gray-500">
                                     {getSpeciesLabel(entry.species)} · {getLifeStageLabel(entry.lifeStage)}
                                 </p>
@@ -99,55 +101,51 @@ function PendingEntriesTab({ canAct }) {
                             <RiskBadge level={entry.riskLevel} size="md" />
                         </div>
 
-                        {entry.notes && <p className="text-sm text-gray-700 mb-3">{entry.notes}</p>}
+                        {entry.notes && <p className="text-sm leading-relaxed text-gray-700 mb-3">{entry.notes}</p>}
 
                         {entry.sources?.length > 0 && (
-                            <div className="mb-3">
-                                <p className="font-mono text-xs uppercase tracking-wide text-gray-500 mb-1">
-                                    Fuentes
-                                </p>
+                            <div className="mb-4 rounded-xl bg-bone px-4 py-3">
+                                <p className="text-xs font-semibold text-gray-600 mb-1">Fuentes</p>
                                 <ul className="space-y-1">
                                     {entry.sources.map((source) => (
                                         <li key={source.id} className="text-sm">
                                             {isSafeUrl(source.sourceUrl) ? (
-
-                                                  <a  href={source.sourceUrl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-1 text-brand"
+                                                <a
+                                                    href={source.sourceUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-1 font-medium text-brand hover:underline"
                                                 >
-                                            {source.sourceName}
-                                                <ExternalLink size={12} aria-hidden="true" />
-                                        </a>
-                                        ) : (
-                                        <span className="text-gray-700">{source.sourceName}</span>
-                                )}
-                            </li>
-                            ))}
-                    </ul>
-                    </div>
-                    )}
+                                                    {source.sourceName}
+                                                    <ExternalLink size={12} aria-hidden="true" />
+                                                </a>
+                                            ) : (
+                                                <span className="text-gray-700">{source.sourceName}</span>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
 
-                {rowErrors[entry.id] && (
-                    <p className="text-sm text-risk-toxic mb-2">{rowErrors[entry.id]}</p>
-                )}
+                        {rowErrors[entry.id] && <p className="text-sm text-risk-toxic mb-2">{rowErrors[entry.id]}</p>}
 
-                <button
-                    type="button"
-                    onClick={() => handleVerify(entry.id)}
-                    disabled={!canAct || verifyingId !== null}
-                    className="inline-flex items-center gap-2 min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-md disabled:opacity-60"
-                >
-                    <Check size={16} aria-hidden="true" />
-                    {verifyingId === entry.id ? 'Verificando...' : 'Verificar'}
-                </button>
-            </li>
-            ))}
-        </ul>
+                        <button
+                            type="button"
+                            onClick={() => handleVerify(entry.id)}
+                            disabled={!canAct || verifyingId !== null}
+                            className="inline-flex w-full sm:w-auto items-center justify-center gap-2 min-h-[44px] px-5 bg-brand text-white text-sm font-medium rounded-xl hover:bg-brand-dark disabled:opacity-60"
+                        >
+                            <Check size={16} aria-hidden="true" />
+                            {verifyingId === entry.id ? 'Verificando...' : 'Verificar'}
+                        </button>
+                    </li>
+                ))}
+            </ul>
 
-    <Pagination page={page} totalPages={totalPages} onPageChange={goToPage} disabled={loading} />
-</div>
-)
+            <Pagination page={page} totalPages={totalPages} onPageChange={goToPage} disabled={loading} />
+        </div>
+    )
 }
 
 export default PendingEntriesTab

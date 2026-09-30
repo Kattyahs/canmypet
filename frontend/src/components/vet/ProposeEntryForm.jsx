@@ -18,9 +18,9 @@ const normalize = (value) =>
 
 const findExactMatch = (foods, query) => foods.find((food) => normalize(food.name) === normalize(query))
 
-const LABEL = 'block font-mono text-xs uppercase tracking-wide text-gray-500 mb-1.5'
+const LABEL = 'block text-sm font-semibold text-gray-700 mb-1.5'
 const INPUT =
-    'w-full min-h-[44px] px-3 border border-gray-300 rounded-md text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand'
+    'w-full min-h-[44px] px-3 border border-gray-200 rounded-xl text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand'
 
 function ProposeEntryForm({ onCreated, onCancel }) {
     const [form, setForm] = useState(INITIAL_FORM)
@@ -153,9 +153,9 @@ function ProposeEntryForm({ onCreated, onCancel }) {
     return (
         <form
             onSubmit={handleSubmit}
-            className="bg-white border border-gray-200 rounded-lg p-4 md:p-6 mb-6 space-y-4"
+            className="bg-white border border-gray-100 rounded-2xl shadow-card p-4 md:p-6 mb-6 space-y-4"
         >
-            <h2 className="font-medium text-gray-900">Proponer una evaluación de riesgo</h2>
+            <h2 className="text-lg font-semibold text-gray-900">Proponer una evaluación de riesgo</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="relative">
@@ -171,13 +171,13 @@ function ProposeEntryForm({ onCreated, onCancel }) {
                         className={INPUT}
                     />
                     {foodSuggestions.length > 0 && (
-                        <ul className="absolute z-10 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg max-h-60 overflow-auto">
+                        <ul className="absolute z-10 left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-auto">
                             {foodSuggestions.map((food) => (
                                 <li key={food.id}>
                                     <button
                                         type="button"
                                         onClick={() => selectFood(food)}
-                                        className="w-full min-h-[44px] px-3 text-left text-sm text-gray-900 hover:bg-bone"
+                                        className="w-full min-h-[44px] px-3 text-left text-sm text-gray-900 hover:bg-brand-muted"
                                     >
                                         {food.name}
                                     </button>
@@ -225,7 +225,7 @@ function ProposeEntryForm({ onCreated, onCancel }) {
                         return (
                             <label
                                 key={level}
-                                className={`flex items-center justify-center gap-2 min-h-[44px] px-3 rounded-md border cursor-pointer font-mono text-sm uppercase ${
+                                className={`flex items-center justify-center gap-2 min-h-[44px] px-3 rounded-xl border cursor-pointer text-sm font-semibold tracking-wide ${
                                     selected
                                         ? `${config.bg} ${config.border} ${config.text} font-medium ring-1 ring-current`
                                         : 'border-gray-200 text-gray-500'
@@ -255,7 +255,7 @@ function ProposeEntryForm({ onCreated, onCancel }) {
                     onChange={setField('notes')}
                     rows={3}
                     placeholder="Qué lo hace peligroso, síntomas, cantidades de referencia..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                    className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand"
                 />
             </div>
 
@@ -285,7 +285,7 @@ function ProposeEntryForm({ onCreated, onCancel }) {
                                     type="button"
                                     onClick={() => removeSource(index)}
                                     aria-label={`Quitar fuente ${index + 1}`}
-                                    className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-gray-300 rounded-md text-gray-500"
+                                    className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-gray-200 rounded-xl text-gray-500"
                                 >
                                     <Trash2 size={16} aria-hidden="true" />
                                 </button>
@@ -309,7 +309,7 @@ function ProposeEntryForm({ onCreated, onCancel }) {
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-md disabled:opacity-60"
+                    className="min-h-[44px] px-4 bg-brand text-white text-sm font-medium rounded-xl hover:bg-brand-dark disabled:opacity-60"
                 >
                     {submitting ? 'Guardando...' : 'Crear entrada'}
                 </button>
@@ -317,7 +317,7 @@ function ProposeEntryForm({ onCreated, onCancel }) {
                     type="button"
                     onClick={onCancel}
                     disabled={submitting}
-                    className="min-h-[44px] px-4 border border-gray-300 text-sm font-medium rounded-md text-gray-700"
+                    className="min-h-[44px] px-4 border border-gray-200 text-sm font-medium rounded-xl text-gray-700"
                 >
                     Cancelar
                 </button>

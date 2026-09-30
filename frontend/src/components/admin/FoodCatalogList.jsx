@@ -74,7 +74,7 @@ function FoodCatalogList({ query, onUpdated }) {
                     ) : (
                         <li
                             key={food.id}
-                            className="bg-white border border-gray-200 rounded-lg p-4 flex flex-col md:flex-row md:items-start md:justify-between gap-3"
+                            className="bg-white border border-gray-100 rounded-2xl shadow-card p-4 flex flex-col md:flex-row md:items-start md:justify-between gap-3"
                         >
                             <div className="min-w-0 flex items-start gap-3">
                                 <FoodThumb name={food.name} category={food.category} size="md" />
@@ -89,7 +89,7 @@ function FoodCatalogList({ query, onUpdated }) {
                                 onClick={() => setEditingId(food.id)}
                                 disabled={editingId !== null}
                                 aria-label={`Editar ${food.name}`}
-                                className="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 border border-gray-300 bg-white text-sm font-medium rounded-md text-gray-700 disabled:opacity-60 shrink-0"
+                                className="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 border border-gray-200 bg-white text-sm font-medium rounded-xl text-gray-700 disabled:opacity-60 shrink-0"
                             >
                                 <Pencil size={16} aria-hidden="true" />
                                 Editar
