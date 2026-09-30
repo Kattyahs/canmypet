@@ -13,7 +13,9 @@ const GUIDES = {
 
 const notFound = { isAxiosError: true, response: { status: 404 } }
 
-const card = (level) => screen.getByRole('region', { name: level })
+const LEVEL_NAMES = { MODERATE: 'PRECAUCIÓN', TOXIC: 'TÓXICO', LETHAL: 'LETAL' }
+
+const card = (level) => screen.getByRole('region', { name: LEVEL_NAMES[level] })
 
 async function renderLoaded() {
     render(<EmergencyGuidesTab />)

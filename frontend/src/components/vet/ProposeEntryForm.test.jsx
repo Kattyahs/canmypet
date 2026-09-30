@@ -39,7 +39,7 @@ describe('ProposeEntryForm', () => {
         await user.type(screen.getByLabelText('Alimento'), 'cho')
         await user.click(await screen.findByRole('button', { name: 'Chocolate' }))
         await user.selectOptions(screen.getByLabelText('Especie'), 'CAT')
-        await user.click(screen.getByLabelText(/toxic/i))
+        await user.click(screen.getByLabelText(/tóxico/i))
         await user.click(screen.getByRole('button', { name: 'Crear entrada' }))
 
         expect(createFoodSafety).toHaveBeenCalledWith(
@@ -54,7 +54,7 @@ describe('ProposeEntryForm', () => {
 
         await user.type(screen.getByLabelText('Alimento'), 'Choco')
         await user.selectOptions(screen.getByLabelText('Especie'), 'CAT')
-        await user.click(screen.getByLabelText(/toxic/i))
+        await user.click(screen.getByLabelText(/tóxico/i))
         await user.click(screen.getByRole('button', { name: 'Crear entrada' }))
 
         expect(await screen.findByRole('alert')).toHaveTextContent(
@@ -72,7 +72,7 @@ describe('ProposeEntryForm', () => {
         await user.type(screen.getByLabelText('Alimento'), 'platano')
         await screen.findByRole('button', { name: 'Plátano' })
         await user.selectOptions(screen.getByLabelText('Especie'), 'DOG')
-        await user.click(screen.getByLabelText(/safe/i))
+        await user.click(screen.getByLabelText(/seguro/i))
         await user.click(screen.getByRole('button', { name: 'Crear entrada' }))
 
         expect(createFoodSafety).toHaveBeenCalledWith(expect.objectContaining({ foodId: 7 }))

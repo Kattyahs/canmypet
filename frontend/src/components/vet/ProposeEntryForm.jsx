@@ -240,7 +240,7 @@ function ProposeEntryForm({ onCreated, onCancel }) {
                                     className="sr-only"
                                 />
                                 <config.Icon size={14} aria-hidden="true" />
-                                {level}
+                                {config.label}
                             </label>
                         )
                     })}

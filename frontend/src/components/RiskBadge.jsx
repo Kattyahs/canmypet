@@ -2,7 +2,7 @@ import { CheckCircle, AlertCircle, XCircle, Skull } from 'lucide-react'
 
 export const RISK_CONFIG = {
     SAFE: {
-        label: 'SAFE',
+        label: 'SEGURO',
         Icon: CheckCircle,
         text: 'text-risk-safe',
         bg: 'bg-green-50',
@@ -10,7 +10,7 @@ export const RISK_CONFIG = {
         verdict: 'Sin riesgo conocido para esta especie.',
     },
     MODERATE: {
-        label: 'MODERATE',
+        label: 'PRECAUCIÓN',
         Icon: AlertCircle,
         text: 'text-risk-moderate',
         bg: 'bg-amber-50',
@@ -18,7 +18,7 @@ export const RISK_CONFIG = {
         verdict: 'Ocasional y controlado. Evita darlo con frecuencia.',
     },
     TOXIC: {
-        label: 'TOXIC',
+        label: 'TÓXICO',
         Icon: XCircle,
         text: 'text-risk-toxic',
         bg: 'bg-red-50',
@@ -26,7 +26,7 @@ export const RISK_CONFIG = {
         verdict: 'No debe comerlo. Puede provocar intoxicación.',
     },
     LETHAL: {
-        label: 'LETHAL',
+        label: 'LETAL',
         Icon: Skull,
         text: 'text-risk-lethal',
         bg: 'bg-red-100',

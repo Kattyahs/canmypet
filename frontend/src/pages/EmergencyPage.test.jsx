@@ -27,7 +27,7 @@ describe('EmergencyPage', () => {
 
         expect(await screen.findByText('Ve a urgencias')).toBeInTheDocument()
         expect(getEmergencyGuide).toHaveBeenCalledWith('LETHAL')
-        expect(screen.getByRole('button', { name: /lethal/i })).toHaveAttribute('aria-pressed', 'true')
+        expect(screen.getByRole('button', { name: /letal/i })).toHaveAttribute('aria-pressed', 'true')
     })
 
     it('explains that a level has no guide yet', async () => {

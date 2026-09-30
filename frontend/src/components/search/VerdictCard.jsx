@@ -34,7 +34,7 @@ function VerdictCard({ entry, question, stageNote, onShowOtherSpecies, emergency
                             <Icon size={28} aria-hidden="true" />
                             <h2 className="text-2xl md:text-[28px] font-bold">{HEADLINES[entry.riskLevel]}</h2>
                             <span className={`font-mono text-xs font-semibold px-2 py-0.5 rounded border ${config.border} bg-white`}>
-                                {entry.riskLevel}
+                                {config.label}
                             </span>
                         </div>
                         <p className={`text-sm ${config.text}`}>{config.verdict}</p>
