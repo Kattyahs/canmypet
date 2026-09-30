@@ -13,6 +13,7 @@ import ErrorMessage from '../components/ErrorMessage'
 import { resolveEntry } from '../utils/foodSafety'
 import { ELAPSED_OPTIONS, getElapsedLabel, getEmergencyAdvice } from '../utils/emergencyAdvice'
 import { getApiErrorMessage } from '../utils/apiError'
+import NearbyClinics from '../components/emergency/NearbyClinics'
 
 const STEPS = ['animal', 'food', 'time']
 const STEP_TITLES = {
@@ -191,6 +192,7 @@ function EmergencyResult({ animal, food, elapsed, onRestart }) {
     const who = describeAnimal(animal)
     const what = food.name ? food.name.toLowerCase() : 'algo que no sabes qué es'
     const when = elapsed === 'UNKNOWN' ? 'sin saber cuándo' : `hace ${getElapsedLabel(elapsed)}`
+    const needsClinic = advice.tone === 'urgent' || advice.tone === 'unknown'
 
     return (
         <section aria-label="Indicaciones de emergencia" className="space-y-4">
@@ -214,7 +216,7 @@ function EmergencyResult({ animal, food, elapsed, onRestart }) {
                     </p>
                 )}
             </div>
-
+            {needsClinic && <NearbyClinics />}
             {state.guide && (
                 <div className="bg-white border border-gray-200 rounded-lg overflow-hidden">
                     <div className="p-5 border-b border-gray-100">
@@ -246,6 +248,8 @@ function EmergencyResult({ animal, food, elapsed, onRestart }) {
                     <p className="text-sm text-gray-700 leading-relaxed">{state.entry.notes}</p>
                 </div>
             )}
+
+            {advice.tone === 'moderate' && <NearbyClinics />}
 
             <div className="flex flex-wrap gap-2">
                 <button

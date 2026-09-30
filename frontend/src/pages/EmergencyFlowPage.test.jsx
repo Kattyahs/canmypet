@@ -9,6 +9,7 @@ import { getEmergencyGuide } from '../api/emergency'
 
 vi.mock('../api/pets', () => ({ getMyPets: vi.fn() }))
 vi.mock('../api/foods', () => ({ getFoodsByIds: vi.fn(), getFoodSafetyAllSpecies: vi.fn(), searchFoods: vi.fn() }))
+vi.mock('../components/emergency/NearbyClinics', () => ({ default: () => <section aria-label="Veterinarias cercanas" /> }))
 vi.mock('../api/emergency', () => ({ getEmergencyGuide: vi.fn() }))
 
 const POPI = { id: 1, name: 'Popi', species: 'DOG', lifeStage: 'ADULT' }
