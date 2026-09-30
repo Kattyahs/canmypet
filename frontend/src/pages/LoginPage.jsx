@@ -4,6 +4,11 @@ import { useAuth } from '../context/AuthContext'
 import axiosClient from '../api/axiosClient'
 import Logo from '../components/Logo'
 import { usePageTitle } from '../hooks/usePageTitle'
+import { getApiErrorMessage } from '../utils/apiError'
+
+const LABEL = 'block font-mono text-xs uppercase tracking-wide text-gray-500 mb-1.5'
+const INPUT =
+    'w-full min-h-[44px] px-3 border border-gray-300 rounded-md text-base md:text-sm focus:outline-none focus:ring-2 focus:ring-brand'
 
 function LoginPage() {
     usePageTitle('Iniciar sesión')
@@ -23,14 +28,22 @@ function LoginPage() {
             await login(response.data.token)
             navigate('/')
         } catch (err) {
-            setError('Email o contraseña incorrectos.')
+            setError(
+                getApiErrorMessage(err, {
+                    fallback: 'No se pudo iniciar sesión. Intenta de nuevo.',
+                    byStatus: {
+                        400: 'Revisa el email y la contraseña.',
+                        401: 'Email o contraseña incorrectos.',
+                    },
+                })
+            )
         } finally {
             setLoading(false)
         }
     }
 
     return (
-        <div className="min-h-screen bg-bone flex items-center justify-center px-4">
+        <div className="min-h-screen bg-bone flex items-center justify-center px-4 py-8">
             <div className="w-full max-w-sm">
                 <div className="mb-8">
                     <Logo className="h-10" />
@@ -43,42 +56,42 @@ function LoginPage() {
 
                 <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-lg p-6">
                     <div className="mb-4">
-                        <label className="block font-mono text-xs uppercase tracking-wide text-gray-500 mb-1.5">
+                        <label htmlFor="login-email" className={LABEL}>
                             Email
                         </label>
                         <input
+                            id="login-email"
                             type="email"
+                            autoComplete="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="ana@correo.com"
                             required
-                            className="w-full min-h-[44px] px-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                            className={INPUT}
                         />
                     </div>
 
-                    <div className="mb-4">
-                        <div className="flex items-center justify-between mb-1.5">
-                            <label className="font-mono text-xs uppercase tracking-wide text-gray-500">
-                                Contraseña
-                            </label>
-                            <span className="text-xs text-brand cursor-pointer">¿La olvidaste?</span>
-                        </div>
+                    <div className="mb-5">
+                        <label htmlFor="login-password" className={LABEL}>
+                            Contraseña
+                        </label>
                         <input
+                            id="login-password"
                             type="password"
+                            autoComplete="current-password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="••••••••"
                             required
-                            className="w-full min-h-[44px] px-3 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand"
+                            className={INPUT}
                         />
                     </div>
 
-                    <label className="flex items-center gap-2 mb-5 text-sm text-gray-600">
-                        <input type="checkbox" className="rounded border-gray-300" />
-                        Mantener la sesión abierta
-                    </label>
-
-                    {error && <p className="text-sm text-risk-toxic mb-4">{error}</p>}
+                    {error && (
+                        <p role="alert" className="text-sm text-risk-toxic mb-4">
+                            {error}
+                        </p>
+                    )}
 
                     <button
                         type="submit"
