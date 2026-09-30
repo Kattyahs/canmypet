@@ -17,7 +17,7 @@ async function submit() {
     )
     await user.type(screen.getByLabelText('Email'), 'ana@correo.com')
     await user.type(screen.getByLabelText('Contraseña'), 'secreto123')
-    await user.click(screen.getByRole('button', { name: 'Entrar' }))
+    await user.click(screen.getByRole('button', { name: 'Iniciar sesión' }))
 }
 
 describe('LoginPage', () => {
@@ -33,5 +33,22 @@ describe('LoginPage', () => {
         axiosClient.post.mockRejectedValue({ isAxiosError: true })
         await submit()
         expect(await screen.findByRole('alert')).toHaveTextContent('No se pudo conectar con el servidor.')
+    })
+
+    it('lets the user show and hide the password', async () => {
+        const user = userEvent.setup()
+        render(
+            <MemoryRouter>
+                <LoginPage />
+            </MemoryRouter>
+        )
+        const password = screen.getByLabelText('Contraseña')
+        expect(password).toHaveAttribute('type', 'password')
+
+        await user.click(screen.getByRole('button', { name: 'Mostrar contraseña' }))
+        expect(password).toHaveAttribute('type', 'text')
+
+        await user.click(screen.getByRole('button', { name: 'Ocultar contraseña' }))
+        expect(password).toHaveAttribute('type', 'password')
     })
 })
