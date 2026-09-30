@@ -1,14 +1,13 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Lock, Mail } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import axiosClient from '../api/axiosClient'
-import Logo from '../components/Logo'
+import AuthLayout from '../components/auth/AuthLayout'
+import AuthField from '../components/auth/AuthField'
+import Button from '../components/ui/Button'
 import { usePageTitle } from '../hooks/usePageTitle'
 import { getApiErrorMessage } from '../utils/apiError'
-
-const LABEL = 'block font-mono text-xs uppercase tracking-wide text-gray-500 mb-1.5'
-const INPUT =
-    'w-full min-h-[44px] px-3 border border-gray-300 rounded-md text-base md:text-sm focus:outline-none focus:ring-2 focus:ring-brand'
 
 function LoginPage() {
     usePageTitle('Iniciar sesión')
@@ -43,73 +42,53 @@ function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen bg-bone flex items-center justify-center px-4 py-8">
-            <div className="w-full max-w-sm">
-                <div className="mb-8">
-                    <Logo className="h-10" />
-                </div>
-
-                <h1 className="text-2xl font-semibold text-gray-900 mb-1">Iniciar sesión</h1>
-                <p className="text-sm text-gray-500 mb-6">
-                    Consulta qué alimentos son seguros para tus mascotas.
-                </p>
-
-                <form onSubmit={handleSubmit} className="bg-white border border-gray-200 rounded-lg p-6">
-                    <div className="mb-4">
-                        <label htmlFor="login-email" className={LABEL}>
-                            Email
-                        </label>
-                        <input
-                            id="login-email"
-                            type="email"
-                            autoComplete="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="ana@correo.com"
-                            required
-                            className={INPUT}
-                        />
-                    </div>
-
-                    <div className="mb-5">
-                        <label htmlFor="login-password" className={LABEL}>
-                            Contraseña
-                        </label>
-                        <input
-                            id="login-password"
-                            type="password"
-                            autoComplete="current-password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="••••••••"
-                            required
-                            className={INPUT}
-                        />
-                    </div>
-
-                    {error && (
-                        <p role="alert" className="text-sm text-risk-toxic mb-4">
-                            {error}
-                        </p>
-                    )}
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full min-h-[44px] bg-brand text-white text-sm font-medium rounded-md hover:opacity-90 disabled:opacity-60"
-                    >
-                        {loading ? 'Entrando...' : 'Entrar'}
-                    </button>
-                </form>
-
-                <p className="text-center text-sm text-gray-500 mt-4">
+        <AuthLayout
+            title="Qué bueno verte"
+            subtitle="Inicia sesión para seguir cuidando lo que comen tus mascotas."
+            footer={
+                <>
                     ¿No tienes cuenta?{' '}
-                    <Link to="/register" className="text-brand font-medium">
+                    <Link to="/register" className="font-semibold text-brand hover:underline">
                         Crear cuenta
                     </Link>
-                </p>
-            </div>
-        </div>
+                </>
+            }
+        >
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <AuthField
+                    id="login-email"
+                    label="Email"
+                    icon={Mail}
+                    type="email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="tu@correo.com"
+                    required
+                />
+                <AuthField
+                    id="login-password"
+                    label="Contraseña"
+                    icon={Lock}
+                    type="password"
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                />
+
+                {error && (
+                    <p role="alert" className="text-sm text-risk-toxic">
+                        {error}
+                    </p>
+                )}
+
+                <Button type="submit" size="lg" fullWidth disabled={loading} className="mt-2">
+                    {loading ? 'Entrando...' : 'Iniciar sesión'}
+                </Button>
+            </form>
+        </AuthLayout>
     )
 }
 
