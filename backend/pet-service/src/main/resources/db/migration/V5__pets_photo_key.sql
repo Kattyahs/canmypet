@@ -1,0 +1,1 @@
+ALTER TABLE pets ADD COLUMN photo_key VARCHAR(64);

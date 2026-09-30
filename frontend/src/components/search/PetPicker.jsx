@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
-import { PawPrint, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { getSpeciesLabel } from '../../constants/species'
 import { LIFE_STAGE_LABELS } from '../../constants/lifeStages'
+import PetAvatar from '../PetAvatar'
 
 function PetPicker({ pets, selectedPetId, onSelect, label = '¿Para cuál de tus mascotas?', showAddPet = true }) {
     return (
@@ -24,13 +25,7 @@ function PetPicker({ pets, selectedPetId, onSelect, label = '¿Para cuál de tus
                                     : 'border border-gray-300 bg-white hover:bg-bone'
                             }`}
                         >
-                            <span
-                                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                    selected ? 'bg-brand text-white' : 'bg-gray-100 text-gray-500'
-                                }`}
-                            >
-                                <PawPrint size={16} aria-hidden="true" />
-                            </span>
+                            <PetAvatar pet={pet} selected={selected} />
                             <span>
                                 <span className={`block text-sm font-semibold ${selected ? 'text-brand' : 'text-gray-900'}`}>
                                     {pet.name}
@@ -51,9 +46,7 @@ function PetPicker({ pets, selectedPetId, onSelect, label = '¿Para cuál de tus
                         <Plus size={16} aria-hidden="true" />
                         Agregar mascota
                     </Link>
-
                 )}
-
             </div>
         </div>
     )

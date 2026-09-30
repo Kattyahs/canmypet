@@ -1,13 +1,15 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Plus, Pencil, Search, PawPrint } from 'lucide-react'
-import { getMyPets, createPet, updatePet } from '../api/pets'
+import { Plus, Pencil, Search, PawPrint, Camera, Trash2 } from 'lucide-react'
+import { getMyPets, createPet, updatePet, uploadPetPhoto, deletePetPhoto } from '../api/pets'
 import { SPECIES, getSpeciesLabel, getStageHints } from '../constants/species'
 import { LIFE_STAGE_LABELS, getLifeStageLabel } from '../constants/lifeStages'
 import Spinner from '../components/Spinner'
 import EmptyState from '../components/EmptyState'
 import ErrorMessage from '../components/ErrorMessage'
+import PetAvatar from '../components/PetAvatar'
 import { getApiErrorMessage } from '../utils/apiError'
+import { ACCEPTED_PHOTO_TYPES, resizeImage } from '../utils/resizeImage'
 
 const buildLifeStages = (species) => {
     const hints = getStageHints(species)
@@ -24,6 +26,17 @@ const EMPTY_FORM = {
     medicalConditions: '',
 }
 
+const NO_PHOTO_CHANGE = { file: null, previewUrl: null, remove: false }
+
+const photoErrorMessage = (err) =>
+    getApiErrorMessage(err, {
+        fallback: 'No se pudo subir la foto.',
+        byStatus: {
+            400: 'La foto debe ser una imagen JPG o PNG válida.',
+            413: 'La foto pesa demasiado. Prueba con una más liviana.',
+        },
+    })
+
 const LABEL = 'block font-mono text-xs uppercase tracking-wide text-gray-500 mb-1.5'
 const INPUT =
     'w-full min-h-[44px] px-3 border border-gray-300 rounded-md text-base md:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand'
@@ -36,6 +49,8 @@ function PetsPage() {
     const [form, setForm] = useState(EMPTY_FORM)
     const [saving, setSaving] = useState(false)
     const [error, setError] = useState('')
+    const [photo, setPhoto] = useState(NO_PHOTO_CHANGE)
+    const [photoError, setPhotoError] = useState('')
     const formRef = useRef(null)
 
     const loadPets = useCallback(async () => {
@@ -59,10 +74,23 @@ function PetsPage() {
         if (editingId) formRef.current?.scrollIntoView?.({ behavior: 'smooth', block: 'start' })
     }, [editingId])
 
+    useEffect(() => {
+        const url = photo.previewUrl
+        return () => {
+            if (url) URL.revokeObjectURL(url)
+        }
+    }, [photo.previewUrl])
+
+    const resetPhoto = () => {
+        setPhoto(NO_PHOTO_CHANGE)
+        setPhotoError('')
+    }
+
     const startCreate = () => {
         setEditingId('new')
         setForm(EMPTY_FORM)
         setError('')
+        resetPhoto()
     }
 
     const startEdit = (pet) => {
@@ -77,12 +105,36 @@ function PetsPage() {
             medicalConditions: pet.medicalConditions || '',
         })
         setError('')
+        resetPhoto()
     }
 
     const cancelEdit = () => {
         setEditingId(null)
         setForm(EMPTY_FORM)
         setError('')
+        resetPhoto()
+    }
+
+    const handlePhotoChange = async (e) => {
+        const file = e.target.files?.[0]
+        e.target.value = ''
+        if (!file) return
+        setPhotoError('')
+        if (!ACCEPTED_PHOTO_TYPES.includes(file.type)) {
+            setPhotoError('Elige una foto JPG o PNG.')
+            return
+        }
+        try {
+            const resized = await resizeImage(file)
+            setPhoto({ file: resized, previewUrl: URL.createObjectURL(resized), remove: false })
+        } catch {
+            setPhotoError('No pudimos leer esa foto. Prueba con otra.')
+        }
+    }
+
+    const removePhoto = () => {
+        setPhoto({ file: null, previewUrl: null, remove: true })
+        setPhotoError('')
     }
 
     const handleChange = (field) => (e) => {
@@ -100,10 +152,18 @@ function PetsPage() {
                 lifeStage: form.lifeStage || null,
             }
 
-            if (editingId === 'new') {
-                await createPet(payload)
-            } else {
-                await updatePet(editingId, payload)
+            const saved = editingId === 'new' ? await createPet(payload) : await updatePet(editingId, payload)
+            const petId = saved.data.id
+
+            try {
+                if (photo.file) await uploadPetPhoto(petId, photo.file)
+                else if (photo.remove && saved.data.hasPhoto) await deletePetPhoto(petId)
+            } catch (photoErr) {
+                await loadPets()
+                setEditingId(petId)
+                setPhoto(NO_PHOTO_CHANGE)
+                setPhotoError(`La mascota se guardó, pero la foto no. ${photoErrorMessage(photoErr)}`)
+                return
             }
 
             await loadPets()
@@ -119,6 +179,9 @@ function PetsPage() {
             setSaving(false)
         }
     }
+
+    const editingPet = pets.find((p) => p.id === editingId)
+    const currentHasPhoto = Boolean(photo.previewUrl) || (!photo.remove && Boolean(editingPet?.hasPhoto))
 
     return (
         <div>
@@ -160,35 +223,40 @@ function PetsPage() {
                                 editingId === pet.id ? 'border-brand ring-1 ring-brand' : 'border-gray-200'
                             }`}
                         >
-                            <div className="flex items-center gap-2 mb-1">
-                                <p className="font-medium text-gray-900">{pet.name}</p>
-                                {pet.lifeStage && (
-                                    <span className="text-xs font-mono uppercase px-1.5 py-0.5 bg-bone rounded text-gray-600">
-                                        {getLifeStageLabel(pet.lifeStage)}
-                                    </span>
-                                )}
-                            </div>
-                            <p className="text-sm text-gray-500 mb-2">
-                                {getSpeciesLabel(pet.species)}
-                                {pet.breed ? ` · ${pet.breed}` : ''}
-                                {pet.weight ? ` · ${pet.weight} kg` : ''}
-                            </p>
-                            <div className="flex flex-wrap items-center gap-x-4 text-sm">
-                                <button
-                                    type="button"
-                                    onClick={() => startEdit(pet)}
-                                    className="flex items-center gap-1 min-h-[44px] text-brand font-medium"
-                                >
-                                    <Pencil size={14} aria-hidden="true" />
-                                    Editar
-                                </button>
-                                <Link
-                                    to={`/search?petId=${pet.id}`}
-                                    className="flex items-center gap-1 min-h-[44px] text-brand font-medium"
-                                >
-                                    <Search size={14} aria-hidden="true" />
-                                    Consultar un alimento
-                                </Link>
+                            <div className="flex items-start gap-3">
+                                <PetAvatar pet={pet} size="md" />
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <p className="font-medium text-gray-900">{pet.name}</p>
+                                        {pet.lifeStage && (
+                                            <span className="text-xs font-mono uppercase px-1.5 py-0.5 bg-bone rounded text-gray-600">
+                                                {getLifeStageLabel(pet.lifeStage)}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <p className="text-sm text-gray-500 mb-2">
+                                        {getSpeciesLabel(pet.species)}
+                                        {pet.breed ? ` · ${pet.breed}` : ''}
+                                        {pet.weight ? ` · ${pet.weight} kg` : ''}
+                                    </p>
+                                    <div className="flex flex-wrap items-center gap-x-4 text-sm">
+                                        <button
+                                            type="button"
+                                            onClick={() => startEdit(pet)}
+                                            className="flex items-center gap-1 min-h-[44px] text-brand font-medium"
+                                        >
+                                            <Pencil size={14} aria-hidden="true" />
+                                            Editar
+                                        </button>
+                                        <Link
+                                            to={`/search?petId=${pet.id}`}
+                                            className="flex items-center gap-1 min-h-[44px] text-brand font-medium"
+                                        >
+                                            <Search size={14} aria-hidden="true" />
+                                            Consultar un alimento
+                                        </Link>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     ))}
@@ -206,6 +274,41 @@ function PetsPage() {
                         )}
 
                         <form onSubmit={handleSubmit} className="space-y-4 mt-3">
+                            <div className="flex items-center gap-4">
+                                <PetAvatar
+                                    pet={photo.remove ? null : editingPet}
+                                    size="lg"
+                                    previewUrl={photo.previewUrl}
+                                />
+                                <div className="flex flex-col items-start gap-1">
+                                    <label className="inline-flex items-center gap-2 min-h-[44px] px-3 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white cursor-pointer hover:bg-bone focus-within:ring-2 focus-within:ring-brand">
+                                        <Camera size={16} aria-hidden="true" />
+                                        {currentHasPhoto ? 'Cambiar foto' : 'Agregar foto'}
+                                        <input
+                                            type="file"
+                                            accept={ACCEPTED_PHOTO_TYPES.join(',')}
+                                            onChange={handlePhotoChange}
+                                            className="sr-only"
+                                        />
+                                    </label>
+                                    {currentHasPhoto && (
+                                        <button
+                                            type="button"
+                                            onClick={removePhoto}
+                                            className="inline-flex items-center gap-1.5 min-h-[36px] text-sm text-gray-600"
+                                        >
+                                            <Trash2 size={14} aria-hidden="true" />
+                                            Quitar foto
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                            {photoError && (
+                                <p role="alert" className="text-sm text-risk-toxic">
+                                    {photoError}
+                                </p>
+                            )}
+
                             <div>
                                 <label htmlFor="pet-name" className={LABEL}>
                                     Nombre

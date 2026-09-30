@@ -63,6 +63,9 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       USER_SERVICE_URL: http://user-service:${USER_SERVICE_PORT}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      PET_PHOTOS_DIR: /data/pet-photos
+    volumes:
+      - pet_photos:/data/pet-photos
     ports:
       - "127.0.0.1:${PET_SERVICE_PORT}:${PET_SERVICE_PORT}"
 
@@ -125,3 +128,4 @@ services:
 
 volumes:
   postgres_data:
+  pet_photos:
